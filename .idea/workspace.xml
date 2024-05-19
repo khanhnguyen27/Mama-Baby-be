@@ -5,23 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/src/main/java/com/myweb/mamababy/MamababyApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mamababy/src/test/java/com/myweb/mamababy/MamababyApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -40,12 +33,45 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.All in mamababy.executor": "Run",
+    "JUnit.MamababyApplicationTests.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "DuyQuang",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/Materials_FPTU/mamababy/mamababy"
   }
 }]]></component>
+  <component name="RunManager" selected="JUnit.All in mamababy">
+    <configuration name="All in mamababy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MamababyApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.All in mamababy" />
+        <item itemvalue="JUnit.MamababyApplicationTests" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
