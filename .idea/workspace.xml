@@ -5,13 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserLoginDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/exceptions/DataNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/model/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/model/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/IUserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -31,17 +51,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.All in mamababy.executor": "Run",
-    "JUnit.MamababyApplicationTests.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DuyQuang",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Materials_FPTU/mamababy/mamababy"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MamababyApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mamababy (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mamababy.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MamababyApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ManhCuong&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Mamababy_Project/Mama-Baby-be&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.All in mamababy">
+}</component>
+  <component name="RunManager" selected="Application.MamababyApplication">
+    <configuration name="MamababyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplication" />
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in mamababy (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in mamababy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="mamababy" />
       <option name="PACKAGE_NAME" value="" />
@@ -67,6 +114,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MamababyApplication" />
+        <item itemvalue="JUnit.All in mamababy (1)" />
         <item itemvalue="JUnit.All in mamababy" />
         <item itemvalue="JUnit.MamababyApplicationTests" />
       </list>
