@@ -3,8 +3,10 @@ package com.myweb.mamababy.models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,57 +29,62 @@ public class User implements UserDetails{
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "fullName", length = 100)
+    @Column(name = "full_name", length = 100)
     private String fullName;
 
     @Column(name = "address", length = 200)
     private String address;
 
-    @Column(name = "phoneNumber", length = 50)
+    @Column(name = "phone_number", length = 50)
     private String phoneNumber;
 
-    @Column(name = "accumulatedPoints")
-    private String accumulatedPoints;
+    @Column(name = "accumulated_points")
+    private int accumulatedPoints;
 
-    @Column(name = "isActive")
+    @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "roleID")
-    private com.myweb.mamababy.models.Role role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("ROLE_"+getRole().getName().toUpperCase()));
+        //authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return authorityList;
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
