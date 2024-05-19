@@ -1,4 +1,4 @@
-package com.myweb.mamababy.model;
+package com.myweb.mamababy.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;

@@ -1,9 +1,8 @@
-package com.myweb.mamababy.model;
+package com.myweb.mamababy.models;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -44,7 +43,7 @@ public class User implements UserDetails{
     private Boolean isActive;
 
     @Column(name = "roleID")
-    private com.myweb.mamababy.model.Role role;
+    private com.myweb.mamababy.models.Role role;
 
 
     @Override

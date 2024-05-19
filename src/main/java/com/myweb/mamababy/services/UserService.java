@@ -2,7 +2,7 @@ package com.myweb.mamababy.services;
 
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.model.User;
+import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
