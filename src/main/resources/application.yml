@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8080
 spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/mamababy?useSSL=false&serverTimezone=UTC
@@ -19,3 +19,10 @@ api:
 jwt:
   expiration: 2592000 #30 days = 30 * 24 * 60 * 60
   secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=
+open:
+  api:
+    title: Mamababy API
+    version: 1.0.0
+    description: Mota API service
+    serverUrl: http://localhost:8080
+    serverName: server test
