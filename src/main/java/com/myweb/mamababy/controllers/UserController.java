@@ -4,15 +4,15 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.dtos.UserLoginDTO;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.FieldError;
 
 import java.util.List;
@@ -58,6 +58,34 @@ public class UserController {
             return ResponseEntity.ok(token);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //http://localhost:8088/mamababy/users/details
+    @PostMapping("/details")
+    public ResponseEntity<ResponseObject> getUserDetails(
+            @RequestHeader("Authorization") String token
+    ) throws Exception {
+        String extractedToken = token.substring(7); // Loại bỏ "Bearer " từ chuỗi token
+        User user = userService.getUserDetailsFromToken(extractedToken);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get user's detail successfully")
+                        .data(UserResponse.fromUser(user))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    //http://localhost:8088/mamababy/users/logout
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String tokenHeader) throws Exception {
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
+            String token = tokenHeader.substring(7);
+            userService.logout(token);
+            return ResponseEntity.ok("User logged out successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid token");
         }
     }
 

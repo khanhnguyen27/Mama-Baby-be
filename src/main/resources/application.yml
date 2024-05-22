@@ -17,7 +17,7 @@ spring:
 api:
   prefix: mamababy
 jwt:
-  expiration: 2592000 #30 days = 30 * 24 * 60 * 60
+  expiration: 86400 # 24h
   secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=
 open:
   api:
