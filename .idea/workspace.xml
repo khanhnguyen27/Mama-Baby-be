@@ -5,11 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/AgeDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/BrandDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CategoryDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ProductDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/StoreDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Age.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Brand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Store.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/AgeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/BrandRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ProductRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/StoreRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/IProductService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
