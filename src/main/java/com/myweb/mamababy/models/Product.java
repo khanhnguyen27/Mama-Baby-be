@@ -5,13 +5,12 @@ import lombok.*;
 
 @Entity
 @Table(name = "products")
-@Data//toString
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Product {
+public class Product extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,14 +19,16 @@ public class Product {
     private String name;
 
     @Column(name = "price")
-    private Float price;
+    private float price;
+
+    @Column(name = "point")
+    private float point;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "description")
     private String description;
-
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -42,7 +43,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "range_age")
-    private Brand rangeAge;
+    private Age age;
 
     @ManyToOne
     @JoinColumn(name = "store_id")

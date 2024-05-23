@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandDTO {
-    @NotEmpty(message = "Category's name cannot be empty")
+    @NotEmpty(message = "Brand's name cannot be empty")
     private String name;
 }

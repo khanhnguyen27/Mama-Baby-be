@@ -19,7 +19,12 @@ public class ProductDTO {
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Max(value = 10000000, message = "Price must be less than or equal to 10,000,000")
     @JsonProperty("price")
-    private String price;
+    private float price;
+
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
+    @Max(value = 1000, message = "Price must be less than or equal to 10,000,000")
+    @JsonProperty("point")
+    private int point;
 
     @JsonProperty("status")
     private String status;
