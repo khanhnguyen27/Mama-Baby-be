@@ -1,4 +1,4 @@
-package com.myweb.mamababy.services;
+package com.myweb.mamababy.services.User;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.UserDTO;
@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
@@ -35,7 +35,7 @@ public class UserService implements IUserService{
     public User createUser(UserDTO userDTO) throws Exception {
         //register user
         String username = userDTO.getUsername();
-        // Kiểm tra xem số điện thoại đã tồn tại hay chưa
+        // Kiểm tra xem số username đã tồn tại hay chưa
         if(userRepository.existsByUsername(username)) {
             throw new DataIntegrityViolationException("Username already exists");
         }

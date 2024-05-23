@@ -1,4 +1,4 @@
-package com.myweb.mamababy.services;
+package com.myweb.mamababy.services.User;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.models.User;
 

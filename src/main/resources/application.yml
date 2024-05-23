@@ -26,3 +26,4 @@ open:
     description: Mota API service
     serverUrl: http://localhost:8080
     serverName: server test
+

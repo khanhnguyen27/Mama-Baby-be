@@ -6,7 +6,7 @@ import com.myweb.mamababy.dtos.UserLoginDTO;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.user.UserResponse;
-import com.myweb.mamababy.services.IUserService;
+import com.myweb.mamababy.services.User.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final IUserService userService;
+
+    //http://localhost:8088/mamababy/users/register
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     //can we register an "admin" user ?
     public ResponseEntity<?> createUser(
@@ -40,7 +43,13 @@ public class UserController {
             }
             User user = userService.createUser(userDTO);
             //return ResponseEntity.ok("Register successfully");
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok().body(
+                    ResponseObject.builder()
+                            .message("Get user's detail successfully")
+                            .data(UserResponse.fromUser(user))
+                            .status(HttpStatus.OK)
+                            .build()
+            );
         }  catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -48,21 +57,29 @@ public class UserController {
 
 
     //http://localhost:8088/mamababy/users/login
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<?> login(
             @Valid @RequestBody UserLoginDTO userLoginDTO) {
         // Kiểm tra thông tin đăng nhập và sinh token
         try {
             String token = userService.login(userLoginDTO.getUsername(), userLoginDTO.getPassword());
             // Trả về token trong response
-            return ResponseEntity.ok(token);
+            //return ResponseEntity.ok(token);
+            return ResponseEntity.ok().body(
+                    ResponseObject.builder()
+                            .message("Login successfully")
+                            .data(token)
+                            .status(HttpStatus.OK)
+                            .build()
+            );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     //http://localhost:8088/mamababy/users/details
-    @PostMapping("/details")
+    @GetMapping("/details")
     public ResponseEntity<ResponseObject> getUserDetails(
             @RequestHeader("Authorization") String token
     ) throws Exception {

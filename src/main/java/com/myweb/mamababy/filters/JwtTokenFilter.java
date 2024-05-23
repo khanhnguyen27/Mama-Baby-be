@@ -1,7 +1,10 @@
 package com.myweb.mamababy.filters;
+
 import com.myweb.mamababy.components.JwtTokenUtil;
+
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -81,11 +84,20 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     }
     private boolean isBypassToken(@NonNull  HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
+                //Thêm api mà người dùng không cần đăng nhập (token) vẫn xem được
+                //Nếu cần test, test xong mọi người nhớ xóa
                 Pair.of(String.format("%s/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/**", apiPrefix), "PUT"),
+                Pair.of(String.format("%s/**", apiPrefix), "DELETE"),
+                Pair.of(String.format("%s/**", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
-                Pair.of(String.format("%s/**", apiPrefix), "PUT"),
-                Pair.of(String.format("%s/**", apiPrefix), "DELETE")
+                Pair.of(String.format("%s/stores/getAllStores", apiPrefix), "GET"),
+                Pair.of(String.format("%s/products/getProducts", apiPrefix), "GET"),
+                Pair.of(String.format("%s/categories/getAllCategories", apiPrefix), "GET"),
+                Pair.of(String.format("%s/brands/getAllBrands", apiPrefix), "GET"),
+                Pair.of(String.format("%s/age/getAllAges", apiPrefix), "GET")
+
         );
         for(Pair<String, String> bypassToken: bypassTokens) {
             if (request.getServletPath().contains(bypassToken.getFirst()) &&
