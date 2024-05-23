@@ -1,6 +1,5 @@
 package com.myweb.mamababy.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.reponses.ProductListResponse;
