@@ -3,6 +3,7 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.BrandDTO;
 import com.myweb.mamababy.models.Brand;
 import com.myweb.mamababy.services.Brand.BrandService;
+import com.myweb.mamababy.services.Brand.IBrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BrandController {
 
-    private final BrandService brandService;
+    private final IBrandService brandService;
 
     @PostMapping("")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
