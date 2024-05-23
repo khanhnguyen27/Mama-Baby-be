@@ -3,17 +3,17 @@ package com.myweb.mamababy.services.Store;
 import com.myweb.mamababy.dtos.StoreDTO;
 
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.reponses.StoreResponse;
 import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +55,9 @@ public class StoreService implements IStoreService{
     }
 
     @Override
-    public List<Store> getAllStores() {
-        return storeRepository.findAll();
+    public Page<Store> getAllStores(String keyword, PageRequest pageRequest) {
+        Page<Store> storesPage = storeRepository.searchStores(keyword, pageRequest);
+        return storesPage;
     }
 
     @Override

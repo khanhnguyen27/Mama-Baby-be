@@ -1,6 +1,5 @@
 package com.myweb.mamababy.reponses;
 
-import com.myweb.mamababy.models.Product;
 import lombok.*;
 
 import java.util.List;

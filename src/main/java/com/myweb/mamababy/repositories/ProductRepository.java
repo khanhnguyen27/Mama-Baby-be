@@ -2,7 +2,6 @@ package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.models.User;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +12,6 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     boolean existsByName(String name);
-
-    Page<Product> findAll(Pageable pageable);//ph&acirc;n trang
 
     List<Product> findByCategory(Category category);
 

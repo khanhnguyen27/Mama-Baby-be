@@ -2,7 +2,7 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.CategoryDTO;
 import com.myweb.mamababy.models.Category;
-import com.myweb.mamababy.services.Category.CategoryService;
+import com.myweb.mamababy.services.Category.ICategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final ICategoryService categoryService;
 
-    @PostMapping("")
+    @PostMapping("/createCategory")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
@@ -36,7 +36,7 @@ public class CategoryController {
     }
 
     //Hiện tất cả các categories
-    @GetMapping("")
+    @GetMapping("/getAllCategories")
     public ResponseEntity<List<Category>> getAllCategories(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit

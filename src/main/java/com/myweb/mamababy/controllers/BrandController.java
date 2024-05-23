@@ -2,7 +2,7 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.BrandDTO;
 import com.myweb.mamababy.models.Brand;
-import com.myweb.mamababy.services.Brand.BrandService;
+import com.myweb.mamababy.services.Brand.IBrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BrandController {
 
-    private final BrandService brandService;
+    private final IBrandService brandService;
 
-    @PostMapping("")
+    @PostMapping("/createBrand")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createBrand(
             @Valid @RequestBody BrandDTO brandDTO,
@@ -36,7 +36,7 @@ public class BrandController {
     }
 
     //Hiện tất cả các categories
-    @GetMapping("")
+    @GetMapping("/getAllBrands")
     public ResponseEntity<List<Brand>> getAllBrands(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit

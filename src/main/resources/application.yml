@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mamababy?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3307/mamababy?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
@@ -17,7 +17,7 @@ spring:
 api:
   prefix: mamababy
 jwt:
-  expiration: 2592000 #30 days = 30 * 24 * 60 * 60
+  expiration: 86400 # 24h
   secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=
 open:
   api:
@@ -26,3 +26,4 @@ open:
     description: Mota API service
     serverUrl: http://localhost:8080
     serverName: server test
+

@@ -1,6 +1,5 @@
 package com.myweb.mamababy.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.reponses.ProductListResponse;
@@ -27,7 +26,7 @@ public class ProductController {
     private final IProductService productService;
 
     //POST http://localhost:8080/mamababy/products
-    @PostMapping("")
+    @PostMapping("/createProduct")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -50,16 +49,16 @@ public class ProductController {
 
     //GET http://localhost:8080/mamababy/products
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("")
+    @GetMapping("/getProducts")
     public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
             @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
             @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
             @RequestParam(defaultValue = "0", name = "store_id") int storeId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int limit
-    ) throws JsonProcessingException {
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "12", name = "limit") int limit
+    ){
         int totalPages = 0;
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
