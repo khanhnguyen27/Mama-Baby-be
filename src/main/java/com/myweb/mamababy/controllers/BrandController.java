@@ -2,7 +2,6 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.BrandDTO;
 import com.myweb.mamababy.models.Brand;
-import com.myweb.mamababy.services.Brand.BrandService;
 import com.myweb.mamababy.services.Brand.IBrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

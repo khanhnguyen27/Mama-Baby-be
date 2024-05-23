@@ -1,9 +1,7 @@
 package com.myweb.mamababy.services.Store;
 
-import com.myweb.mamababy.dtos.CategoryDTO;
 import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.reponses.StoreResponse;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,6 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Store;
-import com.myweb.mamababy.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
