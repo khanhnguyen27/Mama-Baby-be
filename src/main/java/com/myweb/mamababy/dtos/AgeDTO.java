@@ -1,5 +1,6 @@
 package com.myweb.mamababy.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgeDTO {
-    @NotEmpty(message = "Category's name cannot be empty")
+    @NotEmpty(message = "Age's name cannot be empty")
+    @JsonProperty("range_age")
     private String rangeAge;
 }

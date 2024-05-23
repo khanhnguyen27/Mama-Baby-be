@@ -1,5 +1,6 @@
-package com.myweb.mamababy.services;
+package com.myweb.mamababy.services.Product;
 
+import com.myweb.mamababy.reponses.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.myweb.mamababy.dtos.ProductDTO;
@@ -13,8 +14,8 @@ public interface IProductService {
 
     Product getProductById(int id) throws Exception;
 
-    Page<Product> getAllProducts(String keyword,
-                                 Long categoryId, PageRequest pageRequest);
+    Page<ProductResponse> getAllProducts(String keyword,
+                                         int categoryId, int brandId, int age, int storeId, PageRequest pageRequest);
 
     Product updateProduct(int id, ProductDTO productDTO) throws Exception;
 

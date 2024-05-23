@@ -30,6 +30,9 @@ public class Store {
     @Column(name = "phone", length = 10, nullable = false)
     private String phone;
 
+    @Column(name = "status")
+    private boolean status;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
