@@ -21,6 +21,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final IUserService userService;
+
+    //http://localhost:8088/mamababy/users/register
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/register")
     //can we register an "admin" user ?
     public ResponseEntity<?> createUser(
@@ -48,6 +51,7 @@ public class UserController {
 
 
     //http://localhost:8088/mamababy/users/login
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<String> login(
             @Valid @RequestBody UserLoginDTO userLoginDTO) {

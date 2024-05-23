@@ -1,7 +1,10 @@
 package com.myweb.mamababy.filters;
+
 import com.myweb.mamababy.components.JwtTokenUtil;
+
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.*;
 
@@ -84,6 +84,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 Pair.of(String.format("%s/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
+                Pair.of(String.format("%s/products", apiPrefix), "GET"),
                 Pair.of(String.format("%s/**", apiPrefix), "PUT"),
                 Pair.of(String.format("%s/**", apiPrefix), "DELETE")
         );
