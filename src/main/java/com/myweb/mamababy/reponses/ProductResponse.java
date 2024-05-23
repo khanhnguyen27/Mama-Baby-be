@@ -22,7 +22,7 @@ public class ProductResponse extends BaseResponse{
     @JsonProperty("category_id")
     private int categoryId;
 
-    @JsonProperty("brand")
+    @JsonProperty("brand_id")
     private int brandId;
 
     @JsonProperty("age_id")

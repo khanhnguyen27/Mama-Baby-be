@@ -57,9 +57,9 @@ public class ProductController {
             @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
             @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
             @RequestParam(defaultValue = "0", name = "store_id") int storeId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int limit
-    ) throws JsonProcessingException {
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "12", name = "limit") int limit
+    ){
         int totalPages = 0;
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
