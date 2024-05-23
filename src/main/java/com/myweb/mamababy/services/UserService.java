@@ -3,8 +3,11 @@ package com.myweb.mamababy.services;
 import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.exceptions.ExpiredTokenException;
+import com.myweb.mamababy.models.BlacklistedToken;
 import com.myweb.mamababy.models.Role;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.BadCredentialsException;
 
+import java.util.Date;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class UserService implements IUserService{
     private final RoleRepository roleRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
+    private final BlacklistedTokenRepository blacklistedTokenRepository;
 
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
@@ -72,5 +77,32 @@ public class UserService implements IUserService{
         //authenticate with Java Spring security
         authenticationManager.authenticate(authenticationToken);
         return jwtTokenUtil.generateToken(existingUser);
+    }
+
+    @Override
+    public User getUserDetailsFromToken(String token) throws Exception {
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new ExpiredTokenException("Token is expired");
+        }
+        String subject = jwtTokenUtil.extractUserName(token);
+        Optional<User> user;
+        user = userRepository.findByUsername(subject);
+        return user.orElseThrow(() -> new Exception("User not found"));
+    }
+
+    public void logout(String token) throws Exception{
+        // Extract expiration date from token
+        Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
+
+        BlacklistedToken blacklistedToken = new BlacklistedToken();
+        blacklistedToken.setToken(token);
+        blacklistedToken.setExpirationDate(expirationDate);
+
+        blacklistedTokenRepository.save(blacklistedToken);
+    }
+
+    public void cleanupExpiredTokens() {
+        Date now = new Date();
+        blacklistedTokenRepository.deleteAllByExpirationDateBefore(now);
     }
 }
