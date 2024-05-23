@@ -19,7 +19,7 @@ public class BrandController {
 
     private final IBrandService brandService;
 
-    @PostMapping("")
+    @PostMapping("/createBrand")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createBrand(
             @Valid @RequestBody BrandDTO brandDTO,
@@ -36,7 +36,7 @@ public class BrandController {
     }
 
     //Hiện tất cả các categories
-    @GetMapping("")
+    @GetMapping("/getAllBrands")
     public ResponseEntity<List<Brand>> getAllBrands(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit

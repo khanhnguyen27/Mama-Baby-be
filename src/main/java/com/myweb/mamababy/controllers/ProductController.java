@@ -26,7 +26,7 @@ public class ProductController {
     private final IProductService productService;
 
     //POST http://localhost:8080/mamababy/products
-    @PostMapping("")
+    @PostMapping("/createProduct")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -49,7 +49,7 @@ public class ProductController {
 
     //GET http://localhost:8080/mamababy/products
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("")
+    @GetMapping("/getProducts")
     public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,

@@ -1,4 +1,4 @@
-package com.myweb.mamababy.services;
+package com.myweb.mamababy.services.User;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.UserDTO;
@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;

@@ -20,7 +20,7 @@ public class AgeController {
 
     private final IAgeService ageService;
 
-    @PostMapping("")
+    @PostMapping("/createAge")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createAge(
             @Valid @RequestBody AgeDTO ageDTO,
@@ -38,7 +38,7 @@ public class AgeController {
 
     //GET: http://localhost:8080/mamababy/products
     //Hiện tất cả các categories
-    @GetMapping("")
+    @GetMapping("/getAllAges")
     public ResponseEntity<List<Age>> getAllAges(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
