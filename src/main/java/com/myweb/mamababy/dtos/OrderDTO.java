@@ -14,8 +14,9 @@ import java.util.Date;
 @Getter
 @Setter
 
-public class OderDTO {
+public class OrderDTO {
 
+    @JsonProperty("id")
     private int id;
 
     @JsonProperty("user_id")
