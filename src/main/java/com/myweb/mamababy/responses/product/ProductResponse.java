@@ -1,7 +1,8 @@
-package com.myweb.mamababy.reponses;
+package com.myweb.mamababy.responses.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Product;
+import com.myweb.mamababy.responses.BaseResponse;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductResponse extends BaseResponse{
+public class ProductResponse extends BaseResponse {
 
     private int id;
     private String name;

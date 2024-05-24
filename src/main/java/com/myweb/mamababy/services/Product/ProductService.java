@@ -3,7 +3,7 @@ package com.myweb.mamababy.services.Product;
 import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.reponses.ProductResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.repositories.ProductRepository;
 import lombok.*;
 import org.springframework.data.domain.Page;

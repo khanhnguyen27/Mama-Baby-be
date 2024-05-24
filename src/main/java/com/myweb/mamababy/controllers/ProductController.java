@@ -2,8 +2,8 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.reponses.ProductListResponse;
-import com.myweb.mamababy.reponses.ProductResponse;
+import com.myweb.mamababy.responses.product.ProductListResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Product.IProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
