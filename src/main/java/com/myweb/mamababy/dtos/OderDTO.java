@@ -14,13 +14,12 @@ import java.util.Date;
 @Getter
 @Setter
 
-public class OrderDTO {
+public class OderDTO {
 
-    @JsonProperty("id")
     private int id;
 
     @JsonProperty("user_id")
-    private int userId;
+    private int user_id;
 
     @JsonProperty("voucher_id")
     private int voucher_id;

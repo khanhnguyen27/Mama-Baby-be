@@ -1,4 +1,4 @@
-package com.myweb.mamababy.reponses;
+package com.myweb.mamababy.responses;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.MappedSuperclass;

@@ -1,5 +1,6 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,9 @@ public class Product extends BaseEntity{
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "description")
     private String description;

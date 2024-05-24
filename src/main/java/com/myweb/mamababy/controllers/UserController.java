@@ -80,7 +80,7 @@ public class UserController {
 
     //http://localhost:8088/mamababy/users/details
     @GetMapping("/details")
-    public ResponseEntity<ResponseObject> getUserDetails(
+    public ResponseEntity<?> getUserDetails(
             @RequestHeader("Authorization") String token
     ) throws Exception {
         String extractedToken = token.substring(7); // Loại bỏ "Bearer " từ chuỗi token
