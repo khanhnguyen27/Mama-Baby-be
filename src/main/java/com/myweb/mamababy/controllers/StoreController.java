@@ -30,7 +30,7 @@ public class StoreController {
     private final IStoreService storeService;
 
     //POST: http://localhost:8080/mamababy/stores
-    @PostMapping("/createStore")
+    @PostMapping("")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createStore(
             @Valid @RequestBody StoreDTO storeDTO,
@@ -54,7 +54,7 @@ public class StoreController {
     }
 
     //Hiện tất cả các categories
-    @GetMapping("/getAllStores")
+    @GetMapping("")
     public ResponseEntity<?> getAllStores(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0",name = "page")     int page,
