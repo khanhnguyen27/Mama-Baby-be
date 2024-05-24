@@ -1,6 +1,6 @@
 package com.myweb.mamababy.services.Product;
 
-import com.myweb.mamababy.reponses.ProductResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.myweb.mamababy.dtos.ProductDTO;

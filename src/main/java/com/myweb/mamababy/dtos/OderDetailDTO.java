@@ -9,9 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class OrderDetailDTO {
+public class OderDetailDTO {
 
-    @JsonProperty("id")
     private int id;
 
     @JsonProperty("oder_id")

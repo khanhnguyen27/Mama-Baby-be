@@ -1,4 +1,4 @@
-package com.myweb.mamababy.reponses;
+package com.myweb.mamababy.responses.product;
 
 import lombok.*;
 

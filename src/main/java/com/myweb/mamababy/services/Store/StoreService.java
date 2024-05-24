@@ -5,7 +5,7 @@ import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
-import com.myweb.mamababy.reponses.StoreResponse;
+import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -55,9 +55,10 @@ public class StoreService implements IStoreService{
     }
 
     @Override
-    public Page<Store> getAllStores(String keyword, PageRequest pageRequest) {
+    public Page<StoreResponse> getAllStores(String keyword, PageRequest pageRequest) {
         Page<Store> storesPage = storeRepository.searchStores(keyword, pageRequest);
-        return storesPage;
+
+        return storesPage.map(StoreResponse::fromStore);
     }
 
     @Override

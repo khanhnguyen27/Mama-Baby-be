@@ -37,4 +37,7 @@ public class ProductDTO {
 
     @JsonProperty("type")
     private String type;
+
+    @JsonProperty("brand_id")
+    private int brandId;
 }

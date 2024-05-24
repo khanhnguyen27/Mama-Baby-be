@@ -2,9 +2,11 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.BrandDTO;
 import com.myweb.mamababy.models.Brand;
+import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Brand.IBrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -37,12 +39,17 @@ public class BrandController {
 
     //Hiện tất cả các categories
     @GetMapping("")
-    public ResponseEntity<List<Brand>> getAllBrands(
+    public ResponseEntity<?> getAllBrands(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
         List<Brand> brands = brandService.getAllBrands();
-        return ResponseEntity.ok(brands);
+        return ResponseEntity.ok(ResponseObject
+                .builder()
+                .message("Get list brands successfully !!!")
+                .status(HttpStatus.OK)
+                .data(brands)
+                .build());
     }
 
     @PutMapping("/{id}")
