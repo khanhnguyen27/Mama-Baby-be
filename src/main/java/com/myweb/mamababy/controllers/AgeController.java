@@ -3,9 +3,11 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.AgeDTO;
 import com.myweb.mamababy.models.Age;
+import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Age.IAgeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -39,12 +41,17 @@ public class AgeController {
     //GET: http://localhost:8080/mamababy/products
     //Hiện tất cả các categories
     @GetMapping("")
-    public ResponseEntity<List<Age>> getAllAges(
+    public ResponseEntity<?> getAllAges(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
         List<Age> ages = ageService.getAllAges();
-        return ResponseEntity.ok(ages);
+        return ResponseEntity.ok(ResponseObject
+                .builder()
+                .message("Get list ages successfully !!!")
+                .status(HttpStatus.OK)
+                .data(ages)
+                .build());
     }
 
     @PutMapping("/{id}")

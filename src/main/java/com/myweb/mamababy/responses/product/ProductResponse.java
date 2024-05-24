@@ -17,6 +17,7 @@ public class ProductResponse extends BaseResponse {
     private float price;
     private float point;
     private String status;
+    private String type;
     private String description;
     private String imageUrl;
 
@@ -39,6 +40,7 @@ public class ProductResponse extends BaseResponse {
                 .price(product.getPrice())
                 .point(product.getPoint())
                 .status(product.getStatus())
+                .type(product.getType())
                 .description(product.getDescription())
                 .imageUrl(product.getImageUrl())
                 .categoryId(product.getCategory().getId())

@@ -3,8 +3,10 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.responses.store.StoreListResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

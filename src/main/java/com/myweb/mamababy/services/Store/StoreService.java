@@ -5,6 +5,7 @@ import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import jakarta.transaction.Transactional;
