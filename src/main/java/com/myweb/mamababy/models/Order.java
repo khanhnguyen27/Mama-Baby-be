@@ -26,28 +26,28 @@ public class Order {
     private User user_id;
 
     @Column(name = "total_point")
-    private int total_point;
+    private int totalPoint;
 
     @Column(name = "amount")
     private float amount;
 
     @Column(name = "total_discount")
-    private float total_discount;
+    private float totalDiscount;
 
     @Column(name = "final_amount")
-    private float final_amount;
+    private float finalAmount;
 
     @Column(name = "shipping_address", nullable = false, length = 100)
-    private String shipping_address;
+    private String shippingAddress;
 
     @Column(name = "payment_method")
-    private String payment_method;
+    private String paymentMethod;
 
     @Column(name = "type")
     private String type;
 
     @Column(name = "oder_date")
-    private LocalDate oder_date;
+    private LocalDate oderDate;
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -57,6 +57,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "voucher_id")
     @JsonBackReference
-    private Voucher voucher_id;
+    private Voucher voucher;
 }
 

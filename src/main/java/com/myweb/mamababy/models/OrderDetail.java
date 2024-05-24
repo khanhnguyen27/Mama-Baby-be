@@ -1,5 +1,7 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,20 +20,21 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order_id;
+    @JsonBackReference
+    private Order orderId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product_id;
 
-    @Column(name = "quality", nullable = false)
-    private int quality;
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
 
     @Column(name = "unit_price", nullable = false)
-    private float unit_price;
+    private float unitPrice;
 
     @Column(name = "unit_point", nullable = false)
-    private int unit_point;
+    private int unitPoint;
 
     @Column(name = "amount", nullable = false)
     private float amount;
