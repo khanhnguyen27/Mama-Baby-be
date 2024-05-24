@@ -20,7 +20,7 @@ public class OrderDTO {
     private int id;
 
     @JsonProperty("user_id")
-    private int user_id;
+    private int userId;
 
     @JsonProperty("voucher_id")
     private int voucher_id;
