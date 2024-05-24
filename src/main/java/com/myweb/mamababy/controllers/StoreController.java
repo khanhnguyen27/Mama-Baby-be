@@ -6,6 +6,7 @@ import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.responses.store.StoreListResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/stores")
@@ -66,18 +68,15 @@ public class StoreController {
                 Sort.by("id").ascending()
         );
 
-        Page<StoreResponse> storePage = storeService.getAllStores(keyword, pageRequest);
+        Page<Store> storePage = storeService.getAllStores(keyword, pageRequest);
         totalPages = storePage.getTotalPages();
-        List<StoreResponse> stores = storePage.getContent();
-        StoreListResponse storeListResponse = StoreListResponse
-                .builder()
-                .stores(stores)
-                .totalPages(totalPages)
-                .build();
+        List<Store> stores = storePage.getContent();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get store' details successfully")
-                        .data(storeListResponse)
+                        .data(stores.stream()
+                                .map(StoreResponse::fromStore)
+                                .collect(Collectors.toList()))
                         .status(HttpStatus.OK)
                         .build()
         );
