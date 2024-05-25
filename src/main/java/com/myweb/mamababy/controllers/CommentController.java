@@ -22,19 +22,35 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    public ResponseEntity<List<Comment>> getAllComments() {
+    public ResponseEntity<?> getAllComments() {
         List<Comment> comments = commentService.getAllComment();
+        if (comments == null || comments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseObject.builder()
+                            .message("No comments found")
+                            .status(HttpStatus.NOT_FOUND)
+                            .build());
+        }
+
         return ResponseEntity.ok(comments);
     }
 
-    @GetMapping("/product/{id}") //get all comment of product
+
+    @GetMapping("/product/{id}") // Lấy tất cả bình luận của sản phẩm
     public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) {
-        List<Comment> comment = commentService.getCommentsByProductId(id);
+        List<Comment> comments = commentService.getCommentsByProductId(id);
+        if (comments == null || comments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseObject.builder()
+                            .message("No comments found for product with ID: " + id)
+                            .status(HttpStatus.NOT_FOUND)
+                            .build());
+        }
 
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get comments of product successfully")
-                        .data(comment.stream()
+                        .data(comments.stream()
                                 .map(CommentResponse::fromComment)
                                 .collect(Collectors.toList()))
                         .status(HttpStatus.OK)
@@ -42,19 +58,28 @@ public class CommentController {
         );
     }
 
-    @GetMapping("/user/{id}") //get all comment of user
+    @GetMapping("/user/{id}") // Lấy tất cả bình luận của người dùng
     public ResponseEntity<?> getCommentByUser(@PathVariable("id") int id) {
-        List<Comment> comment = commentService.getCommentsByUserId(id);
+        List<Comment> comments = commentService.getCommentsByUserId(id);
+        if (comments == null || comments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseObject.builder()
+                            .message("No comments found for user with ID: " + id)
+                            .status(HttpStatus.NOT_FOUND)
+                            .build());
+        }
+
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get comments of user successfully")
-                        .data(comment.stream()
+                        .data(comments.stream()
                                 .map(CommentResponse::fromComment)
                                 .collect(Collectors.toList()))
                         .status(HttpStatus.OK)
                         .build()
         );
     }
+
 
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentDTO commentDTO) throws Exception {
