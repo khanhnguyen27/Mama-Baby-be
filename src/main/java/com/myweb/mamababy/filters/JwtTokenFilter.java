@@ -31,8 +31,10 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     @Value("${api.prefix}")
     private String apiPrefix;
     private final UserDetailsService userDetailsService;
+
     @Autowired
     private final JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private BlacklistedTokenRepository blacklistedTokenRepository;
 

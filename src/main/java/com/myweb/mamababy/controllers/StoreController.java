@@ -3,6 +3,7 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.store.StoreListResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.responses.ResponseObject;
@@ -68,15 +69,19 @@ public class StoreController {
                 Sort.by("id").ascending()
         );
 
-        Page<Store> storePage = storeService.getAllStores(keyword, pageRequest);
+        Page<StoreResponse> storePage = storeService.getAllStores(keyword, pageRequest);
         totalPages = storePage.getTotalPages();
-        List<Store> stores = storePage.getContent();
+        List<StoreResponse> stores = storePage.getContent();
+
+        StoreListResponse storeListResponse = StoreListResponse
+                .builder()
+                .stores(stores)
+                .totalPages(totalPages)
+                .build();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get store' details successfully")
-                        .data(stores.stream()
-                                .map(StoreResponse::fromStore)
-                                .collect(Collectors.toList()))
+                        .data(storeListResponse)
                         .status(HttpStatus.OK)
                         .build()
         );
