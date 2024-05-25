@@ -4,6 +4,7 @@ package com.myweb.mamababy.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data//toString
 @Getter
@@ -40,4 +41,13 @@ public class ProductDTO {
 
     @JsonProperty("brand_id")
     private int brandId;
+
+    @JsonProperty("category_id")
+    private int categoryId;
+
+    @JsonProperty("age_id")
+    private int rangeAge;
+
+    @JsonProperty("store_id")
+    private int storeID;
 }

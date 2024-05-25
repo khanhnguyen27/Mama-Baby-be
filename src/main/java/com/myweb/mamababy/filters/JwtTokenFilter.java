@@ -31,8 +31,10 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     @Value("${api.prefix}")
     private String apiPrefix;
     private final UserDetailsService userDetailsService;
+
     @Autowired
     private final JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private BlacklistedTokenRepository blacklistedTokenRepository;
 
@@ -70,11 +72,11 @@ public class JwtTokenFilter extends OncePerRequestFilter{
             }
 
             // Check if token is blacklisted
-            if (blacklistedTokenRepository.findByToken(token).isPresent()) {
-                logger.warn("JWT Token is blacklisted");
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
-                return;
-            }
+//            if (blacklistedTokenRepository.findByToken(token).isPresent()) {
+//                logger.warn("JWT Token is blacklisted");
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
+//                return;
+//            }
 
             filterChain.doFilter(request, response); //enable bypass
         }catch (Exception e) {
