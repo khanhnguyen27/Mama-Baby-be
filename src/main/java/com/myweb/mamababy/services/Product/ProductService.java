@@ -4,14 +4,19 @@ import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.product.ProductResponse;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +38,8 @@ public class ProductService implements IProductService {
     private static final String UPLOADS_FOLDER = "uploads";
 
     @Override
-    public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
+    @Transactional
+    public Product createProduct(ProductDTO productDTO, MultipartFile file) throws DataNotFoundException, IOException {
         Category existingCategory = categoryRepository
                 .findById(productDTO.getCategoryId())
                 .orElseThrow(() ->
@@ -55,6 +61,7 @@ public class ProductService implements IProductService {
                         new DataNotFoundException(
                                 "Cannot find store with id: "+productDTO.getStoreID()));
 
+        String fileName = storeFile(file);
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
@@ -62,7 +69,7 @@ public class ProductService implements IProductService {
                 .status(productDTO.getStatus())
                 .description(productDTO.getDescription())
                 .type(productDTO.getType())
-                .imageUrl(productDTO.getImageUrl())
+                .imageUrl(fileName)
                 .brand(existingBrand)
                 .category(existingCategory)
                 .age(existingAge)
@@ -88,27 +95,113 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Product updateProduct(int id, ProductDTO productDTO) throws Exception {
+    @Transactional
+    public Product updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws Exception {
+        Product existingProduct = getProductById(id);
+        if(existingProduct != null) {
+            //copy các thuộc tính từ DTO -> Product
+            //Có thể sử dụng ModelMapper
+            Category existingCategory = categoryRepository
+                    .findById(productDTO.getCategoryId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find category with id: "+productDTO.getCategoryId()));
+            Brand existingBrand = brandRepository
+                    .findById(productDTO.getBrandId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find brand with id: "+productDTO.getBrandId()));
+            Age existingAge = ageRepository
+                    .findById(productDTO.getRangeAge())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find range age with id: "+productDTO.getRangeAge()));
+            Store existingStore = storeRepository
+                    .findById(productDTO.getStoreID())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find store with id: "+productDTO.getStoreID()));
+
+            if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
+                existingProduct.setName(productDTO.getName());
+            }
+
+            existingProduct.setCategory(existingCategory);
+            existingProduct.setBrand(existingBrand);
+            existingProduct.setAge(existingAge);
+            existingProduct.setStore(existingStore);
+
+            if(productDTO.getPrice() >= 0) {
+                existingProduct.setPrice(productDTO.getPrice());
+            }
+            if(productDTO.getPoint() >= 0) {
+                existingProduct.setPoint(productDTO.getPoint());
+            }
+            if(productDTO.getStatus() != null &&
+                    !productDTO.getStatus().isEmpty()) {
+                existingProduct.setStatus(productDTO.getStatus());
+            }
+            if(productDTO.getType() != null &&
+                    !productDTO.getType().isEmpty()) {
+                existingProduct.setType(productDTO.getType());
+            }
+            if(productDTO.getDescription() != null &&
+                    !productDTO.getDescription().isEmpty()) {
+                existingProduct.setDescription(productDTO.getDescription());
+            }
+            if(file != null && !file.isEmpty()) {
+                deleteFile(existingProduct.getImageUrl());
+                String fileName = storeFile(file);
+                existingProduct.setImageUrl(fileName);
+            }
+
+            return productRepository.save(existingProduct);
+        }
         return null;
     }
 
     @Override
-    public void deleteProduct(int id) {
-
+    @Transactional
+    public void deleteProduct(int id) throws IOException {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Product product =optionalProduct.get();
+            deleteFile(product.getImageUrl());
+            productRepository.delete(product);
+        }
     }
 
     @Override
     public boolean existsByName(String name) {
-        return false;
+        return productRepository.existsByName(name);
     }
 
     @Override
+    public Boolean checkFileImage(MultipartFile file) {
+        Boolean result = false;
+        // Kiểm tra kích thước file và định dạng
+        if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
+            return result;
+        }
+        String contentType = file.getContentType();
+        if(contentType == null || !contentType.startsWith("image/")) {
+            return result;
+        }
+
+        result =true;
+        return result;
+    }
+
+
+    @Override
     public String storeFile(MultipartFile file) throws IOException {
+        if (!checkFileImage(file)) {
+            throw new IOException("Invalid image format");
+        }
         //Xu li file name
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        //String uniqueFilename = UUID.randomUUID().toString() + "_" + filename; //old code, not good
-        Date createAt =new Date();
+        // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
+        Date createAt = new Date();
         String uniqueFilename = createAt.getTime() + "_" + filename; // Convert nanoseconds to microseconds
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
@@ -121,10 +214,22 @@ public class ProductService implements IProductService {
         // Sao chép file vào thư mục đích
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
+
     }
 
     @Override
     public void deleteFile(String filename) throws IOException {
+        // Đường dẫn đến thư mục chứa file
+        Path uploadDir = Paths.get(UPLOADS_FOLDER);
+        // Đường dẫn đầy đủ đến file cần xóa
+        Path filePath = uploadDir.resolve(filename);
 
+        // Kiểm tra xem file tồn tại hay không
+        if (Files.exists(filePath)) {
+            // Xóa file
+            Files.delete(filePath);
+        } else {
+            throw new FileNotFoundException("File not found: " + filename);
+        }
     }
 }

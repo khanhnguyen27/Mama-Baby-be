@@ -34,7 +34,7 @@ public class StoreService implements IStoreService{
                 .findById(storeDTO.getUserId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find store with id: "+storeDTO.getUserId()));
+                                "Cannot find user with id: "+storeDTO.getUserId()));
         Store newStore = Store
                 .builder()
                 .nameStore(storeDTO.getNameStore())
@@ -62,7 +62,7 @@ public class StoreService implements IStoreService{
 
     @Override
     public Store updateStore(int id, StoreDTO storeDTO) {
-
+        // Tìm sản phẩm tồn tại trong DB
         Store existingStore = getStoreById(id);
 
         existingStore.setNameStore(storeDTO.getNameStore());
