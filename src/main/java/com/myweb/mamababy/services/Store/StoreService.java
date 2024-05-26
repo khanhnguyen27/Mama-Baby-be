@@ -55,9 +55,9 @@ public class StoreService implements IStoreService{
     }
 
     @Override
-    public Page<Store> getAllStores(String keyword, PageRequest pageRequest) {
+    public Page<StoreResponse> getAllStores(String keyword, PageRequest pageRequest) {
         Page<Store> storesPage = storeRepository.searchStores(keyword, pageRequest);
-        return storesPage;
+        return storesPage.map(StoreResponse::fromStore);
     }
 
     @Override

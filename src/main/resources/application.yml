@@ -2,10 +2,10 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/mamababy?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/mamababy?useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password:
+    password: 12345
   jpa:
     show-sql: true
     hibernate:
@@ -14,6 +14,9 @@ spring:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
       format_sql: true
+#  mvc:
+#    path match:
+#      matching-strategy: ant-path-matcher
 api:
   prefix: mamababy
 jwt:
@@ -26,4 +29,3 @@ open:
     description: Mota API service
     serverUrl: http://localhost:8080
     serverName: server test
-
