@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,16 +53,26 @@ public class CommentService implements ICommentService{
     }
 
     public List<Comment> getCommentsByUserId(int userId) {
-        return commentRepository.findByUserId(userId);
+        List<Comment> comments = commentRepository.findByUserId(userId);
+        return handleEmptyList(comments);
     }
 
     public List<Comment> getCommentsByProductId(int productId) {
-        return commentRepository.findByProductId(productId);
+        List<Comment> comments = commentRepository.findByProductId(productId);
+        return handleEmptyList(comments);
+    }
+
+    private List<Comment> handleEmptyList(List<Comment> comments) {
+        if (comments == null || comments.isEmpty()) {
+            return Collections.emptyList(); // hoặc trả về null
+        }
+        return comments;
     }
 
     @Override
     public List<Comment> getAllComment() {
-        return commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAll();
+        return handleEmptyList(comments);
     }
 
     @Override
