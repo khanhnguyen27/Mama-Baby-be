@@ -1,6 +1,7 @@
 package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ArticleDTO;
+import com.myweb.mamababy.dtos.CommentDTO;
 import com.myweb.mamababy.models.Article;
 import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.responses.Article.ArticleResponse;
@@ -105,13 +106,13 @@ public class ArticleController {
         if (articles.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ResponseObject.builder()
-                            .message("Không tìm thấy bài viết cho cửa hàng có id: " + id)
+                            .message("No posts found for store with id: " + id)
                             .status(HttpStatus.NOT_FOUND)
                             .build());
         } else {
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
-                            .message("Lấy bài viết thành công cho cửa hàng có id: " + id)
+                            .message("Retrieve successful posts for store with id: " + id)
                             .data(articles.stream()
                                     .map(ArticleResponse::fromArticle)
                                     .collect(Collectors.toList()))
@@ -119,6 +120,65 @@ public class ArticleController {
                             .build()
             );
         }
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateArticle(@Valid @ModelAttribute ArticleDTO articleDTO,
+                                           BindingResult result,
+                                           @RequestParam("files") MultipartFile file,
+                                           @PathVariable("id") int id) throws Exception {
+        try {
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+
+            // Kiểm tra kích thước file và định dạng
+            if (file.getSize() > 10 * 1024 * 1024) { // Kích thước > 10MB
+                return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                        .body(ResponseObject.builder()
+                                .message("Cannot upload images >10MB !!!")
+                                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+                                .build());
+            }
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                        .body(ResponseObject.builder()
+                                .message("The file is not suitable !!!")
+                                .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                                .build());
+            }
+
+            // Lưu file và cập nhật thumbnail trong DTO
+            String filename = articleService.storeFile(file);
+
+            // lưu vào đối tượng product trong DB
+            articleDTO.setLink_image(filename);
+            Article updatedArticle = articleService.updateArticle(id, articleDTO);
+            return ResponseEntity.ok().body(
+                    ResponseObject.builder()
+                            .message("Update article successfully")
+                            .data(ArticleResponse.fromArticle(updatedArticle))
+                            .status(HttpStatus.OK)
+                            .build()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    ResponseObject.builder()
+                            .message(e.getMessage())
+                            .status(HttpStatus.BAD_REQUEST)
+                            .build());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteArticle(@PathVariable("id") int id) {
+        articleService.deleteArticle(id);
+        return ResponseEntity.ok("Article deleted successfully");
     }
 
 }

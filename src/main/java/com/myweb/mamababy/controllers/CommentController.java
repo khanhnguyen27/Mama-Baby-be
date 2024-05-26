@@ -103,6 +103,7 @@ public class CommentController {
     }
 
     //update comment for user
+    //Users can only update comments
     @PutMapping("/{id}")
     public ResponseEntity<?> updateComment(@PathVariable("id") int id, @RequestBody CommentDTO commentDTO) {
         Comment updatedComment = commentService.updateComment(id, commentDTO);

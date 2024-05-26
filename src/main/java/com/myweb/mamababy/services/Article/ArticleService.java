@@ -85,13 +85,20 @@ public class ArticleService implements IArticleService{
     }
 
     @Override
-    public Article updateProduct(int id, ArticleDTO articleDTO) throws Exception {
-        return null;
+    public Article updateArticle(int id, ArticleDTO articleDTO) throws Exception {
+        Article existingArticle = getArticleById(id);
+        existingArticle.setHeader(articleDTO.getHeader());
+        existingArticle.setContent(articleDTO.getContent());
+        existingArticle.setLink_product(articleDTO.getLink_product());
+        existingArticle.setLink_image(articleDTO.getLink_image());
+        existingArticle.setStatus(articleDTO.getStatus());
+        articleReponsitory.save(existingArticle);
+        return existingArticle;
     }
 
     @Override
-    public void deleteProduct(int id) {
-
+    public void deleteArticle(int id) {
+        articleReponsitory.deleteById(id);
     }
 
     @Override

@@ -15,9 +15,9 @@ public interface IArticleService {
 
     List<Article> getAllArticle() throws Exception;
 
-    Article updateProduct(int id, ArticleDTO articleDTO) throws Exception;
+    Article updateArticle(int id, ArticleDTO articleDTO) throws Exception;
 
-    void deleteProduct(int id);
+    void deleteArticle(int id);
 
     String storeFile(MultipartFile file) throws IOException;
 
