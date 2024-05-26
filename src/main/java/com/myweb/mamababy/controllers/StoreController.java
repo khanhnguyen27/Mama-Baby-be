@@ -2,8 +2,10 @@ package com.myweb.mamababy.controllers;
 
 
 import com.myweb.mamababy.dtos.StoreDTO;
+import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.responses.product.ProductListResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.store.StoreListResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.responses.ResponseObject;
@@ -30,9 +32,10 @@ public class StoreController {
 
     private final IStoreService storeService;
 
+    //Tạo mới một cửa hàng
     //POST: http://localhost:8080/mamababy/stores
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("")
-    //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createStore(
             @Valid @RequestBody StoreDTO storeDTO,
             BindingResult result){
@@ -46,7 +49,11 @@ public class StoreController {
                 return ResponseEntity.badRequest().body(errorMessages);
             }
             Store store  = storeService.createStore(storeDTO);
-            return ResponseEntity.ok(store);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Create new store successfully !!!")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(store))
+                    .build());
         }catch (Exception e)
         {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -54,7 +61,9 @@ public class StoreController {
 
     }
 
-    //Hiện tất cả các categories
+    //Hiện tất cả các store
+    //GET: http://localhost:8080/mamababy/stores
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("")
     public ResponseEntity<?> getAllStores(
             @RequestParam(defaultValue = "") String keyword,
@@ -86,17 +95,45 @@ public class StoreController {
                         .build()
         );
     }
+    //Lấy ra một sản phẩm theo ID
+    //GET: http://localhost:8080/mamababy/stores/{id}
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getStoreById(
+            @PathVariable("id") int storeId
+    ){
+        try{
+            Store existingStore = storeService.getStoreById(storeId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get detail product successfully")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(existingStore))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
+    //Cập nhật lại một sản phẩm theo ID
+    //PUT: http://localhost:8080/mamababy/stores/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Store> updateStore(
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> updateStore(
             @PathVariable int id,
             @Valid @RequestBody StoreDTO storeDTO
     ) {
         Store updateStore = storeService.updateStore(id, storeDTO);
-        return ResponseEntity.ok(updateStore);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Create new store successfully !!!")
+                .status(HttpStatus.OK)
+                .data(StoreResponse.fromStore(updateStore))
+                .build());
     }
 
+    //Xóa một sản phẩm theo ID
+    //DELETE: http://localhost:8080/mamababy/stores/{id}
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<String> deleteStore(@PathVariable int id) {
         storeService.deleteStore(id);
         return ResponseEntity.ok("Delete successfully !!!");
