@@ -1,20 +1,13 @@
 package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ArticleDTO;
-import com.myweb.mamababy.dtos.CommentDTO;
 import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.responses.Article.ArticleResponse;
+import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.responses.comment.CommentResponse;
 import com.myweb.mamababy.services.Article.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;

@@ -56,10 +56,10 @@ public class ProductService implements IProductService {
                         new DataNotFoundException(
                                 "Cannot find range age with id: "+productDTO.getRangeAge()));
         Store existingStore = storeRepository
-                .findById(productDTO.getStoreID())
+                .findById(productDTO.getStoreId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find store with id: "+productDTO.getStoreID()));
+                                "Cannot find store with id: "+productDTO.getStoreId()));
 
         String fileName = storeFile(file);
         Product newProduct = Product.builder()
@@ -89,7 +89,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductResponse> getAllProducts(String keyword, int categoryId, int brandId, int age, int storeId, PageRequest pageRequest) {
-        Page<Product> productsPage= productRepository.searchProducts(keyword, categoryId, brandId, age, pageRequest);
+        Page<Product> productsPage= productRepository.searchProducts(keyword, categoryId, brandId, age, storeId, pageRequest);
         return productsPage.map(ProductResponse::fromProduct);
     }
 
@@ -117,10 +117,10 @@ public class ProductService implements IProductService {
                             new DataNotFoundException(
                                     "Cannot find range age with id: "+productDTO.getRangeAge()));
             Store existingStore = storeRepository
-                    .findById(productDTO.getStoreID())
+                    .findById(productDTO.getStoreId())
                     .orElseThrow(() ->
                             new DataNotFoundException(
-                                    "Cannot find store with id: "+productDTO.getStoreID()));
+                                    "Cannot find store with id: "+productDTO.getStoreId()));
 
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
                 existingProduct.setName(productDTO.getName());

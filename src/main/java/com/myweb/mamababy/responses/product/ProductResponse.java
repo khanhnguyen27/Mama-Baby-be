@@ -19,6 +19,8 @@ public class ProductResponse extends BaseResponse {
     private String status;
     private String type;
     private String description;
+
+    @JsonProperty("image_url")
     private String imageUrl;
 
     @JsonProperty("category_id")
