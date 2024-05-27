@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -14,39 +14,38 @@ import java.util.Date;
 @Getter
 @Setter
 
-public class OderDTO {
-
-    private int id;
+public class OrderDTO {
 
     @JsonProperty("user_id")
-    private int user_id;
+    private int userId;
 
     @JsonProperty("voucher_id")
-    private int voucher_id;
+    private int voucherId;
 
     @JsonProperty("total_point")
-    private int total_point;
+    private int totalPoint;
 
     @JsonProperty("amount")
     private float amount;
 
     @JsonProperty("total_discount")
-    private float total_discount;
+    private float totalDiscount;
 
     @Min(value = 0, message = "Final money must be >= 0")
     @JsonProperty("final_amount")
-    private float final_amount;
+    private float finalAmount;
 
     @NotBlank(message = "shipping_address is required")
     @JsonProperty("shipping_address")
-    private String shipping_address;
+    private String shippingAddress;
 
     @JsonProperty("payment_method")
-    private String payment_method;
+    private String paymentMethod;
+
+    @JsonProperty("order_date")
+    private LocalDate orderDate;
 
     @JsonProperty("type")
     private String type;
 
-    @JsonProperty("oder_date")
-    private Date oder_date;
 }
