@@ -4,7 +4,7 @@ import com.myweb.mamababy.dtos.OrderDetailDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.OrderDetail;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface IOrderDetailService {
 
@@ -15,7 +15,9 @@ public interface IOrderDetailService {
     OrderDetail updateOrderDetail(int id, OrderDetailDTO newOrderDetailData)
             throws DataNotFoundException;
 
-    void deleteById(int id);
+    List<OrderDetail> getAllOrderDetail() throws Exception;
 
-    Optional<OrderDetail> findByOrderId(int orderId);
+    OrderDetail deleteOrderDetail(int id) throws DataNotFoundException;
+
+    List<OrderDetail> findByOrderId(int orderId) throws DataNotFoundException;
 }
