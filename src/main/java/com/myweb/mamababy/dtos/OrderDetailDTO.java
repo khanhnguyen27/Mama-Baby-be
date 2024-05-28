@@ -11,8 +11,8 @@ import lombok.*;
 @Setter
 public class OrderDetailDTO {
 
-    @JsonProperty("oder_id")
-    private int oderId;
+    @JsonProperty("order_id")
+    private int orderId;
 
     @JsonProperty("product_id")
     private int productId;

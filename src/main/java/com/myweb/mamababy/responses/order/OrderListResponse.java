@@ -1,9 +1,6 @@
 package com.myweb.mamababy.responses.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 
 public class OrderListResponse {
+
     private List<OrderResponse> orders;
+
     private int totalPages;
 }

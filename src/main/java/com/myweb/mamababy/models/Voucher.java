@@ -32,6 +32,6 @@ public class Voucher {
     private String description;
 
     @Column(name = "end_at")
-    private LocalDate end_at;
+    private LocalDate endAt;
 
 }

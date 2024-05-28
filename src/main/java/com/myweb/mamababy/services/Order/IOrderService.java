@@ -17,10 +17,12 @@ public interface IOrderService {
 
     Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException;
 
-    void deleteOrder(int id);
+    List<Order> getAllOrder() throws Exception;
 
-    List<Order> findByUserId(int userId);
+    Order deleteOrder(int id) throws DataNotFoundException;
 
-    Page<Order> getOrdersByKeyword(String keyword, Pageable pageable);
+    List<Order> findByUserId(int userId) throws DataNotFoundException;
+
+    Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) throws DataNotFoundException;
 
 }
