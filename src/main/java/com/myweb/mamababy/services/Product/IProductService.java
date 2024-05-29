@@ -10,18 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface IProductService {
-    Product createProduct(ProductDTO productDTO) throws Exception;
+    Product createProduct(ProductDTO productDTO, MultipartFile file) throws Exception;
 
     Product getProductById(int id) throws Exception;
 
     Page<ProductResponse> getAllProducts(String keyword,
                                          int categoryId, int brandId, int age, int storeId, PageRequest pageRequest);
 
-    Product updateProduct(int id, ProductDTO productDTO) throws Exception;
+    Product updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws Exception;
 
-    void deleteProduct(int id);
+    void deleteProduct(int id) throws IOException;
 
     boolean existsByName(String name);
+
+    Boolean checkFileImage(MultipartFile file);
 
     String storeFile(MultipartFile file) throws IOException;
 

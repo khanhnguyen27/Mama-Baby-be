@@ -1,6 +1,8 @@
 package com.myweb.mamababy.controllers;
 
+import com.myweb.mamababy.dtos.CategoryDTO;
 import com.myweb.mamababy.dtos.ProductDTO;
+import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
@@ -20,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,7 @@ public class ProductController {
     private final IProductService productService;
 
     //POST http://localhost:8080/mamababy/products
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createProduct(
             @Valid @ModelAttribute ProductDTO productDTO,
@@ -45,28 +49,7 @@ public class ProductController {
                 return ResponseEntity.badRequest().body(errorMessages);
             }
 
-            // Kiểm tra kích thước file và định dạng
-            if(file.getSize() > 10 * 1024 * 1024) { // Kích thước > 10MB
-                return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                        .body(ResponseObject.builder()
-                                .message("Cannot download images >10MB !!!")
-                                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                                .build());
-            }
-            String contentType = file.getContentType();
-            if(contentType == null || !contentType.startsWith("image/")) {
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                        .body(ResponseObject.builder()
-                                .message("The file is not suitable !!!")
-                                .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                                .build());
-            }
-            // Lưu file và cập nhật thumbnail trong DTO
-            String filename = productService.storeFile(file); // Thay thế hàm này với code của bạn để lưu file
-
-            //lưu vào đối tượng product trong DB
-            productDTO.setImageUrl(filename);
-            Product newProduct = productService.createProduct(productDTO);
+            Product newProduct = productService.createProduct(productDTO, file);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new product successfully")
                     .status(HttpStatus.CREATED)
@@ -88,7 +71,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0", name = "store_id") int storeId,
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "12", name = "limit") int limit
-    ){
+            ){
         int totalPages = 0;
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
@@ -114,4 +97,59 @@ public class ProductController {
                         .status(HttpStatus.OK)
                         .build());
     }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(
+            @PathVariable("id") int productId
+        ){
+        try{
+            Product existingProduct = productService.getProductById(productId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get detail product successfully")
+                    .status(HttpStatus.OK)
+                    .data(ProductResponse.fromProduct(existingProduct))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int id) {
+        try {
+
+            productService.deleteProduct(id);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .data(null)
+                    .message(String.format("Product with id = %d deleted successfully", id))
+                    .status(HttpStatus.OK)
+                    .build());
+
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProduct(
+            @PathVariable int id,
+            @ModelAttribute ProductDTO productDTO,
+            @RequestParam("image") MultipartFile file
+            ){
+        try{
+            Product updatedProduct = productService.updateProduct(id, productDTO, file);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .data(ProductResponse.fromProduct(updatedProduct))
+                    .message("Update product successfully")
+                    .status(HttpStatus.OK)
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
 }
