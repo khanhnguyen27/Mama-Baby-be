@@ -13,4 +13,7 @@ public class AgeDTO {
     @NotEmpty(message = "Age's name cannot be empty")
     @JsonProperty("range_age")
     private String rangeAge;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
 }

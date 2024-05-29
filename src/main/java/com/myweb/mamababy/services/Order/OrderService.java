@@ -55,22 +55,21 @@ public class OrderService implements IOrderService{
     @Override
     public Order getOrder(int id) throws DataNotFoundException {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: " + id));
+                .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: " + id));
         return  order;
     }
 
     @Override
     public Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException {
 
-
-        User existingUser = userRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Cannot find user with id: " + id));
-
-        Voucher existingVoucher  = voucherRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Cannot find voucher with id: " + id));
-
         Order existingOrder = orderRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Cannot find order with id: " + id));
+
+        User existingUser = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->
+                new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
+
+        Voucher existingVoucher  = voucherRepository.findById(orderDTO.getVoucherId()).orElseThrow(() ->
+                new DataNotFoundException("Cannot find voucher with id: " + orderDTO.getVoucherId()));
 
         existingOrder.setTotalPoint(orderDTO.getTotalPoint());
         existingOrder.setAmount(orderDTO.getAmount());
@@ -88,19 +87,41 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public void deleteOrder(int id) {
-        //Hard Delete
+    public List<Order> getAllOrder() throws Exception {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public Order deleteOrder(int id) throws DataNotFoundException {
+
+        Order existingOrder = orderRepository.findById(id).orElseThrow(() ->
+                new DataNotFoundException("Cannot find order with id: " + id));
+
         orderRepository.deleteById(id);
+
+        return existingOrder;
     }
 
     @Override
-    public List<Order> findByUserId(int userId) {
-        return orderRepository.findByUserId(userId);
+    public List<Order> findByUserId(int userId) throws DataNotFoundException {
+
+        List<Order> orders = orderRepository.findByUserId(userId);
+
+        if (orders.isEmpty()) {
+            throw new DataNotFoundException("Cannot find orders for user with id: " + userId);
+        }
+
+        return orders;
     }
 
     @Override
-    public Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) {
- //     return orderRepository.findByKeyword(keyword, pageable);
-      return null;
+    public Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) throws DataNotFoundException {
+        Page<Order> orderPage = orderRepository.findByKeyword(keyword, pageable);
+
+        if (orderPage.isEmpty()) {
+            throw new DataNotFoundException("No orders found with keyword: " + keyword);
+        }
+
+        return orderPage;
     }
 }

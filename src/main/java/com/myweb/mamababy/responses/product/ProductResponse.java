@@ -35,6 +35,9 @@ public class ProductResponse extends BaseResponse {
     @JsonProperty("store_id")
     private int storeId;
 
+    @JsonProperty("is_active")
+    private boolean isActive;
+
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())
@@ -49,6 +52,7 @@ public class ProductResponse extends BaseResponse {
                 .brandId(product.getBrand().getId())
                 .age(product.getAge().getId())
                 .storeId(product.getStore().getId())
+                .isActive(product.isActive())
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());

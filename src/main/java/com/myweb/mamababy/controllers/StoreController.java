@@ -4,6 +4,7 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.store.StoreListResponse;
@@ -11,6 +12,7 @@ import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
+import com.myweb.mamababy.services.User.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 public class StoreController {
 
     private final IStoreService storeService;
+    private final IUserService userService;
 
     //Tạo mới một cửa hàng
     //POST: http://localhost:8080/mamababy/stores
@@ -67,6 +70,7 @@ public class StoreController {
     @GetMapping("")
     public ResponseEntity<?> getAllStores(
             @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
@@ -78,7 +82,7 @@ public class StoreController {
                 Sort.by("id").ascending()
         );
 
-        Page<StoreResponse> storePage = storeService.getAllStores(keyword, pageRequest);
+        Page<StoreResponse> storePage = storeService.getAllStores(keyword, status, pageRequest);
         totalPages = storePage.getTotalPages();
         List<StoreResponse> stores = storePage.getContent();
 
@@ -122,21 +126,33 @@ public class StoreController {
             @PathVariable int id,
             @Valid @RequestBody StoreDTO storeDTO
     ) {
-        Store updateStore = storeService.updateStore(id, storeDTO);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("Create new store successfully !!!")
-                .status(HttpStatus.OK)
-                .data(StoreResponse.fromStore(updateStore))
-                .build());
+        try{
+            Store updateStore = storeService.updateStore(id, storeDTO);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Create new store successfully !!!")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(updateStore))
+                    .build());
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     //Xóa một sản phẩm theo ID
     //DELETE: http://localhost:8080/mamababy/stores/{id}
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<String> deleteStore(@PathVariable int id) {
-        storeService.deleteStore(id);
-        return ResponseEntity.ok("Delete successfully !!!");
+    public ResponseEntity<?> deleteStore(@PathVariable int id) {
+        try {
+            Store deleteStore = storeService.deleteStore(id);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Delete successfully !!!")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(deleteStore))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

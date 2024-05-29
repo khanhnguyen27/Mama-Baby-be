@@ -15,7 +15,7 @@ public interface IArticleService {
 
     List<Article> getAllArticle() throws Exception;
 
-    Article updateArticle(int id, ArticleDTO articleDTO) throws Exception;
+    Article updateArticle(int id, ArticleDTO articleDTO, String token) throws Exception;
 
     void deleteArticle(int id);
 

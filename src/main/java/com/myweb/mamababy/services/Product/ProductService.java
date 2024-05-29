@@ -8,6 +8,7 @@ import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +63,10 @@ public class ProductService implements IProductService {
                         new DataNotFoundException(
                                 "Cannot find store with id: "+productDTO.getStoreId()));
 
+        if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive()){
+            throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
+        }
+
         String fileName = storeFile(file);
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
@@ -74,6 +80,7 @@ public class ProductService implements IProductService {
                 .category(existingCategory)
                 .age(existingAge)
                 .store(existingStore)
+                .isActive(true)
                 .build();
         return productRepository.save(newProduct);
     }
@@ -122,14 +129,18 @@ public class ProductService implements IProductService {
                             new DataNotFoundException(
                                     "Cannot find store with id: "+productDTO.getStoreId()));
 
-            if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
-                existingProduct.setName(productDTO.getName());
+            if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive()){
+                throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
             }
 
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
             existingProduct.setStore(existingStore);
+
+            if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
+                existingProduct.setName(productDTO.getName());
+            }
 
             if(productDTO.getPrice() >= 0) {
                 existingProduct.setPrice(productDTO.getPrice());
@@ -149,11 +160,13 @@ public class ProductService implements IProductService {
                     !productDTO.getDescription().isEmpty()) {
                 existingProduct.setDescription(productDTO.getDescription());
             }
+
             if(file != null && !file.isEmpty()) {
                 deleteFile(existingProduct.getImageUrl());
                 String fileName = storeFile(file);
                 existingProduct.setImageUrl(fileName);
             }
+
 
             return productRepository.save(existingProduct);
         }
@@ -162,13 +175,11 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public void deleteProduct(int id) throws IOException {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isPresent()) {
-            Product product =optionalProduct.get();
-            deleteFile(product.getImageUrl());
-            productRepository.delete(product);
-        }
+    public Product deleteProduct(int id) throws Exception {
+        Product existingProduct = getProductById(id);
+        existingProduct.setActive(false);
+        return productRepository.save(existingProduct);
+
     }
 
     @Override
@@ -201,8 +212,7 @@ public class ProductService implements IProductService {
         //Xu li file name
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-        Date createAt = new Date();
-        String uniqueFilename = createAt.getTime() + "_" + filename; // Convert nanoseconds to microseconds
+        String uniqueFilename = "Product_" + UUID.randomUUID().toString() + "_" + filename;
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
         // Kiểm tra và tạo thư mục nếu nó không tồn tại

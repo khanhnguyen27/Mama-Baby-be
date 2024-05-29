@@ -11,7 +11,7 @@ import com.myweb.mamababy.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +24,9 @@ public class OrderDetailService implements IOrderDetailService{
     @Override
     public OrderDetail createOrderDetail(OrderDetailDTO newOrderDetail) throws Exception {
 
-        Order  existingorder = orderRepository.findById(newOrderDetail.getOderId())
+        Order  existingorder = orderRepository.findById(newOrderDetail.getOrderId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find Order with id : " + newOrderDetail.getOderId()));
+                        "Cannot find Order with id : " + newOrderDetail.getOrderId()));
 
         Product existingproduct = productRepository.findById(newOrderDetail.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
@@ -57,8 +57,8 @@ public class OrderDetailService implements IOrderDetailService{
         OrderDetail existingOrderDetail = orderDetailRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find order detail with id: " + id));
 
-        Order existingOrder = orderRepository.findById(newOrderDetailData.getOderId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: " + newOrderDetailData.getOderId()));
+        Order existingOrder = orderRepository.findById(newOrderDetailData.getOrderId())
+                .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: " + newOrderDetailData.getOrderId()));
 
         Product existingProduct = productRepository.findById(newOrderDetailData.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
@@ -76,12 +76,29 @@ public class OrderDetailService implements IOrderDetailService{
     }
 
     @Override
-    public void deleteById(int id) {
-        orderDetailRepository.deleteById(id);
+    public List<OrderDetail> getAllOrderDetail() throws Exception {
+        return orderDetailRepository.findAll();
     }
 
     @Override
-    public Optional<OrderDetail> findByOrderId(int orderId) {
-        return orderDetailRepository.findByOrderId(orderId);
+    public OrderDetail deleteOrderDetail(int id) throws DataNotFoundException {
+
+        OrderDetail existingOrderDetail  = orderDetailRepository.findById(id).orElseThrow(() ->
+                new DataNotFoundException("Cannot find order detail with id: " + id));
+
+        orderDetailRepository.deleteById(id);
+        return existingOrderDetail;
+    }
+
+    @Override
+    public List<OrderDetail> findByOrderId(int orderId) throws DataNotFoundException {
+
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
+
+        if (orderDetails.isEmpty()) {
+            throw new DataNotFoundException("Cannot find orderDetail for oder with id: " + orderId);
+        }
+
+        return orderDetails;
     }
 }

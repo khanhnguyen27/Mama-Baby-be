@@ -31,6 +31,9 @@ public class Exchange {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
     @Column(name = "create_date")
     private LocalDate createDate;
 

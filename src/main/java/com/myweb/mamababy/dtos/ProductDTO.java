@@ -57,4 +57,7 @@ public class ProductDTO {
     @NotNull(message = "Store ID is required")
     @JsonProperty("store_id")
     private int storeId;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
 }

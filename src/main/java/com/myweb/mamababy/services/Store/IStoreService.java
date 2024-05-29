@@ -12,7 +12,7 @@ import java.util.List;
 public interface IStoreService {
     Store createStore(StoreDTO storeDTO) throws DataNotFoundException;
     Store getStoreById(int id);
-    Page<StoreResponse> getAllStores(String keyword, PageRequest pageRequest);
+    Page<StoreResponse> getAllStores(String keyword,String status, PageRequest pageRequest);
     Store updateStore(int store, StoreDTO storeDTO);
-    void deleteStore(int id);
+    Store deleteStore(int id);
 }

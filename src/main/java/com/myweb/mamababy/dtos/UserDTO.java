@@ -19,9 +19,6 @@ public class UserDTO {
     @JsonProperty("password")
     private String password;
 
-    @JsonProperty("retype_password")
-    private String retypePassword;
-
     @JsonProperty("fullName")
     private String fullName;
 
@@ -30,5 +27,8 @@ public class UserDTO {
 
     @JsonProperty("phoneNumber")
     private String phoneNumber;
+
+    @JsonProperty("status")
+    private Boolean status;
 
 }

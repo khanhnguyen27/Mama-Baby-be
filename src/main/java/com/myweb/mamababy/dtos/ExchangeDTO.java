@@ -1,7 +1,9 @@
 package com.myweb.mamababy.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -17,7 +19,7 @@ public class ExchangeDTO {
     @JsonProperty("order_detail_id")
     private int orderDetailId;
 
-    @NotEmpty(message = "Quantity is required.")
+    @Min(value = 0, message = "Quantity must be greater than or equal to 0")
     @JsonProperty("quantity")
     private int quantity;
 
@@ -27,6 +29,9 @@ public class ExchangeDTO {
     @NotEmpty(message = "Description is required.")
     @JsonProperty("description")
     private String description;
+
+    @JsonProperty("status")
+    private String status;
 
     @NotNull(message = "User ID is required.")
     @JsonProperty("user_id")

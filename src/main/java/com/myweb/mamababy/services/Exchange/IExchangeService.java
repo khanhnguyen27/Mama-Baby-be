@@ -18,9 +18,9 @@ public interface IExchangeService {
 
     Exchange getExchangeById(int id) throws Exception;
 
-    Page<ExchangeResponse> getAllExchange(PageRequest pageRequest);
+    Page<ExchangeResponse> getAllExchange(String status, PageRequest pageRequest);
 
-    Exchange updateExchange(int id, ExchangeDTO exchangeDTO, MultipartFile file) throws Exception;
+    Exchange updateExchange(int id, ExchangeDTO exchangeDTO) throws Exception;
 
     void deleteExchange(int id) throws IOException;
 

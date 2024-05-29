@@ -20,7 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "AND (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
             "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId)" +
             "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)" +
-            "AND (:age IS NULL OR :age = 0 OR p.age.id = :age)")
+            "AND (:age IS NULL OR :age = 0 OR p.age.id = :age) " +
+            "AND p.isActive = true")
     Page<Product> searchProducts
             (@Param("keyword") String keyword,
              @Param("categoryId") int categoryId,

@@ -25,6 +25,8 @@ public class ExchangeResponse {
 
     private String description;
 
+    private String status;
+
     @JsonProperty("create_date")
     private LocalDate createDate;
 
@@ -38,6 +40,7 @@ public class ExchangeResponse {
                 .quantity(exchange.getQuantity())
                 .imageUrl(exchange.getImageUrl())
                 .description(exchange.getDescription())
+                .status(exchange.getStatus())
                 .createDate(exchange.getCreateDate())
                 .userId(exchange.getUser().getId())
                 .build();

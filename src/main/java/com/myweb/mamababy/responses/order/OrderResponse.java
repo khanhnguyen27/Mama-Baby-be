@@ -7,14 +7,16 @@ import lombok.*;
 import java.time.LocalDate;
 
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
+
 public class OrderResponse {
 
     private int id;
+    private String shippingAddress;
+    private LocalDate orderDate;
 
     @JsonProperty("user_id")
     private int userId;
@@ -34,14 +36,8 @@ public class OrderResponse {
     @JsonProperty("final_amount")
     private float finalAmount;
 
-    @JsonProperty("shipping_address")
-    private String shippingAddress;
-
     @JsonProperty("payment_method")
     private String paymentMethod;
-
-    @JsonProperty("order_date")
-    private LocalDate orderDate;
 
     @JsonProperty("type")
     private String type;

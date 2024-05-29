@@ -16,7 +16,10 @@ public class StoreResponse {
     private String address;
     private String description;
     private String phone;
-    private boolean status;
+    private String status;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
 
     @JsonProperty("user_id")
     private int userID;
@@ -28,7 +31,8 @@ public class StoreResponse {
                 .address(store.getAddress())
                 .description(store.getDescription())
                 .phone(store.getPhone())
-                .status(store.isStatus())
+                .status(store.getStatus())
+                .isActive(store.isActive())
                 .userID(store.getUser().getId())
                 .build();
     }

@@ -1,4 +1,4 @@
-package com.myweb.mamababy.responses.article;
+package com.myweb.mamababy.responses.Article;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class ArticleResponse {
+
     @JsonProperty("id")
     private int id;
 

@@ -1,12 +1,16 @@
 package com.myweb.mamababy.services.Article;
 
+import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.Article;
 import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +29,9 @@ public class ArticleService implements IArticleService{
 
     private final ArticleReponsitory articleReponsitory;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+
 
     private static final String UPLOADS_FOLDER = "uploads";
     @Override
@@ -51,7 +58,7 @@ public class ArticleService implements IArticleService{
     public String storeFile(MultipartFile file) throws IOException {
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
+        String uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads");
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
@@ -85,15 +92,37 @@ public class ArticleService implements IArticleService{
     }
 
     @Override
-    public Article updateArticle(int id, ArticleDTO articleDTO) throws Exception {
-        Article existingArticle = getArticleById(id);
-        existingArticle.setHeader(articleDTO.getHeader());
-        existingArticle.setContent(articleDTO.getContent());
-        existingArticle.setLink_product(articleDTO.getLink_product());
-        existingArticle.setLink_image(articleDTO.getLink_image());
-        existingArticle.setStatus(articleDTO.getStatus());
-        articleReponsitory.save(existingArticle);
-        return existingArticle;
+    public Article updateArticle(int id, ArticleDTO articleDTO, String token) throws Exception {
+
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new ExpiredTokenException("Token is expired");
+        }
+        String subject = jwtTokenUtil.extractUserName(token);
+        Optional<User> user;
+        user = userRepository.findByUsername(subject);
+
+        if (user.isPresent()) {
+            User retrievedUser = user.get();
+            Store existingStore = storeRepository
+                    .findByUserId(retrievedUser.getId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find store with id: "+ retrievedUser.getId()));
+            if (existingStore.getId() != (articleDTO.getStore_id())) {
+                throw new Exception("Store does not match");
+            } else {
+                Article existingArticle = getArticleById(id);
+                existingArticle.setHeader(articleDTO.getHeader());
+                existingArticle.setContent(articleDTO.getContent());
+                existingArticle.setLink_product(articleDTO.getLink_product());
+                existingArticle.setLink_image(articleDTO.getLink_image());
+                existingArticle.setStatus(articleDTO.getStatus());
+                articleReponsitory.save(existingArticle);
+                return existingArticle;
+            }
+        }
+
+        throw new Exception("Store not found");
     }
 
     @Override

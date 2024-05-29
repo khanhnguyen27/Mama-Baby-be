@@ -4,6 +4,7 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.dtos.UserLoginDTO;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.responses.Article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.User.IUserService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.FieldError;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("${api.prefix}/users")
 @RequiredArgsConstructor
@@ -38,14 +41,11 @@ public class UserController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            if(!userDTO.getPassword().equals(userDTO.getRetypePassword())){
-                return ResponseEntity.badRequest().body("Password does not match");
-            }
             User user = userService.createUser(userDTO);
             //return ResponseEntity.ok("Register successfully");
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
-                            .message("Get user's detail successfully")
+                            .message("Create account successfully")
                             .data(UserResponse.fromUser(user))
                             .status(HttpStatus.OK)
                             .build()
@@ -79,6 +79,7 @@ public class UserController {
     }
 
     //http://localhost:8088/mamababy/users/details
+    //Lấy thông tin chi tiết khi user đã đăng nhập
     @GetMapping("/details")
     public ResponseEntity<?> getUserDetails(
             @RequestHeader("Authorization") String token
@@ -94,6 +95,21 @@ public class UserController {
         );
     }
 
+    //Chỉ admin mới được sử dụng
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUser() throws Exception {
+        List<User> user = userService.getAllAccount();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get user's detail successfully")
+                        .data(user.stream()
+                                .map(UserResponse::fromUser)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
     //http://localhost:8088/mamababy/users/logout
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String tokenHeader) throws Exception {
@@ -104,6 +120,40 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body("Invalid token");
         }
+    }
+
+    //User chỉ được chỉnh các thông số cơ bản
+    //http://localhost:8088/mamababy/users
+    @PutMapping("")
+    public ResponseEntity<?> updateUser(
+            @RequestHeader("Authorization") String token,
+            @Valid @RequestBody UserDTO userDTO
+    ) throws Exception {
+        String extractedToken = token.substring(7); // Loại bỏ "Bearer " từ chuỗi token
+        User user = userService.updateAccount(extractedToken, userDTO);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Update User successfully")
+                        .data(UserResponse.fromUser(user))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    //Admin chỉ được phép block/open account customer, staff
+    //http://localhost:8088/mamababy/users/admin
+    @PutMapping("/admin")
+    public ResponseEntity<?> isActiveUser(
+            @Valid @RequestBody UserDTO userDTO
+    ) throws Exception {
+        User user = userService.isActive(userDTO);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Update User successfully")
+                        .data(UserResponse.fromUser(user))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
     }
 
 }

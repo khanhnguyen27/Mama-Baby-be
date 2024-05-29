@@ -23,19 +23,19 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username", length = 100, nullable = false)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", length = 100, nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "full_name", length = 100)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "address", length = 200)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "phone_number", length = 50)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "accumulated_points")
