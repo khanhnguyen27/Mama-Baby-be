@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgeDTO {
+
     @NotEmpty(message = "Age's name cannot be empty")
     @JsonProperty("range_age")
     private String rangeAge;

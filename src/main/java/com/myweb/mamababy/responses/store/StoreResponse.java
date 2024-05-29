@@ -12,7 +12,10 @@ import lombok.*;
 public class StoreResponse {
 
     private int id;
+
+    @JsonProperty("name_store")
     private String nameStore;
+
     private String address;
     private String description;
     private String phone;
