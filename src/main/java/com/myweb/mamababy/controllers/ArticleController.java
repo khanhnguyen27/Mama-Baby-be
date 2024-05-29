@@ -126,7 +126,8 @@ public class ArticleController {
     public ResponseEntity<?> updateArticle(@Valid @ModelAttribute ArticleDTO articleDTO,
                                            BindingResult result,
                                            @RequestParam("files") MultipartFile file,
-                                           @PathVariable("id") int id) throws Exception {
+                                           @PathVariable("id") int id,
+                                           @RequestHeader("Authorization") String token) throws Exception {
         try {
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors()
@@ -156,9 +157,10 @@ public class ArticleController {
             // Lưu file và cập nhật thumbnail trong DTO
             String filename = articleService.storeFile(file);
 
+            String extractedToken = token.substring(7);
             // lưu vào đối tượng product trong DB
             articleDTO.setLink_image(filename);
-            Article updatedArticle = articleService.updateArticle(id, articleDTO);
+            Article updatedArticle = articleService.updateArticle(id, articleDTO, extractedToken);
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
                             .message("Update article successfully")
@@ -175,10 +177,11 @@ public class ArticleController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArticle(@PathVariable("id") int id) {
-        articleService.deleteArticle(id);
-        return ResponseEntity.ok("Article deleted successfully");
-    }
+    //Không dùng xóa cứng
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteArticle(@PathVariable("id") int id) {
+//        articleService.deleteArticle(id);
+//        return ResponseEntity.ok("Article deleted successfully");
+//    }
 
 }

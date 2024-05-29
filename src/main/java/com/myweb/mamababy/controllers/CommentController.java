@@ -2,6 +2,7 @@ package com.myweb.mamababy.controllers;
 
 
 import com.myweb.mamababy.dtos.CommentDTO;
+import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.comment.CommentResponse;
@@ -103,10 +104,12 @@ public class CommentController {
     }
 
     //update comment for user
-    //Users can only update comments
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateComment(@PathVariable("id") int id, @RequestBody CommentDTO commentDTO) {
-        Comment updatedComment = commentService.updateComment(id, commentDTO);
+    public ResponseEntity<?> updateComment(@PathVariable("id") int id,
+                                           @RequestBody CommentDTO commentDTO,
+                                           @RequestHeader("Authorization") String token) throws Exception {
+        String extractedToken = token.substring(7);
+        Comment updatedComment = commentService.updateComment(id, commentDTO, extractedToken);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Update comments successfully")
@@ -116,7 +119,7 @@ public class CommentController {
         );
     }
 
-    //update status comment for staff, admin, block comment
+    //Ẩn hiện comment, xóa mềm, dành cho staff admin
     @PutMapping("/status/{id}")
     public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody String status) {
         boolean parsedStatus = Boolean.parseBoolean(status);
@@ -130,9 +133,10 @@ public class CommentController {
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable("id") int id) {
-        commentService.deleteComment(id);
-        return ResponseEntity.ok("Comment deleted successfully");
-    }
+    //Không dùng xóa cứng
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteComment(@PathVariable("id") int id) {
+//        commentService.deleteComment(id);
+//        return ResponseEntity.ok("Comment deleted successfully");
+//    }
 }

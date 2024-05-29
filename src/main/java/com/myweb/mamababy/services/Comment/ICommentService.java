@@ -11,6 +11,6 @@ public interface ICommentService {
     Comment createComment(CommentDTO commentDTO) throws Exception;
     Comment getCommentById(int Id) throws Exception;
     List<Comment> getAllComment() throws Exception;
-    Comment updateComment(int Id, CommentDTO commentDTO) throws Exception;
+    Comment updateComment(int Id, CommentDTO commentDTO, String extractedToken) throws Exception;
     void deleteComment(int Id) throws Exception;
 }

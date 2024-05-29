@@ -11,6 +11,8 @@ import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.BadCredentialsException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -100,6 +104,68 @@ public class UserService implements IUserService {
 
         blacklistedTokenRepository.save(blacklistedToken);
     }
+
+    @Override
+    public User isActive(UserDTO userDTO) throws Exception {
+        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        User exitUser = user.get();
+        exitUser.setIsActive(userDTO.getStatus());
+        userRepository.save(exitUser);
+        return exitUser;
+    }
+
+    @Override
+    public User updateAccount(String token, UserDTO userDTO) throws Exception {
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new ExpiredTokenException("Token is expired");
+        }
+        String subject = jwtTokenUtil.extractUserName(token);
+        Optional<User> user;
+        user = userRepository.findByUsername(subject);
+
+        if (user.isPresent()) {
+            User retrievedUser = user.get();
+            if (!retrievedUser.getUsername().equals(userDTO.getUsername())) {
+                throw new Exception("Username does not match");
+            } else {
+
+                retrievedUser.setUsername(userDTO.getUsername());
+                retrievedUser.setPassword(userDTO.getPassword());
+                retrievedUser.setFullName(userDTO.getFullName());
+                retrievedUser.setAddress(userDTO.getAddress());
+                retrievedUser.setPhoneNumber(userDTO.getPhoneNumber());
+                userRepository.save(retrievedUser);
+            }
+        } else {
+
+            throw new Exception("User not found");
+        }
+
+        return user.get();
+    }
+
+    @Override
+    public List<User> getAllAccount() throws Exception {
+        try {
+            // Retrieve all users from the repository
+            List<User> users = userRepository.findAll();
+
+            // If no users found, you can either return an empty list or throw an exception based on your requirements
+            if (users.isEmpty()) {
+                // Log and/or throw an exception if necessary
+                // Example: throw new Exception("No users found");
+                return new ArrayList<>(); // or simply return users; which will be an empty list
+            }
+
+            return users;
+        } catch (Exception e) {
+            // Log the exception and rethrow it
+            Logger logger = LoggerFactory.getLogger(this.getClass());
+            logger.error("Exception while fetching all accounts: " + e.getMessage());
+            throw new Exception("Error retrieving all accounts", e);
+        }
+    }
+
 
     public void cleanupExpiredTokens() {
         Date now = new Date();
