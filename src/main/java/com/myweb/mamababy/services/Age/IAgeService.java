@@ -10,5 +10,5 @@ public interface IAgeService {
     Age getAgeById(int id);
     List<Age> getAllAges();
     Age updateAge(int ageId, AgeDTO ageDTO);
-    void deleteAge(int id);
+    Age deleteAge(int id);
 }

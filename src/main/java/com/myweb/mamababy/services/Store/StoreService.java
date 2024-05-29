@@ -26,22 +26,24 @@ public class StoreService implements IStoreService{
     @Transactional
     public Store createStore(StoreDTO storeDTO) throws DataNotFoundException  {
 
-        if(storeRepository.existsByUserId(storeDTO.getUserId())) {
-            throw new DataIntegrityViolationException("User already exists store");
-        }
-
         User existingUser = userRepository
                 .findById(storeDTO.getUserId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
                                 "Cannot find user with id: "+storeDTO.getUserId()));
+
+        if(storeRepository.existsByUserId(storeDTO.getUserId()) || !existingUser.getIsActive()) {
+            throw new DataIntegrityViolationException("User cannot create new store !!!");
+        }
+
         Store newStore = Store
                 .builder()
                 .nameStore(storeDTO.getNameStore())
                 .address(storeDTO.getAddress())
                 .description(storeDTO.getDescription())
                 .phone(storeDTO.getPhone())
-                .status(true)
+                .status("PROCESSING")
+                .isActive(false)
                 .build();
         newStore.setUser(existingUser);
 
@@ -55,8 +57,8 @@ public class StoreService implements IStoreService{
     }
 
     @Override
-    public Page<StoreResponse> getAllStores(String keyword, PageRequest pageRequest) {
-        Page<Store> storesPage = storeRepository.searchStores(keyword, pageRequest);
+    public Page<StoreResponse> getAllStores(String keyword, String status, PageRequest pageRequest) {
+        Page<Store> storesPage = storeRepository.searchStores(keyword, status, pageRequest);
         return storesPage.map(StoreResponse::fromStore);
     }
 
@@ -75,9 +77,10 @@ public class StoreService implements IStoreService{
     }
 
     @Override
-    public void deleteStore(int id) {
+    public Store deleteStore(int id) {
         Store existingStore = getStoreById(id);
-        existingStore.setStatus(false);
+        existingStore.setActive(false);
         storeRepository.save(existingStore);
+        return existingStore;
     }
 }

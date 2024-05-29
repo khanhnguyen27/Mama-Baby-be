@@ -22,6 +22,7 @@ public class CategoryService implements ICategoryService {
         Category newCategory = Category
                 .builder()
                 .name(categoryDTO.getName())
+                .isActive(true)
                 .build();
         return categoryRepository.save(newCategory);
     }
@@ -45,14 +46,18 @@ public class CategoryService implements ICategoryService {
     {
         Category existingCategory = getCategoryById(categoryId);
         existingCategory.setName(categoryDTO.getName());
+        existingCategory.setActive(categoryDTO.isActive());
         categoryRepository.save(existingCategory);
         return existingCategory;
     }
 
     @Override
     @Transactional
-    public void deleteCategory(int id)
+    public Category deleteCategory(int id)
     {
-        categoryRepository.deleteById(id);
+        Category existingCategory = getCategoryById(id);
+        existingCategory.setActive(false);
+        categoryRepository.save(existingCategory);
+        return existingCategory;
     }
 }

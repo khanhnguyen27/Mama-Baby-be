@@ -29,6 +29,12 @@ public class StoreDTO {
     @JsonProperty("phone")
     private String phone;
 
+    @JsonProperty("status")
+    private String status;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
+
     @NotNull(message = "User ID is required")
     @JsonProperty("user_id")
     private int userId;

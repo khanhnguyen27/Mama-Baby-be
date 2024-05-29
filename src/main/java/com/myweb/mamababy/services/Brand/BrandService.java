@@ -22,6 +22,7 @@ public class BrandService implements IBrandService{
         Brand newBrand = Brand
                 .builder()
                 .name(brandDTO.getName())
+                .isActive(true)
                 .build();
         return brandRepository.save(newBrand);
     }
@@ -45,14 +46,18 @@ public class BrandService implements IBrandService{
     {
         Brand existingBrand = getBrandById(brandId);
         existingBrand.setName(brandDTO.getName());
+        existingBrand.setActive(brandDTO.isActive());
         brandRepository.save(existingBrand);
         return existingBrand;
     }
 
     @Override
     @Transactional
-    public void deleteBrand(int id)
+    public Brand deleteBrand(int id)
     {
-        brandRepository.deleteById(id);
+        Brand existingBrand = getBrandById(id);
+        existingBrand.setActive(false);
+        brandRepository.save(existingBrand);
+        return existingBrand;
     }
 }

@@ -1,5 +1,6 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,10 @@ public class Store {
     private String phone;
 
     @Column(name = "status")
-    private boolean status;
+    private String status;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @OneToOne
     @JoinColumn(name = "user_id")

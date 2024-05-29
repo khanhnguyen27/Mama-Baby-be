@@ -1,45 +1,42 @@
 package com.myweb.mamababy.controllers;
 
-import com.myweb.mamababy.dtos.CategoryDTO;
-import com.myweb.mamababy.dtos.ProductDTO;
-import com.myweb.mamababy.models.Category;
-import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.responses.product.ProductListResponse;
-import com.myweb.mamababy.responses.product.ProductResponse;
+import com.myweb.mamababy.dtos.BrandDTO;
+import com.myweb.mamababy.dtos.ExchangeDTO;
+import com.myweb.mamababy.models.Exchange;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.services.Product.IProductService;
+import com.myweb.mamababy.responses.exchange.ExchangeListResponse;
+import com.myweb.mamababy.responses.exchange.ExchangeResponse;
+import com.myweb.mamababy.services.Exchange.IExchangeService;
+import jakarta.validation.Valid;
+import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("${api.prefix}/products")
+@RequestMapping("${api.prefix}/exchanges")
 @RequiredArgsConstructor
-public class ProductController {
+public class ExchangeController {
 
-    private final IProductService productService;
+    private final IExchangeService exchangeService;
 
-    //POST http://localhost:8080/mamababy/products
+    //POST http://localhost:8080/mamababy/exchanges
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createProduct(
-            @Valid @ModelAttribute ProductDTO productDTO,
+    public ResponseEntity<?> createExchange(
+            @Valid @ModelAttribute ExchangeDTO exchangeDTO,
             BindingResult result,
             @RequestParam("image") MultipartFile file
-            ) {
+    ) {
         try {
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors()
@@ -48,12 +45,11 @@ public class ProductController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-
-            Product newProduct = productService.createProduct(productDTO, file);
+            Exchange newExchange = exchangeService.createExchange(exchangeDTO, file);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Create new product successfully")
+                    .message("Create new exchange request successfully")
                     .status(HttpStatus.CREATED)
-                    .data(ProductResponse.fromProduct(newProduct))
+                    .data(ExchangeResponse.fromExchange(newExchange))
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -63,15 +59,11 @@ public class ProductController {
     //GET http://localhost:8080/mamababy/products
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("")
-    public ResponseEntity<?> getProducts(
-            @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
-            @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
-            @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
-            @RequestParam(defaultValue = "0", name = "store_id") int storeId,
+    public ResponseEntity<?> getExchanges(
+            @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "12", name = "limit") int limit
-            ){
+    ){
         int totalPages = 0;
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
@@ -80,35 +72,35 @@ public class ProductController {
                 Sort.by("id").ascending()
         );
         //Lay tat ca cac product theo yeu cau
-        Page<ProductResponse> productPage = productService
-                .getAllProducts(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
+        Page<ExchangeResponse> exchangePage = exchangeService
+                .getAllExchange(status, pageRequest);
         // Lấy tổng số trang
-        totalPages = productPage.getTotalPages();
-        List<ProductResponse> products = productPage.getContent();
+        totalPages = exchangePage.getTotalPages();
+        List<ExchangeResponse> exchanges = exchangePage.getContent();
 
-        ProductListResponse productListResponse = ProductListResponse
+        ExchangeListResponse exchangeListResponse = ExchangeListResponse
                 .builder()
-                .products(products)
+                .exchanges(exchanges)
                 .totalPages(totalPages)
                 .build();
         return ResponseEntity.ok(ResponseObject.builder()
-                        .message("Get products details successfully")
-                        .data(productListResponse)
-                        .status(HttpStatus.OK)
-                        .build());
+                .message("Get exchange request successfully")
+                .data(exchangeListResponse)
+                .status(HttpStatus.OK)
+                .build());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(
-            @PathVariable("id") int productId
-        ){
+    public ResponseEntity<?> getExchangeById(
+            @PathVariable("id") int exchangeId
+    ){
         try{
-            Product existingProduct = productService.getProductById(productId);
+            Exchange existingExchange = exchangeService.getExchangeById(exchangeId);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Get detail product successfully")
                     .status(HttpStatus.OK)
-                    .data(ProductResponse.fromProduct(existingProduct))
+                    .data(ExchangeResponse.fromExchange(existingExchange))
                     .build());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -117,12 +109,12 @@ public class ProductController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable int id) {
+    public ResponseEntity<?> deleteExchange(@PathVariable int id) {
         try {
-            Product deleteProduct = productService.deleteProduct(id);
+            exchangeService.deleteExchange(id);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .data(ProductResponse.fromProduct(deleteProduct))
-                    .message(String.format("Product with id = %d deleted successfully", id))
+                    .data(null)
+                    .message(String.format("Exchange request with id = %d deleted successfully", id))
                     .status(HttpStatus.OK)
                     .build());
 
@@ -132,23 +124,20 @@ public class ProductController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProduct(
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateExchange(
             @PathVariable int id,
-            @ModelAttribute ProductDTO productDTO,
-            @RequestParam("image") MultipartFile file
-            ){
-        try{
-            Product updatedProduct = productService.updateProduct(id, productDTO, file);
+            @Valid @RequestBody ExchangeDTO exchangeDTO
+    ) {
+        try {
+            Exchange updatedExchange = exchangeService.updateExchange(id, exchangeDTO);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .data(ProductResponse.fromProduct(updatedProduct))
+                    .data(ExchangeResponse.fromExchange(updatedExchange))
                     .message("Update product successfully")
                     .status(HttpStatus.OK)
                     .build());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
-
 }
