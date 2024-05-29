@@ -1,5 +1,6 @@
 package com.myweb.mamababy.responses.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.models.Role;
 import lombok.*;
 
@@ -32,6 +33,9 @@ public class UserResponse {
     @JsonProperty("role_id")
     private com.myweb.mamababy.models.Role role;
 
+    @JsonProperty("isActive")
+    private Boolean isActive;
+
     public static UserResponse fromUser(com.myweb.mamababy.models.User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -40,6 +44,7 @@ public class UserResponse {
                 .address(user.getAddress())
                 .phone_number(user.getPhoneNumber())
                 .accumulated_points(user.getAccumulatedPoints())
+                .isActive(user.getIsActive())
                 .role(user.getRole())
                 .build();
     }
