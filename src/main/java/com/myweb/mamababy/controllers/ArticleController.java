@@ -86,6 +86,7 @@ public class ArticleController {
         }
     }
 
+    //Ai cũng xem được
     @GetMapping
     public ResponseEntity<?> getAllArticles() throws Exception {
         List<Article> articles = articleService.getAllArticle();
@@ -100,9 +101,12 @@ public class ArticleController {
         );
     }
 
+    //Store nào chỉ xem được article của shop đó
     @GetMapping("/store/{id}")
-    public ResponseEntity<?> getArticlesByStore(@PathVariable("id") int id) throws Exception {
-        List<Article> articles = articleService.getArticlesByStoreId(id);
+    public ResponseEntity<?> getArticlesByStore(@PathVariable("id") int id,
+                                                @RequestHeader("Authorization") String token) throws Exception {
+        String extractedToken = token.substring(7);
+        List<Article> articles = articleService.getArticlesByStoreId(id, extractedToken);
         if (articles.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ResponseObject.builder()

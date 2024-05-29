@@ -3,6 +3,7 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.VoucherDTO;
 import com.myweb.mamababy.models.Voucher;
+import com.myweb.mamababy.responses.Article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.voucher.VoucherResponse;
 import com.myweb.mamababy.services.Voucher.IVoucherService;
@@ -51,15 +52,19 @@ public class VoucherController {
         }
     }
 
-        //Find By id
-        @GetMapping("/{id}")
-        public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int voucherId) {
+        //Find By store id, staff can manage their voucher shop
+        @GetMapping("/store/{id}")
+        public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int shopId,
+                                            @RequestHeader("Authorization") String token) {
             try {
-                Voucher exitingVoucher = voucherService.getVoucherById(voucherId);
+                String extractedToken = token.substring(7);
+                List<Voucher> exitingVoucher = voucherService.getVoucherById(shopId, extractedToken);
                 return ResponseEntity.ok(ResponseObject.builder()
-                        .message("Voucher With VoucherId = " + voucherId + " Found Successfully!!!")
+                        .message("Get voucher shop Successfully!!!")
                         .status(HttpStatus.OK)
-                        .data(VoucherResponse.fromVoucher(exitingVoucher))
+                        .data(exitingVoucher.stream()
+                                .map(VoucherResponse::fromVoucher)
+                                .collect(Collectors.toList()))
                         .build());
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
@@ -84,13 +89,15 @@ public class VoucherController {
     // Update
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(
-            @Valid @PathVariable int id,
-            @Valid @RequestBody VoucherDTO voucherDTO) {
+            @Valid @PathVariable int voucherId,
+            @Valid @RequestBody VoucherDTO voucherDTO,
+            @RequestHeader("Authorization") String token) {
 
         try {
-            Voucher voucher = voucherService.updateVoucher(id, voucherDTO);
+            String extractedToken = token.substring(7);
+            Voucher voucher = voucherService.updateVoucher(voucherId, voucherDTO, extractedToken);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Voucher With VoucherId = " + id + " Updated Successfully!!!")
+                    .message("Voucher With VoucherId = " + voucherId + " Updated Successfully!!!")
                     .status(HttpStatus.OK)
                     .data(VoucherResponse.fromVoucher(voucher))
                     .build());
@@ -99,20 +106,20 @@ public class VoucherController {
         }
     }
 
-    // Delete
-    @DeleteMapping("/{id}")
-    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
-        try {
-
-            voucherService.deleteVoucher(id);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .data(null)
-                    .message(String.format("Voucher With Id = %d Deleted Successfully!!!", id))
-                    .status(HttpStatus.OK)
-                    .build());
-
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    // Delete, không xóa cứng, cật nhật is_active
+//    @DeleteMapping("/{id}")
+//    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
+//        try {
+//
+//            voucherService.deleteVoucher(id);
+//            return ResponseEntity.ok(ResponseObject.builder()
+//                    .data(null)
+//                    .message(String.format("Voucher With Id = %d Deleted Successfully!!!", id))
+//                    .status(HttpStatus.OK)
+//                    .build());
+//
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 }

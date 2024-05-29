@@ -13,11 +13,11 @@ public interface IVoucherService {
 
     Voucher createVoucher(VoucherDTO voucherDTO) throws Exception;
 
-    Voucher getVoucherById(int id) throws Exception;
+    List<Voucher> getVoucherById(int id, String token) throws Exception;
 
     List<Voucher> getAllVoucher() throws Exception;
 
-    Voucher updateVoucher(int id, VoucherDTO voucherDTO) throws Exception;
+    Voucher updateVoucher(int id, VoucherDTO voucherDTO, String token) throws Exception;
 
     Voucher deleteVoucher(int id) throws DataNotFoundException;
 }

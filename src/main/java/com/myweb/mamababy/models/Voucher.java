@@ -34,4 +34,7 @@ public class Voucher {
     @Column(name = "end_at")
     private LocalDate endAt;
 
+    @Column(name = "is_active")
+    private Boolean is_active;
+
 }
