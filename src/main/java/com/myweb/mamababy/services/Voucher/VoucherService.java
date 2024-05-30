@@ -3,6 +3,7 @@ package com.myweb.mamababy.services.Voucher;
 import com.myweb.mamababy.dtos.VoucherDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Order;
+import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.Voucher;
 import com.myweb.mamababy.repositories.StoreRepository;
@@ -42,6 +43,7 @@ public class VoucherService implements IVoucherService{
                 .discountValue(voucherDTO.getDiscountValue())
                 .description(voucherDTO.getDescription())
                 .endAt(voucherDTO.getEndAt())
+                .isActive(true)
                 .build();
 
         return voucherRepository.save(newVoucher);
@@ -52,6 +54,17 @@ public class VoucherService implements IVoucherService{
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find voucher with id: " + id));
         return voucher;
+    }
+
+    @Override
+    public List<Voucher> getVoucherByStoreId(int storeId) throws Exception {
+
+        List<Voucher> vouchers = voucherRepository.findByStoreId(storeId);
+
+        if (vouchers.isEmpty()) {
+            throw new DataNotFoundException("Cannot find voucher for store with id: " + storeId);
+        }
+        return vouchers;
     }
 
     @Override
@@ -87,8 +100,8 @@ public class VoucherService implements IVoucherService{
         Voucher existingVoucher = voucherRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Cannot find voucher with id: " + id));
 
-        voucherRepository.deleteById(id);
-
-        return existingVoucher;
+        existingVoucher.setActive(false);
+        return voucherRepository.save(existingVoucher);
     }
+
 }

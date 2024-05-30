@@ -15,8 +15,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findByUserId(int userId);
 
+    List<Order> findByStoreId(int storeId);
+
     @Query("SELECT o FROM Order o WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
+            "LOWER(o.type) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(o.shippingAddress) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "STR(o.orderDate) LIKE %:keyword%)")
     Page<Order> findByKeyword(@Param("keyword") String keyword, Pageable pageable);

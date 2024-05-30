@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 
 public class VoucherDTO {
+
     @JsonProperty("store_id")
     private int storeId;
 
@@ -29,5 +30,8 @@ public class VoucherDTO {
 
     @JsonProperty("end_at")
     private LocalDate endAt;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
 }
 

@@ -23,6 +23,8 @@ public interface IOrderService {
 
     List<Order> findByUserId(int userId) throws DataNotFoundException;
 
+    List<Order> findByStoreId(int storeId) throws DataNotFoundException;
+
     Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) throws DataNotFoundException;
 
 }

@@ -22,6 +22,7 @@ public class VoucherResponse {
     private int discountValue;
     private String description;
     private LocalDate endAt;
+    private boolean isActive;
 
     public static VoucherResponse fromVoucher(Voucher voucher) {
         return VoucherResponse.builder()
@@ -31,6 +32,7 @@ public class VoucherResponse {
                 .discountValue(voucher.getDiscountValue())
                 .description(voucher.getDescription())
                 .endAt(voucher.getEndAt())
+                .isActive(voucher.isActive())
                 .build();
     }
 }

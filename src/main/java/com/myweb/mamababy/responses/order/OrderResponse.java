@@ -21,6 +21,9 @@ public class OrderResponse {
     @JsonProperty("user_id")
     private int userId;
 
+    @JsonProperty("store_id")
+    private int storeId;
+
     @JsonProperty("voucher_id")
     private int voucherId;
 
@@ -47,6 +50,7 @@ public class OrderResponse {
                 .id(order.getId())
                 .userId(order.getUser().getId())
                 .voucherId(order.getVoucher().getId())
+                .storeId(order.getStore().getId())
                 .totalPoint(order.getTotalPoint())
                 .amount(order.getAmount())
                 .totalDiscount(order.getTotalDiscount())
