@@ -72,7 +72,7 @@ public class VoucherController {
         List<Voucher> vouchers = voucherService.getAllVoucher();
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
-                        .message("Get All Voucher Successfully!!!")
+                        .message("Get all voucher Successfully!!!")
                         .data(vouchers.stream()
                                 .map(VoucherResponse::fromVoucher)
                                 .collect(Collectors.toList()))
