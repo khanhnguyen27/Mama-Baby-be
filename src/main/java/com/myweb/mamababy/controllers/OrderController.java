@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderController {
 
-    // Create
     private final IOrderService orderService;
 
+    // Create Order
     @PostMapping("")
     public ResponseEntity<?> createOrder(
             @Valid @RequestBody OrderDTO orderDTO,
@@ -55,7 +55,7 @@ public class OrderController {
         }
 }
 
-    //Find By id
+    //Order Find By ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderById(@Valid @PathVariable("id") int orderId) {
         try {
@@ -70,7 +70,7 @@ public class OrderController {
         }
     }
 
-    //Find By userId
+    //Order Find By UserId
     @GetMapping("/user/{user_id}")
     public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable("user_id") int userId) {
         try {
@@ -88,19 +88,38 @@ public class OrderController {
         }
     }
 
+    //Order Find By StoreId
+    @GetMapping("/store/{store_id}")
+    public ResponseEntity<?> getOrdersByStoreId(@Valid @PathVariable("store_id") int storeId) {
+        try {
+            List<Order> orders = orderService.findByStoreId(storeId);
+            List<OrderResponse> orderResponses = orders.stream()
+                    .map(OrderResponse::fromOrder)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Order With StoreId = " + storeId + " Found Successfully!!!")
+                    .data(orderResponses)
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Order Find By Type, Shipping Adress and Order Date
     @GetMapping("/get-orders-by-keyword")
     public ResponseEntity<?> getOrdersByKeyword(
             @RequestParam(defaultValue = "", required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ) throws DataNotFoundException {
-        // Tạo Pageable từ thông tin trang và giới hạn
+
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("id").ascending());
-        // Lấy tất cả các orders theo yêu cầu
+
         Page<OrderResponse> orderPage = orderService
                 .getOrdersByKeyword(keyword, pageRequest)
                 .map(OrderResponse::fromOrder);
-        // Lấy tổng số trang
+
         int totalPages = orderPage.getTotalPages();
         List<OrderResponse> orders = orderPage.getContent();
 
@@ -116,7 +135,7 @@ public class OrderController {
                 .build());
     }
 
-
+    // Get All Order
     @GetMapping("")
     public ResponseEntity<?> getAllOrder() throws Exception {
         List<Order> orders = orderService.getAllOrder();
@@ -131,7 +150,7 @@ public class OrderController {
         );
     }
 
-    // Update
+    // Update Order
     @PutMapping("/{id}")
 //  @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateOrder(
@@ -150,21 +169,21 @@ public class OrderController {
         }
     }
 
-    // Delete
-    @DeleteMapping("/{id}")
-//  @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
-        try {
-
-            orderService.deleteOrder(id);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .data(null)
-                    .message(String.format("Order With Id = %d Deleted Successfully!!!", id))
-                    .status(HttpStatus.OK)
-                    .build());
-
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    // Delete Order
+//    @DeleteMapping("/{id}")
+////  @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
+//        try {
+//
+//            orderService.deleteOrder(id);
+//            return ResponseEntity.ok(ResponseObject.builder()
+//                    .data(null)
+//                    .message(String.format("Order With Id = %d Deleted Successfully!!!", id))
+//                    .status(HttpStatus.OK)
+//                    .build());
+//
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 }

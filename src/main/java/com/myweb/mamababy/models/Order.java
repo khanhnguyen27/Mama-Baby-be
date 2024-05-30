@@ -25,6 +25,10 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @ManyToOne
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;
 

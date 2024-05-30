@@ -19,6 +19,9 @@ public class OrderDTO {
     @JsonProperty("user_id")
     private int userId;
 
+    @JsonProperty("store_id")
+    private int storeId;
+
     @JsonProperty("voucher_id")
     private int voucherId;
 

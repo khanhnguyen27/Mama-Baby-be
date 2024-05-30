@@ -22,7 +22,7 @@ public class OrderDetailController {
 
     private final OrderDetailService orderDetailService;
 
-    //Thêm mới 1 order detail
+    // Create OrderDetail
     @PostMapping("")
 //  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> createOrderDetail(
@@ -40,6 +40,7 @@ public class OrderDetailController {
 
     }
 
+    // Get Order Detail By Id
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderDetail(
             @Valid @PathVariable("id") int id) throws DataNotFoundException {
@@ -55,6 +56,7 @@ public class OrderDetailController {
     }
     }
 
+    // Get Order Detail By OrderId
     @GetMapping("/order/{orderId}")
     public ResponseEntity<?> getByOrderId(
             @Valid @PathVariable("orderId") int orderId
@@ -74,6 +76,7 @@ public class OrderDetailController {
         }
     }
 
+    // Get All OrderDetail
     @GetMapping("")
     public ResponseEntity<?> getAllOrderDetail() throws Exception {
         List<OrderDetail> orders = orderDetailService.getAllOrderDetail();
@@ -88,6 +91,7 @@ public class OrderDetailController {
         );
     }
 
+    // Update Order Detail
     @PutMapping("/{id}")
 //    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
 //    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
@@ -106,22 +110,23 @@ public class OrderDetailController {
         }
     }
 
-    @DeleteMapping("/{id}")
-//    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    public ResponseEntity<?> deleteOrderDetail(
-            @Valid @PathVariable("id") int id) {  try {
-
-        orderDetailService.deleteOrderDetail(id);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .data(null)
-                .message(String.format("OrderDetail With Id = %d Deleted Successfully!!!", id))
-                .status(HttpStatus.OK)
-                .build());
-
-    }catch (Exception e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    }
+    // Delete Order Detail
+//    @DeleteMapping("/{id}")
+////    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
+////    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    public ResponseEntity<?> deleteOrderDetail(
+//            @Valid @PathVariable("id") int id) {  try {
+//
+//        orderDetailService.deleteOrderDetail(id);
+//        return ResponseEntity.ok(ResponseObject.builder()
+//                .data(null)
+//                .message(String.format("OrderDetail With Id = %d Deleted Successfully!!!", id))
+//                .status(HttpStatus.OK)
+//                .build());
+//
+//    }catch (Exception e){
+//        return ResponseEntity.badRequest().body(e.getMessage());
+//    }
+//    }
     }
 

@@ -3,9 +3,11 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Order;
+import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.models.Voucher;
 import com.myweb.mamababy.repositories.OrderRepository;
+import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import com.myweb.mamababy.repositories.VoucherRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,8 @@ public class OrderService implements IOrderService{
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final VoucherRepository voucherRepository;
+    private final StoreRepository storeRepository;
+
 
     @Override
     @Transactional
@@ -33,6 +37,9 @@ public class OrderService implements IOrderService{
 
         Voucher existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
                 .orElseThrow(() -> new DataNotFoundException("Cannot find voucher with id: " + orderDTO.getVoucherId()));
+
+        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
+                .orElseThrow(() -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
 
         Order newOrder = Order.builder()
 
@@ -46,6 +53,7 @@ public class OrderService implements IOrderService{
                 .orderDate(orderDTO.getOrderDate())
                 .type(orderDTO.getType())
                 .user(existingUser)
+                .store(existingStore)
                 .build();
 
         return orderRepository.save(newOrder);
@@ -54,9 +62,8 @@ public class OrderService implements IOrderService{
 
     @Override
     public Order getOrder(int id) throws DataNotFoundException {
-        Order order = orderRepository.findById(id)
+        return orderRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find order with id: " + id));
-        return  order;
     }
 
     @Override
@@ -71,6 +78,9 @@ public class OrderService implements IOrderService{
         Voucher existingVoucher  = voucherRepository.findById(orderDTO.getVoucherId()).orElseThrow(() ->
                 new DataNotFoundException("Cannot find voucher with id: " + orderDTO.getVoucherId()));
 
+        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
+                .orElseThrow(() -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
+
         existingOrder.setTotalPoint(orderDTO.getTotalPoint());
         existingOrder.setAmount(orderDTO.getAmount());
         existingOrder.setTotalDiscount(orderDTO.getTotalDiscount());
@@ -82,6 +92,7 @@ public class OrderService implements IOrderService{
 
         existingOrder.setUser(existingUser);
         existingOrder.setVoucher(existingVoucher);
+        existingOrder.setStore(existingStore);
 
         return orderRepository.save(existingOrder);
     }
@@ -109,6 +120,18 @@ public class OrderService implements IOrderService{
 
         if (orders.isEmpty()) {
             throw new DataNotFoundException("Cannot find orders for user with id: " + userId);
+        }
+
+        return orders;
+    }
+
+    @Override
+    public List<Order> findByStoreId(int storeId) throws DataNotFoundException {
+
+        List<Order> orders = orderRepository.findByStoreId(storeId);
+
+        if (orders.isEmpty()) {
+            throw new DataNotFoundException("Cannot find orders for store with id: " + storeId);
         }
 
         return orders;
