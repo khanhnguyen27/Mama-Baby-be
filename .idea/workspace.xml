@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ActivedController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ActivedDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Actived.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/ActivedKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ActivedRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Actived/ActivedService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Actived/IActivedService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VoucherController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
