@@ -78,12 +78,33 @@ public class ArticleService implements IArticleService{
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 
-    public List<Article> getArticlesByStoreId(int storeId) {
-        List<Article> articles = articleReponsitory.findByStoreId(storeId);
-        if (articles == null || articles.isEmpty()) {
-            return Collections.emptyList(); // hoặc trả về null
+    public List<Article> getArticlesByStoreId(int storeId, String token) throws Exception {
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new ExpiredTokenException("Token is expired");
         }
-        return articles;
+        String subject = jwtTokenUtil.extractUserName(token);
+        Optional<User> user;
+        user = userRepository.findByUsername(subject);
+
+        if (user.isPresent()) {
+            User retrievedUser = user.get();
+            Store existingStore = storeRepository
+                    .findByUserId(retrievedUser.getId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find store with id: "+ retrievedUser.getId()));
+            if (existingStore.getId() != storeId) {
+                throw new Exception("Store does not match");
+            } else {
+                List<Article> articles = articleReponsitory.findByStoreId(existingStore.getId());
+                if (articles == null || articles.isEmpty()) {
+                    return Collections.emptyList(); // hoặc trả về null
+                }
+                return articles;
+            }
+        }
+
+        throw new Exception("Store not found");
     }
 
     @Override

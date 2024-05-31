@@ -31,4 +31,7 @@ public class UserDTO {
     @JsonProperty("status")
     private Boolean status;
 
+    @JsonProperty("roleId")
+    private int roleId;
+
 }

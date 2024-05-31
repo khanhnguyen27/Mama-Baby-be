@@ -140,7 +140,7 @@ public class UserController {
         );
     }
 
-    //Admin chỉ được phép block/open account customer, staff
+    //Admin chỉ được phép block/open account customer, staff và chỉnh role
     //http://localhost:8088/mamababy/users/admin
     @PutMapping("/admin")
     public ResponseEntity<?> isActiveUser(

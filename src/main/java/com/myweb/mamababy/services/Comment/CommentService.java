@@ -1,19 +1,16 @@
 package com.myweb.mamababy.services.Comment;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
-import com.myweb.mamababy.dtos.AgeDTO;
 import com.myweb.mamababy.dtos.CommentDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.*;
-import com.myweb.mamababy.repositories.AgeRepository;
 import com.myweb.mamababy.repositories.CommentRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -56,10 +53,27 @@ public class CommentService implements ICommentService{
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
     }
 
-    public List<Comment> getCommentsByUserId(int userId) {
-        List<Comment> comments = commentRepository.findByUserId(userId);
-        return handleEmptyList(comments);
+    public List<Comment> getCommentsByUserId(int UserId, String token) throws Exception {
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new ExpiredTokenException("Token is expired");
+        }
+        String subject = jwtTokenUtil.extractUserName(token);
+        Optional<User> user;
+        user = userRepository.findByUsername(subject);
+
+        if (user.isPresent()) {
+            User retrievedUser = user.get();
+            if (retrievedUser.getId() != UserId) {
+                throw new Exception("Store does not match");
+            } else {
+                List<Comment> comments = commentRepository.findByUserId(retrievedUser.getId());
+                return handleEmptyList(comments);
+            }
+        }
+
+        throw new Exception("Store not found");
     }
+
 
     public List<Comment> getCommentsByProductId(int productId) {
         List<Comment> comments = commentRepository.findByProductId(productId);
