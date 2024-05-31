@@ -34,16 +34,21 @@ public class UserService implements IUserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
+    private final int roleDefault = 1; //Customer
+    private final Boolean statusDefault = true;
 
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         //register user
-        String username = userDTO.getUsername();
         // Kiểm tra xem số username đã tồn tại hay chưa
-        if(userRepository.existsByUsername(username)) {
+        if(userRepository.existsByUsername(userDTO.getUsername())) {
             throw new DataIntegrityViolationException("Username already exists");
         }
-        Role role = roleRepository.findById(1)
+        // Kiểm tra xem phoneNumber đã tồn tại hay chưa
+        if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+        Role role = roleRepository.findById(roleDefault)
                 .orElseThrow(() -> new DataNotFoundException("Role not found"));
         //convert from userDTO => user
         User newUser = User.builder()
@@ -52,7 +57,7 @@ public class UserService implements IUserService {
                 .fullName(userDTO.getFullName())
                 .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .isActive(true)
+                .isActive(statusDefault)
                 .build();
         newUser.setRole(role);
             String password = userDTO.getPassword();
@@ -110,12 +115,26 @@ public class UserService implements IUserService {
         Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
         User exitUser = user.get();
         exitUser.setIsActive(userDTO.getStatus());
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new DataNotFoundException("Role not found"));
+        if(role == null) exitUser.setRole(exitUser.getRole());
+        else exitUser.setRole(role);
         userRepository.save(exitUser);
         return exitUser;
     }
 
     @Override
     public User updateAccount(String token, UserDTO userDTO) throws Exception {
+        String username = userDTO.getUsername();
+        // Kiểm tra xem số username đã tồn tại hay chưa
+        if(userRepository.existsByUsername(username)) {
+            throw new DataIntegrityViolationException("Username already exists");
+        }
+        // Kiểm tra xem phoneNumber đã tồn tại hay chưa
+        if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+
         if (jwtTokenUtil.isTokenExpired(token)) {
             throw new ExpiredTokenException("Token is expired");
         }
@@ -128,9 +147,11 @@ public class UserService implements IUserService {
             if (!retrievedUser.getUsername().equals(userDTO.getUsername())) {
                 throw new Exception("Username does not match");
             } else {
+                String password = userDTO.getPassword();
+                String encodedPassword = passwordEncoder.encode(password);
 
                 retrievedUser.setUsername(userDTO.getUsername());
-                retrievedUser.setPassword(userDTO.getPassword());
+                retrievedUser.setPassword(encodedPassword);
                 retrievedUser.setFullName(userDTO.getFullName());
                 retrievedUser.setAddress(userDTO.getAddress());
                 retrievedUser.setPhoneNumber(userDTO.getPhoneNumber());
