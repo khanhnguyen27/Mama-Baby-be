@@ -1,6 +1,7 @@
 package com.myweb.mamababy.controllers;
 
 
+import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.dtos.UserLoginDTO;
 import com.myweb.mamababy.models.User;
@@ -127,10 +128,10 @@ public class UserController {
     @PutMapping("")
     public ResponseEntity<?> updateUser(
             @RequestHeader("Authorization") String token,
-            @Valid @RequestBody UserDTO userDTO
+            @Valid @RequestBody UpdateUserDTO updateUserDTO
     ) throws Exception {
         String extractedToken = token.substring(7); // Loại bỏ "Bearer " từ chuỗi token
-        User user = userService.updateAccount(extractedToken, userDTO);
+        User user = userService.updateAccount(extractedToken, updateUserDTO);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Update User successfully")
