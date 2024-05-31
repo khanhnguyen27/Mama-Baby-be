@@ -5,90 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ActivedController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ExchangeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/StatusOrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ActivedDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ExchangeDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/StatusOrderDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Actived.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/ActivedKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Exchange.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/StatusOrder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ActivedRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ExchangeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/StatusOrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/article/ArticleResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/exchange/ExchangeListResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/exchange/ExchangeResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/order/StatusOrderResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Actived/ActivedService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Actived/IActivedService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Exchange/ExchangeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Exchange/IExchangeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/StatusOrder/IStatusOrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/StatusOrder/StatusOrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/1716784628144_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/1716912989313_Screenshot 2024-05-10 130541.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/1716955846820_Screenshot 2024-05-10 130541.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/1716955870973_Screenshot 2024-05-10 130541.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/1716955874137_Screenshot 2024-05-10 130541.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_24191ace-fd4c-4d2e-bbff-a58d57ea69d0_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_541974f2-c757-4d31-8243-7b01ca6f7ebe_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_8347ea93-9700-4b27-a519-7a38372271c0_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_8fcd7250-dbfb-44e9-8cab-62b56dd79693_OIP.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_9aa9b139-e91d-4d96-9617-9c2000980d7c_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_e9a845e1-54eb-4ab5-b97c-5cc06c253e0b_testfile.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Product_f2291681-9fdb-4099-b4aa-24a9e7aac336_testfile.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/AgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/AgeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/BrandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/BrandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/OrderDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/OrderDetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/StoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/StoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VoucherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VoucherController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/AgeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/AgeDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/BrandDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/BrandDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CategoryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/OrderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/OrderDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/StoreDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/StoreDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/VoucherDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/VoucherDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Age.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Age.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Brand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/OrderDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/OrderDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Voucher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Voucher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/StoreRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/StoreRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/VoucherRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/VoucherRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/order/OrderResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/order/OrderResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/product/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/product/ProductResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/store/StoreResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/store/StoreResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/voucher/VoucherResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/voucher/VoucherResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Age/AgeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Age/AgeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Age/IAgeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Age/IAgeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Brand/BrandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Brand/BrandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Brand/IBrandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Brand/IBrandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Category/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Category/CategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Category/ICategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Category/ICategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/IOrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/IOrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/IProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Store/IStoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Store/IStoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Store/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Store/StoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Voucher/IVoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Voucher/IVoucherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Voucher/VoucherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Voucher/VoucherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/User/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/User/IUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/User/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/User/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,24 +63,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.MamababyApplication.executor": "Run",
-    "JUnit.All in mamababy (1).executor": "Run",
-    "JUnit.All in mamababy.executor": "Run",
-    "JUnit.MamababyApplicationTests.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging ManhCuong",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/khoitd/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.MamababyApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mamababy (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in mamababy.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MamababyApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ManhCuong&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/khoitd/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.MamababyApplication">
     <configuration name="MamababyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplication" />
@@ -273,37 +196,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>104</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>101</line>
+          <line>97</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>105</line>
+          <line>100</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>110</line>
+          <line>104</line>
           <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java</url>
-          <line>94</line>
-          <properties class="com.myweb.mamababy.services.Article.ArticleService">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

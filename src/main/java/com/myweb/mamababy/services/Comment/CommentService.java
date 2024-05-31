@@ -8,6 +8,7 @@ import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.CommentRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.services.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class CommentService implements ICommentService{
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
 
     @Override
     public Comment createComment(CommentDTO commentDTO) throws Exception{
@@ -54,24 +56,15 @@ public class CommentService implements ICommentService{
     }
 
     public List<Comment> getCommentsByUserId(int UserId, String token) throws Exception {
-        if (jwtTokenUtil.isTokenExpired(token)) {
-            throw new ExpiredTokenException("Token is expired");
-        }
-        String subject = jwtTokenUtil.extractUserName(token);
-        Optional<User> user;
-        user = userRepository.findByUsername(subject);
 
-        if (user.isPresent()) {
-            User retrievedUser = user.get();
+            User retrievedUser = userService.getUserDetailsFromToken(token);
             if (retrievedUser.getId() != UserId) {
                 throw new Exception("Store does not match");
             } else {
                 List<Comment> comments = commentRepository.findByUserId(retrievedUser.getId());
                 return handleEmptyList(comments);
             }
-        }
 
-        throw new Exception("Store not found");
     }
 
 
@@ -95,18 +88,10 @@ public class CommentService implements ICommentService{
 
     @Override
     public Comment updateComment(int Id, CommentDTO commentDTO, String token) throws Exception {
-        if (jwtTokenUtil.isTokenExpired(token)) {
-            throw new ExpiredTokenException("Token is expired");
-        }
-        String subject = jwtTokenUtil.extractUserName(token);
-        Optional<User> user;
-        user = userRepository.findByUsername(subject);
 
+        User user = userService.getUserDetailsFromToken(token);
         Comment existingCom;
-
-        if (user.isPresent()) {
-            User retrievedUser = user.get();
-            if (retrievedUser.getId() != commentDTO.getUserId()) {
+            if (user.getId() != commentDTO.getUserId()) {
                 throw new Exception("User does not match");
             } else {
 
@@ -115,9 +100,6 @@ public class CommentService implements ICommentService{
                 commentRepository.save(existingCom);
                 return existingCom;
             }
-        }
-
-        throw new Exception("User not found");
     }
 
     public Comment updateCommentStatus(int Id, Boolean status) {

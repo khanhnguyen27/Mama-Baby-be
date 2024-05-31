@@ -138,12 +138,8 @@ public class UserService implements IUserService {
         if (jwtTokenUtil.isTokenExpired(token)) {
             throw new ExpiredTokenException("Token is expired");
         }
-        String subject = jwtTokenUtil.extractUserName(token);
-        Optional<User> user;
-        user = userRepository.findByUsername(subject);
 
-        if (user.isPresent()) {
-            User retrievedUser = user.get();
+            User retrievedUser = getUserDetailsFromToken(token);
             if (!retrievedUser.getUsername().equals(userDTO.getUsername())) {
                 throw new Exception("Username does not match");
             } else {
@@ -157,12 +153,8 @@ public class UserService implements IUserService {
                 retrievedUser.setPhoneNumber(userDTO.getPhoneNumber());
                 userRepository.save(retrievedUser);
             }
-        } else {
 
-            throw new Exception("User not found");
-        }
-
-        return user.get();
+        return retrievedUser;
     }
 
     @Override
