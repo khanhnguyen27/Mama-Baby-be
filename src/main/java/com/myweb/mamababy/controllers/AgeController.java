@@ -64,9 +64,13 @@ public class AgeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAge(@PathVariable int id) {
-        ageService.deleteAge(id);
-        return ResponseEntity.ok("Delete successfully !!!");
+    public ResponseEntity<?> deleteAge(@PathVariable int id) {
+        Age deleteAge = ageService.deleteAge(id);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Delete successfully !!!")
+                .status(HttpStatus.OK)
+                .data(deleteAge)
+                .build());
     }
 
 }

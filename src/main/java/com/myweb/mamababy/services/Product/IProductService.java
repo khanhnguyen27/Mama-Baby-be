@@ -19,7 +19,7 @@ public interface IProductService {
 
     Product updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws Exception;
 
-    void deleteProduct(int id) throws IOException;
+    Product deleteProduct(int id) throws Exception;
 
     boolean existsByName(String name);
 

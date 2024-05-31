@@ -1,11 +1,8 @@
-package com.myweb.mamababy.responses.Article;
+package com.myweb.mamababy.responses.article;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.models.Store;
-import com.myweb.mamababy.responses.comment.CommentResponse;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;

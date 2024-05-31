@@ -35,6 +35,6 @@ public class Voucher {
     private LocalDate endAt;
 
     @Column(name = "is_active")
-    private Boolean is_active;
+    private boolean isActive;
 
 }

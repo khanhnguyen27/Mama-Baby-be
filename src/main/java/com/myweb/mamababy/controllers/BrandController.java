@@ -62,9 +62,13 @@ public class BrandController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable int id) {
-        brandService.deleteBrand(id);
-        return ResponseEntity.ok("Delete successfully !!!");
+    public ResponseEntity<?> deleteCategory(@PathVariable int id) {
+        Brand deleteBrand = brandService.deleteBrand(id);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Delete successfully !!!")
+                .status(HttpStatus.OK)
+                .data(deleteBrand)
+                .build());
     }
 
 }

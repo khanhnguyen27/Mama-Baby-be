@@ -1,7 +1,6 @@
 package com.myweb.mamababy.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -15,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 
 public class VoucherDTO {
+
     @JsonProperty("store_id")
     private int storeId;
 
@@ -30,8 +30,5 @@ public class VoucherDTO {
 
     @JsonProperty("end_at")
     private LocalDate endAt;
-
-    @JsonProperty("is_active")
-    private Boolean is_active;
 }
 

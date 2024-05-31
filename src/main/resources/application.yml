@@ -14,9 +14,6 @@ spring:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
       format_sql: true
-#  mvc:
-#    path match:
-#      matching-strategy: ant-path-matcher
 api:
   prefix: mamababy
 jwt:

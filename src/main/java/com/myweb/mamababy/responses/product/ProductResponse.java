@@ -19,6 +19,8 @@ public class ProductResponse extends BaseResponse {
     private String status;
     private String type;
     private String description;
+
+    @JsonProperty("image_url")
     private String imageUrl;
 
     @JsonProperty("category_id")
@@ -32,6 +34,9 @@ public class ProductResponse extends BaseResponse {
 
     @JsonProperty("store_id")
     private int storeId;
+
+    @JsonProperty("is_active")
+    private boolean isActive;
 
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
@@ -47,6 +52,7 @@ public class ProductResponse extends BaseResponse {
                 .brandId(product.getBrand().getId())
                 .age(product.getAge().getId())
                 .storeId(product.getStore().getId())
+                .isActive(product.isActive())
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());

@@ -1,6 +1,5 @@
 package com.myweb.mamababy.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +37,9 @@ public class Product extends BaseEntity{
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

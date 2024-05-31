@@ -22,6 +22,7 @@ public class AgeService implements IAgeService{
         Age newAge = Age
                 .builder()
                 .rangeAge(ageDTO.getRangeAge())
+                .isActive(true)
                 .build();
         return ageRepository.save(newAge);
     }
@@ -45,14 +46,18 @@ public class AgeService implements IAgeService{
     {
         Age existingAge = getAgeById(ageId);
         existingAge.setRangeAge(ageDTO.getRangeAge());
+        existingAge.setActive(ageDTO.isActive());
         ageRepository.save(existingAge);
         return existingAge;
     }
 
     @Override
     @Transactional
-    public void deleteAge(int id)
+    public Age deleteAge(int id)
     {
-        ageRepository.deleteById(id);
+        Age existingAge = getAgeById(id);
+        existingAge.setActive(false);
+        ageRepository.save(existingAge);
+        return existingAge;
     }
 }

@@ -119,10 +119,9 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id) {
         try {
-
-            productService.deleteProduct(id);
+            Product deleteProduct = productService.deleteProduct(id);
             return ResponseEntity.ok(ResponseObject.builder()
-                    .data(null)
+                    .data(ProductResponse.fromProduct(deleteProduct))
                     .message(String.format("Product with id = %d deleted successfully", id))
                     .status(HttpStatus.OK)
                     .build());

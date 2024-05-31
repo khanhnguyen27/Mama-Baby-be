@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
+
     List<Voucher> findByStoreId(int storeId);
 
 }

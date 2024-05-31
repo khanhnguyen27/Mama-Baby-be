@@ -19,4 +19,7 @@ public class Brand {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 }

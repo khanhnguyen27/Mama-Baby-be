@@ -13,20 +13,21 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     boolean existsByName(String name);
 
-    List<Product> findByCategory(Category category);
-
     Optional<Product> findById(int id);
 
     @Query("SELECT p FROM Product p WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR p.name LIKE %:keyword%) " +
             "AND (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
             "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId)" +
-            "AND (:age IS NULL OR :age = 0 OR p.age.id = :age)")
+            "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)" +
+            "AND (:age IS NULL OR :age = 0 OR p.age.id = :age) " +
+            "AND p.isActive = true")
     Page<Product> searchProducts
             (@Param("keyword") String keyword,
              @Param("categoryId") int categoryId,
              @Param("brandId") int brandId,
              @Param("age") int age,
+             @Param("storeId") int storeId,
               Pageable pageable);
 
 }
