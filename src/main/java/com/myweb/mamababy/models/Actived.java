@@ -12,7 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @IdClass(ActivedKey.class)
 @Builder
-
 public class Actived {
 
     @Id

@@ -26,6 +26,7 @@ public class ActivedController {
     private final IActivedService activedService;
 
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createActive(
             @Valid @RequestBody ActivedDTO activedDTO,
@@ -46,9 +47,8 @@ public class ActivedController {
 
     }
 
-    //GET: http://localhost:8080/mamababy/products
-    //Hiện tất cả các categories
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllActived() {
         List<Actived> listActived = activedService.getAllActived();
         return ResponseEntity.ok(ResponseObject
@@ -60,6 +60,7 @@ public class ActivedController {
     }
 
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getActivedByUserId(
             @PathVariable("id") int userId
     ){
