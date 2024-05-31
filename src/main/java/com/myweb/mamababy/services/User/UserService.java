@@ -130,11 +130,6 @@ public class UserService implements IUserService {
         String phoneNumber = updateUserDTO.getPhoneNumber();
         User retrievedUser = getUserDetailsFromToken(token);
 
-        // Kiểm tra xem số username đã tồn tại hay chưa, trừ username của chính user hiện tại
-        if (!retrievedUser.getUsername().equals(username) && userRepository.existsByUsername(username)) {
-            throw new DataIntegrityViolationException("Username already exists");
-        }
-
         // Kiểm tra xem phoneNumber đã tồn tại hay chưa, trừ phoneNumber của chính user hiện tại
         if (!retrievedUser.getPhoneNumber().equals(phoneNumber) && userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataIntegrityViolationException("Phone number already exists");
@@ -150,7 +145,6 @@ public class UserService implements IUserService {
                 String password = updateUserDTO.getPassword();
                 String encodedPassword = passwordEncoder.encode(password);
 
-                retrievedUser.setUsername(updateUserDTO.getUsername());
                 retrievedUser.setPassword(encodedPassword);
                 retrievedUser.setFullName(updateUserDTO.getFullName());
                 retrievedUser.setAddress(updateUserDTO.getAddress());
