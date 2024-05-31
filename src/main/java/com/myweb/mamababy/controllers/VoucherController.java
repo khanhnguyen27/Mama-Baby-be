@@ -54,20 +54,20 @@ public class VoucherController {
         }
     }
 
-        //Find Voucher By Id
-        @GetMapping("/{id}")
-        public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int voucherId) {
-            try {
-                Voucher exitingVoucher = voucherService.getVoucherById(voucherId);
-                return ResponseEntity.ok(ResponseObject.builder()
-                        .message("Voucher With VoucherId = " + voucherId + " Found Successfully!!!")
-                        .status(HttpStatus.OK)
-                        .data(VoucherResponse.fromVoucher(exitingVoucher))
-                        .build());
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
+    //Find Voucher By Id
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int voucherId) {
+        try {
+            Voucher exitingVoucher = voucherService.getVoucherById(voucherId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Voucher With VoucherId = " + voucherId + " Found Successfully!!!")
+                    .status(HttpStatus.OK)
+                    .data(VoucherResponse.fromVoucher(exitingVoucher))
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
 
     //Voucher Find By StoreId
     @GetMapping("/store/{store_id}")

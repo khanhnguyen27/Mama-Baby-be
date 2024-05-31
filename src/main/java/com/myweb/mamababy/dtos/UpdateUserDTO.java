@@ -1,10 +1,7 @@
 package com.myweb.mamababy.dtos;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Data
 @Builder
@@ -12,7 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserDTO {
+public class UpdateUserDTO {
     @JsonProperty("username")
     private String username;
 
@@ -26,13 +23,5 @@ public class UserDTO {
     private String address;
 
     @JsonProperty("phoneNumber")
-    @NotBlank(message = "Phone number is required")
     private String phoneNumber;
-
-    @JsonProperty("status")
-    private Boolean status;
-
-    @JsonProperty("roleId")
-    private int roleId;
-
 }

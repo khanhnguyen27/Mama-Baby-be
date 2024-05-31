@@ -59,13 +59,16 @@ public class CommentController {
         );
     }
 
+    //User nào chỉ xem được lịch sử comment của user đó, nếu cần lịch sử comment
     @GetMapping("/user/{id}") // Lấy tất cả bình luận của người dùng
-    public ResponseEntity<?> getCommentByUser(@PathVariable("id") int id) {
-        List<Comment> comments = commentService.getCommentsByUserId(id);
+    public ResponseEntity<?> getCommentByUser(@PathVariable("id") int UserId,
+                                              @RequestHeader("Authorization") String token) throws Exception {
+        String extractedToken = token.substring(7);
+        List<Comment> comments = commentService.getCommentsByUserId(UserId, extractedToken);
         if (comments == null || comments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ResponseObject.builder()
-                            .message("No comments found for user with ID: " + id)
+                            .message("No comments found for user with ID: " + UserId)
                             .status(HttpStatus.NOT_FOUND)
                             .build());
         }

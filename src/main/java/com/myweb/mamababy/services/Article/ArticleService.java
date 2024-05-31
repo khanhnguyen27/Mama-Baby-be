@@ -9,6 +9,7 @@ import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.services.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class ArticleService implements IArticleService{
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserService userService;
 
 
     private static final String UPLOADS_FOLDER = "uploads";
@@ -78,12 +80,25 @@ public class ArticleService implements IArticleService{
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 
-    public List<Article> getArticlesByStoreId(int storeId) {
-        List<Article> articles = articleReponsitory.findByStoreId(storeId);
-        if (articles == null || articles.isEmpty()) {
-            return Collections.emptyList(); // hoặc trả về null
-        }
-        return articles;
+    public List<Article> getArticlesByStoreId(int storeId, String token) throws Exception {
+
+
+            User retrievedUser = userService.getUserDetailsFromToken(token);
+            Store existingStore = storeRepository
+                    .findByUserId(retrievedUser.getId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find store with id: "+ retrievedUser.getId()));
+            if (existingStore.getId() != storeId) {
+                throw new Exception("Store does not match");
+            } else {
+                List<Article> articles = articleReponsitory.findByStoreId(existingStore.getId());
+                if (articles == null || articles.isEmpty()) {
+                    return Collections.emptyList(); // hoặc trả về null
+                }
+                return articles;
+            }
+
     }
 
     @Override
@@ -94,15 +109,7 @@ public class ArticleService implements IArticleService{
     @Override
     public Article updateArticle(int id, ArticleDTO articleDTO, String token) throws Exception {
 
-        if (jwtTokenUtil.isTokenExpired(token)) {
-            throw new ExpiredTokenException("Token is expired");
-        }
-        String subject = jwtTokenUtil.extractUserName(token);
-        Optional<User> user;
-        user = userRepository.findByUsername(subject);
-
-        if (user.isPresent()) {
-            User retrievedUser = user.get();
+            User retrievedUser = userService.getUserDetailsFromToken(token);
             Store existingStore = storeRepository
                     .findByUserId(retrievedUser.getId())
                     .orElseThrow(() ->
@@ -120,9 +127,7 @@ public class ArticleService implements IArticleService{
                 articleReponsitory.save(existingArticle);
                 return existingArticle;
             }
-        }
 
-        throw new Exception("Store not found");
     }
 
     @Override

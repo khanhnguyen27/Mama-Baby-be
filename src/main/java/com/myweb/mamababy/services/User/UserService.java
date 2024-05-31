@@ -1,6 +1,7 @@
 package com.myweb.mamababy.services.User;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
+import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
@@ -34,16 +35,21 @@ public class UserService implements IUserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
+    private final int roleDefault = 1; //Customer
+    private final Boolean statusDefault = true;
 
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         //register user
-        String username = userDTO.getUsername();
         // Kiểm tra xem số username đã tồn tại hay chưa
-        if(userRepository.existsByUsername(username)) {
+        if(userRepository.existsByUsername(userDTO.getUsername())) {
             throw new DataIntegrityViolationException("Username already exists");
         }
-        Role role = roleRepository.findById(1)
+        // Kiểm tra xem phoneNumber đã tồn tại hay chưa
+        if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+        Role role = roleRepository.findById(roleDefault)
                 .orElseThrow(() -> new DataNotFoundException("Role not found"));
         //convert from userDTO => user
         User newUser = User.builder()
@@ -52,7 +58,7 @@ public class UserService implements IUserService {
                 .fullName(userDTO.getFullName())
                 .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .isActive(true)
+                .isActive(statusDefault)
                 .build();
         newUser.setRole(role);
             String password = userDTO.getPassword();
@@ -110,38 +116,43 @@ public class UserService implements IUserService {
         Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
         User exitUser = user.get();
         exitUser.setIsActive(userDTO.getStatus());
+        Role role = roleRepository.findById(userDTO.getRoleId())
+                .orElseThrow(() -> new DataNotFoundException("Role not found"));
+        if(role == null) exitUser.setRole(exitUser.getRole());
+        else exitUser.setRole(role);
         userRepository.save(exitUser);
         return exitUser;
     }
 
     @Override
-    public User updateAccount(String token, UserDTO userDTO) throws Exception {
+    public User updateAccount(String token, UpdateUserDTO updateUserDTO) throws Exception {
+        String username = updateUserDTO.getUsername();
+        String phoneNumber = updateUserDTO.getPhoneNumber();
+        User retrievedUser = getUserDetailsFromToken(token);
+
+        // Kiểm tra xem phoneNumber đã tồn tại hay chưa, trừ phoneNumber của chính user hiện tại
+        if (!retrievedUser.getPhoneNumber().equals(phoneNumber) && userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new DataIntegrityViolationException("Phone number already exists");
+        }
+
         if (jwtTokenUtil.isTokenExpired(token)) {
             throw new ExpiredTokenException("Token is expired");
         }
-        String subject = jwtTokenUtil.extractUserName(token);
-        Optional<User> user;
-        user = userRepository.findByUsername(subject);
 
-        if (user.isPresent()) {
-            User retrievedUser = user.get();
-            if (!retrievedUser.getUsername().equals(userDTO.getUsername())) {
+            if (!retrievedUser.getUsername().equals(updateUserDTO.getUsername())) {
                 throw new Exception("Username does not match");
             } else {
+                String password = updateUserDTO.getPassword();
+                String encodedPassword = passwordEncoder.encode(password);
 
-                retrievedUser.setUsername(userDTO.getUsername());
-                retrievedUser.setPassword(userDTO.getPassword());
-                retrievedUser.setFullName(userDTO.getFullName());
-                retrievedUser.setAddress(userDTO.getAddress());
-                retrievedUser.setPhoneNumber(userDTO.getPhoneNumber());
+                retrievedUser.setPassword(encodedPassword);
+                retrievedUser.setFullName(updateUserDTO.getFullName());
+                retrievedUser.setAddress(updateUserDTO.getAddress());
+                retrievedUser.setPhoneNumber(updateUserDTO.getPhoneNumber());
                 userRepository.save(retrievedUser);
             }
-        } else {
 
-            throw new Exception("User not found");
-        }
-
-        return user.get();
+        return retrievedUser;
     }
 
     @Override
