@@ -1,6 +1,7 @@
 package com.myweb.mamababy.services.User;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
+import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
@@ -124,14 +125,18 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateAccount(String token, UserDTO userDTO) throws Exception {
-        String username = userDTO.getUsername();
-        // Kiểm tra xem số username đã tồn tại hay chưa
-        if(userRepository.existsByUsername(username)) {
+    public User updateAccount(String token, UpdateUserDTO updateUserDTO) throws Exception {
+        String username = updateUserDTO.getUsername();
+        String phoneNumber = updateUserDTO.getPhoneNumber();
+        User retrievedUser = getUserDetailsFromToken(token);
+
+        // Kiểm tra xem số username đã tồn tại hay chưa, trừ username của chính user hiện tại
+        if (!retrievedUser.getUsername().equals(username) && userRepository.existsByUsername(username)) {
             throw new DataIntegrityViolationException("Username already exists");
         }
-        // Kiểm tra xem phoneNumber đã tồn tại hay chưa
-        if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+
+        // Kiểm tra xem phoneNumber đã tồn tại hay chưa, trừ phoneNumber của chính user hiện tại
+        if (!retrievedUser.getPhoneNumber().equals(phoneNumber) && userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataIntegrityViolationException("Phone number already exists");
         }
 
@@ -139,18 +144,17 @@ public class UserService implements IUserService {
             throw new ExpiredTokenException("Token is expired");
         }
 
-            User retrievedUser = getUserDetailsFromToken(token);
-            if (!retrievedUser.getUsername().equals(userDTO.getUsername())) {
+            if (!retrievedUser.getUsername().equals(updateUserDTO.getUsername())) {
                 throw new Exception("Username does not match");
             } else {
-                String password = userDTO.getPassword();
+                String password = updateUserDTO.getPassword();
                 String encodedPassword = passwordEncoder.encode(password);
 
-                retrievedUser.setUsername(userDTO.getUsername());
+                retrievedUser.setUsername(updateUserDTO.getUsername());
                 retrievedUser.setPassword(encodedPassword);
-                retrievedUser.setFullName(userDTO.getFullName());
-                retrievedUser.setAddress(userDTO.getAddress());
-                retrievedUser.setPhoneNumber(userDTO.getPhoneNumber());
+                retrievedUser.setFullName(updateUserDTO.getFullName());
+                retrievedUser.setAddress(updateUserDTO.getAddress());
+                retrievedUser.setPhoneNumber(updateUserDTO.getPhoneNumber());
                 userRepository.save(retrievedUser);
             }
 
