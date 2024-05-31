@@ -12,4 +12,5 @@ public interface IUserService {
     User isActive(UserDTO userDTO) throws Exception;
     User updateAccount(String token, UserDTO userDTO) throws Exception;
     List<User> getAllAccount() throws Exception;
+
 }
