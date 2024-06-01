@@ -31,6 +31,7 @@ public class VoucherController {
 
     // Create Voucher
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> createVoucher(
             @Valid @RequestBody VoucherDTO voucherDTO,
             BindingResult result) {
@@ -56,6 +57,7 @@ public class VoucherController {
 
     //Find Voucher By Id
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int voucherId) {
         try {
             Voucher exitingVoucher = voucherService.getVoucherById(voucherId);
@@ -71,6 +73,7 @@ public class VoucherController {
 
     //Voucher Find By StoreId
     @GetMapping("/store/{store_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getVoucherByStoreId(@Valid @PathVariable("store_id") int storeId) {
         try {
             List<Voucher> vouchers = voucherService.getVoucherByStoreId(storeId);
@@ -89,6 +92,7 @@ public class VoucherController {
 
     //Get All Voucher
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllVoucher() throws Exception {
         List<Voucher> vouchers = voucherService.getAllVoucher();
         return ResponseEntity.ok().body(
@@ -104,6 +108,7 @@ public class VoucherController {
 
     // Update Voucher
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> updateOrder(
             @Valid @PathVariable int id,
             @Valid @RequestBody VoucherDTO voucherDTO) {
@@ -122,6 +127,7 @@ public class VoucherController {
 
     // Delete Voucher By Soft Deleted
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
         try {
 
