@@ -6,21 +6,28 @@ import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.BlacklistedToken;
+import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Role;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.responses.product.ProductResponse;
+import com.myweb.mamababy.responses.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.BadCredentialsException;
 
+
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -174,6 +181,15 @@ public class UserService implements IUserService {
             Logger logger = LoggerFactory.getLogger(this.getClass());
             logger.error("Exception while fetching all accounts: " + e.getMessage());
             throw new Exception("Error retrieving all accounts", e);
+        }
+    }
+
+    @Override
+    public Page<User> findUserByKeyword(String keyword, Pageable pageable) throws Exception {
+        try {
+            return userRepository.searchUsers(keyword == null ? "" : keyword.trim(), pageable);
+        } catch (Exception e) {
+            throw new Exception("Error finding users by keyword", e);
         }
     }
 

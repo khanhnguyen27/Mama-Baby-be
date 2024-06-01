@@ -7,16 +7,25 @@ import com.myweb.mamababy.dtos.UserLoginDTO;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.Article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.product.ProductListResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
+import com.myweb.mamababy.responses.user.UserListResponse;
 import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.User.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.FieldError;
+import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -160,6 +169,37 @@ public class UserController {
                         .status(HttpStatus.OK)
                         .build()
         );
+    }
+
+    //{{API_MM}}/users/get-users-by-keyword?page=0&size=10&keyword=NguyenVanD
+    //tìm kiếm user để dễ quản lý
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/get-users-by-keyword")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> searchUsers(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<User> userPage = userService.findUserByKeyword(keyword, pageable);
+            int totalPages = userPage.getTotalPages();
+            List<UserResponse> userResponses = userPage.getContent().stream()
+                    .map(UserResponse::fromUser)
+                    .toList();
+            UserListResponse userListResponse = UserListResponse.builder()
+                    .users(userResponses)
+                    .totalPages(totalPages)
+                    .build();
+
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get users successfully")
+                    .data(userListResponse)
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error searching users", e);
+        }
     }
 
 }
