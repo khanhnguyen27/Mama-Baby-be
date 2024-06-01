@@ -1,21 +1,18 @@
 package com.myweb.mamababy.services.Order;
 
+import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Order;
-import com.myweb.mamababy.models.Store;
-import com.myweb.mamababy.models.User;
-import com.myweb.mamababy.models.Voucher;
-import com.myweb.mamababy.repositories.OrderRepository;
-import com.myweb.mamababy.repositories.StoreRepository;
-import com.myweb.mamababy.repositories.UserRepository;
-import com.myweb.mamababy.repositories.VoucherRepository;
+import com.myweb.mamababy.models.*;
+import com.myweb.mamababy.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +23,8 @@ public class OrderService implements IOrderService{
     private final OrderRepository orderRepository;
     private final VoucherRepository voucherRepository;
     private final StoreRepository storeRepository;
+    private final ProductRepository productRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
 
     @Override
@@ -41,6 +40,9 @@ public class OrderService implements IOrderService{
         Store existingStore = storeRepository.findById(orderDTO.getStoreId())
                 .orElseThrow(() -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
 
+        if(!existingVoucher.isActive() || !existingStore.isActive() || !existingUser.getIsActive()){
+            throw new DataNotFoundException("Invalid");
+        }
         Order newOrder = Order.builder()
 
                 .voucher(existingVoucher)
@@ -56,9 +58,40 @@ public class OrderService implements IOrderService{
                 .store(existingStore)
                 .build();
 
-        return orderRepository.save(newOrder);
+        orderRepository.save(newOrder);
 
+        // Tạo danh sách các đối tượng OrderDetail từ cartItems
+
+        List<OrderDetail> orderDetails = new ArrayList<>();
+
+        for (CartItemDTO cartItemDTO : orderDTO.getCartItems()) {
+            // Tạo một đối tượng OrderDetail từ CartItemDTO
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrder(newOrder);
+
+            // Lấy thông tin sản phẩm từ cartItemDTO
+            int productId = cartItemDTO.getProductId();
+            int quantity = cartItemDTO.getQuantity();
+
+            // Tìm thông tin sản phẩm từ cơ sở dữ liệu (hoặc sử dụng cache nếu cần)
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
+
+            // Đặt thông tin cho OrderDetail
+            orderDetail.setProduct(product);
+            orderDetail.setQuantity(quantity);
+            // Các trường khác của OrderDetail nếu cần
+            orderDetail.setUnitPrice(product.getPrice());
+
+            // Thêm OrderDetail vào danh sách
+            orderDetails.add(orderDetail);
+
+        }
+
+        orderDetailRepository.saveAll(orderDetails);
+        return newOrder;
     }
+
 
     @Override
     public Order getOrder(int id) throws DataNotFoundException {

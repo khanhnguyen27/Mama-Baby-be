@@ -33,6 +33,7 @@ public class OrderController {
 
     // Create Order
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> createOrder(
             @Valid @RequestBody OrderDTO orderDTO,
             BindingResult result) {
@@ -57,6 +58,7 @@ public class OrderController {
 
     //Order Find By ID
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrderById(@Valid @PathVariable("id") int orderId) {
         try {
             Order existingOrder = orderService.getOrder(orderId);
@@ -72,6 +74,7 @@ public class OrderController {
 
     //Order Find By UserId
     @GetMapping("/user/{user_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrdersByUserId(@Valid @PathVariable("user_id") int userId) {
         try {
             List<Order> orders = orderService.findByUserId(userId);
@@ -90,6 +93,7 @@ public class OrderController {
 
     //Order Find By StoreId
     @GetMapping("/store/{store_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrdersByStoreId(@Valid @PathVariable("store_id") int storeId) {
         try {
             List<Order> orders = orderService.findByStoreId(storeId);
@@ -108,6 +112,7 @@ public class OrderController {
 
     // Order Find By Type, Shipping Adress and Order Date
     @GetMapping("/get-orders-by-keyword")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrdersByKeyword(
             @RequestParam(defaultValue = "", required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
@@ -137,6 +142,7 @@ public class OrderController {
 
     // Get All Order
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllOrder() throws Exception {
         List<Order> orders = orderService.getAllOrder();
         return ResponseEntity.ok().body(
@@ -152,6 +158,7 @@ public class OrderController {
 
     // Update Order
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
 //  @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateOrder(
             @Valid @PathVariable int id,
@@ -171,7 +178,8 @@ public class OrderController {
 
     // Delete Order
 //    @DeleteMapping("/{id}")
-////  @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
 //    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
 //        try {
 //

@@ -24,6 +24,7 @@ public class OrderDetailController {
 
     // Create OrderDetail
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
 //  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> createOrderDetail(
             @Valid @RequestBody OrderDetailDTO orderDetailDTO) {
@@ -42,6 +43,7 @@ public class OrderDetailController {
 
     // Get Order Detail By Id
     @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrderDetail(
             @Valid @PathVariable("id") int id) throws DataNotFoundException {
         try {
@@ -58,6 +60,7 @@ public class OrderDetailController {
 
     // Get Order Detail By OrderId
     @GetMapping("/order/{orderId}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getByOrderId(
             @Valid @PathVariable("orderId") int orderId
     ) {
@@ -78,6 +81,7 @@ public class OrderDetailController {
 
     // Get All OrderDetail
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllOrderDetail() throws Exception {
         List<OrderDetail> orders = orderDetailService.getAllOrderDetail();
         return ResponseEntity.ok().body(
@@ -93,6 +97,7 @@ public class OrderDetailController {
 
     // Update Order Detail
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
 //    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
 //    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> updateOrderDetail(
@@ -112,6 +117,7 @@ public class OrderDetailController {
 
     // Delete Order Detail
 //    @DeleteMapping("/{id}")
+//    @CrossOrigin(origins = "http://localhost:3000")
 ////    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
 ////    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 //    public ResponseEntity<?> deleteOrderDetail(

@@ -26,6 +26,7 @@ public class StatusOrderController {
 
     // Create Status Order
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> createStatusOrder(
             @Valid @RequestBody StatusOrderDTO statusOrderDTO,
             BindingResult result) {
@@ -50,6 +51,7 @@ public class StatusOrderController {
 
     // Update Status Order
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
 //  @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateStatusOrder(
             @Valid @PathVariable int id,
@@ -70,6 +72,7 @@ public class StatusOrderController {
 
     // Get All Status Order
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllStatusOrder() throws Exception {
         List<StatusOrder> statusOrders = statusOrderService.getAllStatusOrder();
         return ResponseEntity.ok().body(

@@ -138,6 +138,24 @@ public class StoreController {
         }
     }
 
+    @PutMapping("/admin/update_status/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> updateStatusStore(
+            @PathVariable int id,
+            @Valid @RequestBody StoreDTO storeDTO
+    ) {
+        try{
+            Store updateStore = storeService.updateStatusStore(id, storeDTO);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Create new store successfully !!!")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(updateStore))
+                    .build());
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     //Xóa một sản phẩm theo ID
     //DELETE: http://localhost:8080/mamababy/stores/{id}
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,6 +49,8 @@ public class User implements UserDetails{
     @JoinColumn(name = "role_id")
     private Role role;
 
+//    @JsonManagedReference
+//    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

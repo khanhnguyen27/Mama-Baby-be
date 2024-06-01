@@ -77,6 +77,16 @@ public class StoreService implements IStoreService{
     }
 
     @Override
+    public Store updateStatusStore(int id, StoreDTO storeDTO) {
+        Store existingStore = getStoreById(id);
+
+        existingStore.setStatus(storeDTO.getStatus());
+        existingStore.setActive(storeDTO.isActive());
+
+        return storeRepository.save(existingStore);
+    }
+
+    @Override
     public Store deleteStore(int id) {
         Store existingStore = getStoreById(id);
         existingStore.setActive(false);
