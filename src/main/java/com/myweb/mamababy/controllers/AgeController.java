@@ -23,6 +23,7 @@ public class AgeController {
     private final IAgeService ageService;
 
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createAge(
             @Valid @RequestBody AgeDTO ageDTO,
@@ -41,6 +42,7 @@ public class AgeController {
     //GET: http://localhost:8080/mamababy/products
     //Hiện tất cả các categories
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAges(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
@@ -55,6 +57,7 @@ public class AgeController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Age> updateAge(
             @PathVariable int id,
             @Valid @RequestBody AgeDTO ageDTO
@@ -64,6 +67,7 @@ public class AgeController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> deleteAge(@PathVariable int id) {
         Age deleteAge = ageService.deleteAge(id);
         return ResponseEntity.ok(ResponseObject.builder()

@@ -24,6 +24,7 @@ public class CategoryController {
     private final ICategoryService categoryService;
 
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
@@ -41,6 +42,7 @@ public class CategoryController {
 
     //Hiện tất cả các categories
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategories(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
@@ -55,6 +57,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Category> updateCategory(
             @PathVariable int id,
             @Valid @RequestBody CategoryDTO categoryDTO
@@ -64,6 +67,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> deleteCategory(@PathVariable int id) {
 
         Category deleteCategory= categoryService.deleteCategory(id);

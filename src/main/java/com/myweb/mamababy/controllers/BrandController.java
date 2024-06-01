@@ -22,6 +22,7 @@ public class BrandController {
     private final IBrandService brandService;
 
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createBrand(
             @Valid @RequestBody BrandDTO brandDTO,
@@ -39,6 +40,7 @@ public class BrandController {
 
     //Hiện tất cả các categories
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrands(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
@@ -53,6 +55,7 @@ public class BrandController {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Brand> updateBrand(
             @PathVariable int id,
             @Valid @RequestBody BrandDTO brandDTO
@@ -62,6 +65,7 @@ public class BrandController {
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> deleteCategory(@PathVariable int id) {
         Brand deleteBrand = brandService.deleteBrand(id);
         return ResponseEntity.ok(ResponseObject.builder()
