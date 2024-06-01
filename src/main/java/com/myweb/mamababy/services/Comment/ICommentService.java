@@ -13,4 +13,7 @@ public interface ICommentService {
     List<Comment> getAllComment() throws Exception;
     Comment updateComment(int Id, CommentDTO commentDTO, String extractedToken) throws Exception;
     void deleteComment(int Id) throws Exception;
+    List<Comment> getCommentsByProductId(int productId) throws Exception;
+    List<Comment> getCommentsByUserId(int UserId, String token) throws Exception;
+    Comment updateCommentStatus(int Id, Boolean status) throws Exception;
 }

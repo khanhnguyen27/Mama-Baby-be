@@ -5,6 +5,7 @@ import com.myweb.mamababy.models.Article;
 import com.myweb.mamababy.responses.Article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Article.ArticleService;
+import com.myweb.mamababy.services.Article.IArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("${api.prefix}/article")
 @RequiredArgsConstructor
 public class ArticleController {
-    private final ArticleService articleService;
+    private final IArticleService articleService;
 
     // POST http://localhost:8080/mamababy/article
     @CrossOrigin(origins = "http://localhost:3000")

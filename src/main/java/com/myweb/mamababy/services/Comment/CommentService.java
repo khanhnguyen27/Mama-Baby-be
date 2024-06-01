@@ -8,6 +8,7 @@ import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.CommentRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.services.User.IUserService;
 import com.myweb.mamababy.services.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CommentService implements ICommentService{
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
+    private final IUserService userService;
 
     @Override
     public Comment createComment(CommentDTO commentDTO) throws Exception{
@@ -54,7 +55,7 @@ public class CommentService implements ICommentService{
         return commentRepository.findById(Id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
     }
-
+    @Override
     public List<Comment> getCommentsByUserId(int UserId, String token) throws Exception {
 
             User retrievedUser = userService.getUserDetailsFromToken(token);
@@ -67,7 +68,7 @@ public class CommentService implements ICommentService{
 
     }
 
-
+    @Override
     public List<Comment> getCommentsByProductId(int productId) {
         List<Comment> comments = commentRepository.findByProductId(productId);
         return handleEmptyList(comments);
@@ -102,6 +103,7 @@ public class CommentService implements ICommentService{
             }
     }
 
+    @Override
     public Comment updateCommentStatus(int Id, Boolean status) {
         Comment existingCom = getCommentById(Id);
         existingCom.setStatus(status);

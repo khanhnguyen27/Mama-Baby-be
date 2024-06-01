@@ -8,6 +8,7 @@ import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.comment.CommentResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.services.Comment.CommentService;
+import com.myweb.mamababy.services.Comment.ICommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,11 @@ import java.util.stream.Collectors;
 @RequestMapping("${api.prefix}/comments")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CommentService commentService;
+    private final ICommentService commentService;
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
-    public ResponseEntity<?> getAllComments() {
+    public ResponseEntity<?> getAllComments() throws Exception {
         List<Comment> comments = commentService.getAllComment();
         if (comments == null || comments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -40,7 +41,7 @@ public class CommentController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/product/{id}") // Lấy tất cả bình luận của sản phẩm
-    public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) {
+    public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) throws Exception {
         List<Comment> comments = commentService.getCommentsByProductId(id);
         if (comments == null || comments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -130,7 +131,7 @@ public class CommentController {
     //Ẩn hiện comment, xóa mềm, dành cho staff admin
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/status/{id}")
-    public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody String status) {
+    public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody String status) throws Exception {
         boolean parsedStatus = Boolean.parseBoolean(status);
         Comment updatedComment = commentService.updateCommentStatus(id, parsedStatus);
         return ResponseEntity.ok().body(

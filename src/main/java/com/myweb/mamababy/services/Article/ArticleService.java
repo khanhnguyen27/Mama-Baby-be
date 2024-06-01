@@ -9,6 +9,7 @@ import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.services.User.IUserService;
 import com.myweb.mamababy.services.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +33,7 @@ public class ArticleService implements IArticleService{
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserService userService;
+    private final IUserService userService;
 
 
     private static final String UPLOADS_FOLDER = "uploads";
@@ -80,6 +81,7 @@ public class ArticleService implements IArticleService{
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 
+    @Override
     public List<Article> getArticlesByStoreId(int storeId, String token) throws Exception {
 
 
