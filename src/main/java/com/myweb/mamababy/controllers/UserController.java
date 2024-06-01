@@ -81,6 +81,7 @@ public class UserController {
 
     //http://localhost:8088/mamababy/users/details
     //Lấy thông tin chi tiết khi user đã đăng nhập
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/details")
     public ResponseEntity<?> getUserDetails(
             @RequestHeader("Authorization") String token
@@ -97,6 +98,7 @@ public class UserController {
     }
 
     //Chỉ admin mới được sử dụng
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/all")
     public ResponseEntity<?> getAllUser() throws Exception {
         List<User> user = userService.getAllAccount();
@@ -112,6 +114,7 @@ public class UserController {
     }
 
     //http://localhost:8088/mamababy/users/logout
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String tokenHeader) throws Exception {
         if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
@@ -125,6 +128,7 @@ public class UserController {
 
     //User chỉ được chỉnh các thông số cơ bản
     //http://localhost:8088/mamababy/users
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("")
     public ResponseEntity<?> updateUser(
             @RequestHeader("Authorization") String token,
@@ -143,6 +147,7 @@ public class UserController {
 
     //Admin chỉ được phép block/open account customer, staff và chỉnh role
     //http://localhost:8088/mamababy/users/admin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/admin")
     public ResponseEntity<?> isActiveUser(
             @Valid @RequestBody UserDTO userDTO
