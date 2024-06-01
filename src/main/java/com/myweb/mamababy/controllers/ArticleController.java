@@ -26,6 +26,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     // POST http://localhost:8080/mamababy/article
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createArticle(
             @Valid @ModelAttribute ArticleDTO articleDTO,
@@ -80,6 +81,7 @@ public class ArticleController {
     }
 
     //Ai cũng xem được
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public ResponseEntity<?> getAllArticles() throws Exception {
         List<Article> articles = articleService.getAllArticle();
@@ -95,6 +97,7 @@ public class ArticleController {
     }
 
     //Store nào chỉ xem được article của shop đó
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/store/{id}")
     public ResponseEntity<?> getArticlesByStore(@PathVariable("id") int id,
                                                 @RequestHeader("Authorization") String token) throws Exception {
@@ -119,6 +122,7 @@ public class ArticleController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateArticle(@Valid @ModelAttribute ArticleDTO articleDTO,
                                            BindingResult result,

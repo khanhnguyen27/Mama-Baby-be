@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class CommentController {
     private final CommentService commentService;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public ResponseEntity<?> getAllComments() {
         List<Comment> comments = commentService.getAllComment();
@@ -37,6 +38,7 @@ public class CommentController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/product/{id}") // Lấy tất cả bình luận của sản phẩm
     public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) {
         List<Comment> comments = commentService.getCommentsByProductId(id);
@@ -60,6 +62,7 @@ public class CommentController {
     }
 
     //User nào chỉ xem được lịch sử comment của user đó, nếu cần lịch sử comment
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/user/{id}") // Lấy tất cả bình luận của người dùng
     public ResponseEntity<?> getCommentByUser(@PathVariable("id") int UserId,
                                               @RequestHeader("Authorization") String token) throws Exception {
@@ -85,6 +88,7 @@ public class CommentController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentDTO commentDTO) throws Exception {
         try {
@@ -107,6 +111,7 @@ public class CommentController {
     }
 
     //update comment for user
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateComment(@PathVariable("id") int id,
                                            @RequestBody CommentDTO commentDTO,
@@ -123,6 +128,7 @@ public class CommentController {
     }
 
     //Ẩn hiện comment, xóa mềm, dành cho staff admin
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/status/{id}")
     public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody String status) {
         boolean parsedStatus = Boolean.parseBoolean(status);
