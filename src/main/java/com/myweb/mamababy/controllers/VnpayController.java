@@ -30,7 +30,8 @@ public class VnpayController {
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
 
-            VnpayResponse vnpayResponse = new VnpayResponse("00", "Payment success page", "https://");
+            VnpayResponse vnpayResponse = new VnpayResponse(
+                    "00", "Payment success page", "https://");
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Payment success")
                     .status(HttpStatus.OK)
