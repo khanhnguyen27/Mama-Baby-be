@@ -17,4 +17,18 @@ public class CartItemDTO {
 
     @JsonProperty("quantity")
     private int quantity;
+
+    @JsonProperty("unit_price")
+    private float unitPrice;
+
+    @JsonProperty("amount_price")
+    private float amountPrice;
+
+    @JsonProperty("unit_point")
+    private int unitPoint;
+
+    @JsonProperty("amount_point")
+    private int amountPoint;
+
+
 }

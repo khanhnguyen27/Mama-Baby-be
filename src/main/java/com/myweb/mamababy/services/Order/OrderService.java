@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +79,12 @@ public class OrderService implements IOrderService{
             // Đặt thông tin cho OrderDetail
             orderDetail.setProduct(product);
             orderDetail.setQuantity(quantity);
+
             // Các trường khác của OrderDetail nếu cần
             orderDetail.setUnitPrice(product.getPrice());
+            orderDetail.setUnitPoint(product.getPoint());
+            orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
+            orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
 
             // Thêm OrderDetail vào danh sách
             orderDetails.add(orderDetail);
