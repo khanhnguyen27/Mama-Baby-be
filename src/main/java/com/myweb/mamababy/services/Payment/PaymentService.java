@@ -16,7 +16,7 @@ public class PaymentService implements IPaymentService{
 
     @Override
     public VnpayResponse createVnPayPayment(HttpServletRequest request) {
-        long amount = Integer.parseInt(request.getParameter("amount")) * 100L;
+        long amount = Integer.parseInt(request.getParameter("finalAmount")) * 100L;
         String bankCode = request.getParameter("bankCode");
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
