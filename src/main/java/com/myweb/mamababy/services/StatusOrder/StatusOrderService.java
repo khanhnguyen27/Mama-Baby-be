@@ -7,10 +7,9 @@ import com.myweb.mamababy.models.StatusOrder;
 import com.myweb.mamababy.repositories.OrderRepository;
 import com.myweb.mamababy.repositories.StatusOrderRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class StatusOrderService implements IStatusOrderService {
 
     private final OrderRepository orderRepository;
     private final StatusOrderRepository statusOrderRepository;
-
 
     @Override
     @Transactional

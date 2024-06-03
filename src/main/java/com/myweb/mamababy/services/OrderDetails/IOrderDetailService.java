@@ -3,7 +3,6 @@ package com.myweb.mamababy.services.OrderDetails;
 import com.myweb.mamababy.dtos.OrderDetailDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.OrderDetail;
-
 import java.util.List;
 
 public interface IOrderDetailService {
@@ -16,8 +15,6 @@ public interface IOrderDetailService {
             throws DataNotFoundException;
 
     List<OrderDetail> getAllOrderDetail() throws Exception;
-
-    OrderDetail deleteOrderDetail(int id) throws DataNotFoundException;
 
     List<OrderDetail> findByOrderId(int orderId) throws DataNotFoundException;
 }

@@ -2,9 +2,13 @@ package com.myweb.mamababy.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
-
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Builder
@@ -15,16 +19,13 @@ import java.time.LocalDate;
 
 public class VoucherDTO {
 
-    @JsonProperty("store_id")
-    private int storeId;
-
     @JsonProperty("code")
     private String code;
 
     @JsonProperty("discount_value")
     private int discountValue;
 
-    @NotBlank(message = "description is required")
+    @NotBlank(message = "description is required!")
     @JsonProperty("description")
     private String description;
 
