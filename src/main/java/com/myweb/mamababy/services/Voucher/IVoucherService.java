@@ -4,7 +4,6 @@ package com.myweb.mamababy.services.Voucher;
 import com.myweb.mamababy.dtos.VoucherDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Voucher;
-
 import java.util.List;
 
 public interface IVoucherService {
@@ -14,8 +13,6 @@ public interface IVoucherService {
     Voucher createVoucher(VoucherDTO voucherDTO) throws Exception;
 
     Voucher getVoucherById(int id) throws Exception;
-
-    List<Voucher> getVoucherByStoreId(int storeId) throws Exception;
 
     List<Voucher> getAllVoucher() throws Exception;
 
