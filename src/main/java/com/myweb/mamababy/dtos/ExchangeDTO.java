@@ -8,20 +8,15 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Data//toString
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExchangeDTO {
-
-    @NotNull(message = "Order detail ID is required.")
-    @JsonProperty("order_detail_id")
-    private int orderDetailId;
-
-    @Min(value = 0, message = "Quantity must be greater than or equal to 0")
-    @JsonProperty("quantity")
-    private int quantity;
 
     @JsonProperty("image_url")
     private String imageUrl;
@@ -30,11 +25,21 @@ public class ExchangeDTO {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("amount")
+    private float amount;
+
     @JsonProperty("status")
     private String status;
+
+    @NotNull(message = "Store ID is required.")
+    @JsonProperty("store_id")
+    private int storeId;
 
     @NotNull(message = "User ID is required.")
     @JsonProperty("user_id")
     private int userId;
+
+    @JsonProperty("cart_items_exchange")
+    private List<CartItemExchangeDTO> cartItemExchange;
 
 }

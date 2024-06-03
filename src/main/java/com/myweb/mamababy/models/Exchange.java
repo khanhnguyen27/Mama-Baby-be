@@ -1,9 +1,11 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "exchanges")
@@ -18,18 +20,14 @@ public class Exchange {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_detail_id")
-    private OrderDetail orderDetail;
-
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @Column(name = "image_url")
     private String imageUrl;
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "amount", nullable = false)
+    private float amount;
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -40,4 +38,12 @@ public class Exchange {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    @OneToMany(mappedBy = "exchange", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ExchangeDetail> exchangeDetails;
 }

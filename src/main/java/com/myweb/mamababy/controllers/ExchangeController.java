@@ -3,9 +3,11 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.BrandDTO;
 import com.myweb.mamababy.dtos.ExchangeDTO;
 import com.myweb.mamababy.models.Exchange;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.exchange.ExchangeListResponse;
 import com.myweb.mamababy.responses.exchange.ExchangeResponse;
+import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.services.Exchange.IExchangeService;
 import jakarta.validation.Valid;
 import lombok.*;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/exchanges")
@@ -45,7 +48,7 @@ public class ExchangeController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Exchange newExchange = exchangeService.createExchange(exchangeDTO, file);
+            Exchange newExchange = exchangeService.createExchange(exchangeDTO , file);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new exchange request successfully")
                     .status(HttpStatus.CREATED)
@@ -101,6 +104,36 @@ public class ExchangeController {
                     .message("Get detail product successfully")
                     .status(HttpStatus.OK)
                     .data(ExchangeResponse.fromExchange(existingExchange))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/user/{user_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getExchangesByUserId(@Valid @PathVariable("user_id") int userId) {
+        try{
+            List<ExchangeResponse> exchanges = exchangeService.findByUserId(userId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Exchange with user id = " + userId + " Found Successfully!!!")
+                    .data(exchanges)
+                    .status(HttpStatus.OK)
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/store/{store_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getExchangesByStoreId(@Valid @PathVariable("store_id") int storeId) {
+        try{
+            List<ExchangeResponse> exchanges = exchangeService.findByStoreId(storeId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Exchange with store id = " + storeId + " Found Successfully!!!")
+                    .data(exchanges)
+                    .status(HttpStatus.OK)
                     .build());
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
