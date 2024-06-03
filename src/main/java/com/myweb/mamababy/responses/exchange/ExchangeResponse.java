@@ -15,15 +15,12 @@ public class ExchangeResponse {
 
     private int id;
 
-    @JsonProperty("order_detail_id")
-    private int orderDetailId;
-
-    private int quantity;
-
     @JsonProperty("image_url")
     private String imageUrl;
 
     private String description;
+
+    private float amount;
 
     private String status;
 
@@ -33,16 +30,19 @@ public class ExchangeResponse {
     @JsonProperty("user_id")
     private int userId;
 
+    @JsonProperty("store_id")
+    private int storeId;
+
     public static ExchangeResponse fromExchange(Exchange exchange){
         return ExchangeResponse.builder()
                 .id(exchange.getId())
-                .orderDetailId(exchange.getOrderDetail().getId())
-                .quantity(exchange.getQuantity())
                 .imageUrl(exchange.getImageUrl())
                 .description(exchange.getDescription())
+                .amount(exchange.getAmount())
                 .status(exchange.getStatus())
                 .createDate(exchange.getCreateDate())
                 .userId(exchange.getUser().getId())
+                .storeId(exchange.getStore().getId())
                 .build();
     }
 }
