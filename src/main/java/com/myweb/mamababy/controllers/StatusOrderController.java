@@ -1,8 +1,10 @@
 package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.StatusOrderDTO;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.StatusOrder;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.responses.order.StatusOrderResponse;
 import com.myweb.mamababy.services.StatusOrder.IStatusOrderService;
 import jakarta.validation.Valid;
@@ -84,6 +86,44 @@ public class StatusOrderController {
                         .status(HttpStatus.OK)
                         .build()
         );
+    }
+
+    //Status Order Find By OrderId
+    @GetMapping("/order/{order_id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getOrdersByOrderId(@Valid @PathVariable("order_id") int orderId) {
+        try {
+            List<StatusOrder> statusOrders = statusOrderService.findByOrderId(orderId);
+            List<StatusOrderResponse> statusOrderResponses = statusOrders.stream()
+                .map(StatusOrderResponse::fromStatusOrder)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(ResponseObject.builder()
+                .message("Order With OrderId = " + orderId + " Found Successfully!!!")
+                .data(statusOrderResponses)
+                .status(HttpStatus.OK)
+                .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    //Status Order Find By Status
+    @GetMapping("/{status}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getOrdersByStatus(@Valid @PathVariable("status") String status) {
+        try {
+            List<StatusOrder> statusOrders = statusOrderService.findbyStatus(status);
+            List<StatusOrderResponse> statusOrderResponses = statusOrders.stream()
+                .map(StatusOrderResponse::fromStatusOrder)
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(ResponseObject.builder()
+                .message("Order With Status: " + status + " Found Successfully!!!")
+                .data(statusOrderResponses)
+                .status(HttpStatus.OK)
+                .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }
