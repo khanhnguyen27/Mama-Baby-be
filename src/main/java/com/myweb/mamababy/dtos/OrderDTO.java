@@ -24,8 +24,8 @@ public class OrderDTO {
     @JsonProperty("user_id")
     private int userId;
 
-    @JsonProperty("store_id")
-    private int storeId;
+//    @JsonProperty("store_id")
+//    private int storeId;
 
     @JsonProperty("voucher_id")
     private int voucherId;
@@ -50,8 +50,8 @@ public class OrderDTO {
     @JsonProperty("payment_method")
     private String paymentMethod;
 
-    @JsonProperty("order_date")
-    private LocalDate orderDate;
+//    @JsonProperty("order_date")
+//    private LocalDate orderDate;
 
     @JsonProperty("type")
     private String type;
