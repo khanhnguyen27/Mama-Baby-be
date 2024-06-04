@@ -12,4 +12,8 @@ public interface IStatusOrderService {
     StatusOrder updateStatusOrder(int id, StatusOrderDTO statusOrderDTO)throws DataNotFoundException;
 
     List<StatusOrder> getAllStatusOrder() throws Exception;
+
+    List<StatusOrder> findByOrderId(int orderId) throws DataNotFoundException;
+
+    List<StatusOrder> findbyStatus(String Status) throws  DataNotFoundException;
 }

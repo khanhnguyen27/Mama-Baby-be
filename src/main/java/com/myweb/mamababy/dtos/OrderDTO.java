@@ -50,8 +50,8 @@ public class OrderDTO {
     @JsonProperty("payment_method")
     private String paymentMethod;
 
-//    @JsonProperty("order_date")
-//    private LocalDate orderDate;
+    @JsonProperty("order_date")
+    private LocalDate orderDate;
 
     @JsonProperty("type")
     private String type;
