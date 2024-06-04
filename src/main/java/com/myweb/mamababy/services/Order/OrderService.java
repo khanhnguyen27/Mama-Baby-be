@@ -16,6 +16,8 @@ import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import com.myweb.mamababy.repositories.VoucherRepository;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,19 +83,16 @@ public class OrderService implements IOrderService{
                 .finalAmount(orderDTO.getFinalAmount())
                 .shippingAddress(orderDTO.getShippingAddress())
                 .paymentMethod(orderDTO.getPaymentMethod())
-                .orderDate(orderDTO.getOrderDate())
+                .orderDate(LocalDate.now())
                 .type(orderDTO.getType())
                 .user(existingUser)
                 .store(existingStore)
                 .build();
 
-            orderRepository.save(newOrder);
-
             List<OrderDetail> orderDetails = new ArrayList<>();
 
-            float totalPrice = 0;
-
-            int totalPoint = 0;
+//            float totalPrice = 0;
+//            int totalPoint = 0;
 
             for (CartItemDTO cartItemDTO : cartItems) {
 
@@ -113,18 +112,20 @@ public class OrderService implements IOrderService{
                 orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
                 orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
 
-                totalPrice += orderDetail.getAmountPrice();
-                totalPoint += orderDetail.getAmountPoint();
+//                totalPrice += orderDetail.getAmountPrice();
+//                totalPoint += orderDetail.getAmountPoint();
 
                 orderDetails.add(orderDetail);
             }
 
-            newOrder.setAmount(totalPrice);
-            newOrder.setTotalPoint(totalPoint);
-            newOrder.setFinalAmount(totalPrice - newOrder.getTotalDiscount());
+//            newOrder.setAmount(totalPrice);
+//            newOrder.setTotalPoint(totalPoint);
+//            newOrder.setFinalAmount(totalPrice - newOrder.getTotalDiscount());
 
+            newOrder.setOrderDetails(orderDetails);
             orderDetailRepository.saveAll(orderDetails);
 
+            orderRepository.save(newOrder);
             orders.add(newOrder);
         }
 
@@ -150,9 +151,9 @@ public class OrderService implements IOrderService{
             .orElseThrow(() ->
                 new DataNotFoundException(
                     "Cannot find voucher with id: " + orderDTO.getVoucherId()));
-        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
-            .orElseThrow(() -> new DataNotFoundException(
-                "Cannot find store with id: " + orderDTO.getStoreId()));
+//        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
+//            .orElseThrow(() -> new DataNotFoundException(
+//                "Cannot find store with id: " + orderDTO.getStoreId()));
 
         existingOrder.setTotalPoint(orderDTO.getTotalPoint());
         existingOrder.setAmount(orderDTO.getAmount());
@@ -160,12 +161,12 @@ public class OrderService implements IOrderService{
         existingOrder.setFinalAmount(orderDTO.getFinalAmount());
         existingOrder.setShippingAddress(orderDTO.getShippingAddress());
         existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
-        existingOrder.setOrderDate(orderDTO.getOrderDate());
+//        existingOrder.setOrderDate(orderDTO.getOrderDate());
         existingOrder.setType(orderDTO.getType());
 
         existingOrder.setUser(existingUser);
         existingOrder.setVoucher(existingVoucher);
-        existingOrder.setStore(existingStore);
+//        existingOrder.setStore(existingStore);
 
         Order updatedOrder = orderRepository.save(existingOrder);
 

@@ -49,8 +49,8 @@ public class OrderResponse {
     @JsonProperty("type")
     private String type;
 
-    @JsonProperty("cart_items")
-    private List<CartItemDTO> cartItems;
+    @JsonProperty("order_detail_list")
+    private List<OrderDetailResponse> orderDetailResponses;
 
     public static OrderResponse fromOrder(Order order) {
         return OrderResponse.builder()
@@ -66,6 +66,7 @@ public class OrderResponse {
             .paymentMethod(order.getPaymentMethod())
             .orderDate(order.getOrderDate())
             .type(order.getType())
+            .orderDetailResponses(order.getOrderDetails().stream().map(OrderDetailResponse::fromOrderDetail).toList())
             .build();
     }
 }
