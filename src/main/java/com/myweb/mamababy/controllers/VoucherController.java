@@ -2,23 +2,27 @@ package com.myweb.mamababy.controllers;
 
 
 import com.myweb.mamababy.dtos.VoucherDTO;
-import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Voucher;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.responses.voucher.VoucherResponse;
 import com.myweb.mamababy.services.Voucher.IVoucherService;
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -65,25 +69,6 @@ public class VoucherController {
                     .message("Voucher With VoucherId = " + voucherId + " Found Successfully!!!")
                     .status(HttpStatus.OK)
                     .data(VoucherResponse.fromVoucher(exitingVoucher))
-                    .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    //Voucher Find By StoreId
-    @GetMapping("/store/{store_id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getVoucherByStoreId(@Valid @PathVariable("store_id") int storeId) {
-        try {
-            List<Voucher> vouchers = voucherService.getVoucherByStoreId(storeId);
-            List<VoucherResponse> voucherResponses = vouchers.stream()
-                    .map(VoucherResponse::fromVoucher)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Voucher With StoreId = " + storeId + " Found Successfully!!!")
-                    .data(voucherResponses)
-                    .status(HttpStatus.OK)
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

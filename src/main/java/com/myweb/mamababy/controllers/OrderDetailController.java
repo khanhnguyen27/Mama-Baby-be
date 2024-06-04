@@ -7,13 +7,19 @@ import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.order.OrderDetailResponse;
 import com.myweb.mamababy.services.OrderDetails.OrderDetailService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("${api.prefix}/order_details")
@@ -25,7 +31,6 @@ public class OrderDetailController {
     // Create OrderDetail
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-//  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> createOrderDetail(
             @Valid @RequestBody OrderDetailDTO orderDetailDTO) {
         try {
@@ -55,7 +60,7 @@ public class OrderDetailController {
                 .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-    }
+        }
     }
 
     // Get Order Detail By OrderId
@@ -98,8 +103,6 @@ public class OrderDetailController {
     // Update Order Detail
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-//    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> updateOrderDetail(
             @Valid @PathVariable("id") int id,
             @RequestBody OrderDetailDTO orderDetailDTO) {
@@ -114,25 +117,5 @@ public class OrderDetailController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // Delete Order Detail
-//    @DeleteMapping("/{id}")
-//    @CrossOrigin(origins = "http://localhost:3000")
-////    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
-////    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-//    public ResponseEntity<?> deleteOrderDetail(
-//            @Valid @PathVariable("id") int id) {  try {
-//
-//        orderDetailService.deleteOrderDetail(id);
-//        return ResponseEntity.ok(ResponseObject.builder()
-//                .data(null)
-//                .message(String.format("OrderDetail With Id = %d Deleted Successfully!!!", id))
-//                .status(HttpStatus.OK)
-//                .build());
-//
-//    }catch (Exception e){
-//        return ResponseEntity.badRequest().body(e.getMessage());
-//    }
-//    }
-    }
+}
 

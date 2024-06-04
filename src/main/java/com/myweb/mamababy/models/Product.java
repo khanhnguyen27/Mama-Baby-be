@@ -27,7 +27,7 @@ public class Product extends BaseEntity{
     private float price;
 
     @Column(name = "point")
-    private float point;
+    private int point;
 
     @Column(name = "status")
     private String status;

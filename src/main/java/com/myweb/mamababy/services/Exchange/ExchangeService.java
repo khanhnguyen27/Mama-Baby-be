@@ -1,12 +1,10 @@
 package com.myweb.mamababy.services.Exchange;
 
+import com.myweb.mamababy.dtos.CartItemExchangeDTO;
 import com.myweb.mamababy.dtos.ExchangeDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
-import com.myweb.mamababy.repositories.ExchangeRepository;
-import com.myweb.mamababy.repositories.OrderDetailRepository;
-import com.myweb.mamababy.repositories.OrderRepository;
-import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.repositories.*;
 import com.myweb.mamababy.responses.exchange.ExchangeResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,32 +29,63 @@ public class ExchangeService implements IExchangeService{
 
     private final OrderDetailRepository orderDetailRepository;
     private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
     private final ExchangeRepository exchangeRepository;
+    private final ExchangeDetailRepository exchangeDetailRepository;
     private static final String UPLOADS_FOLDER = "uploads";
 
     @Override
     public Exchange createExchange(ExchangeDTO exchangeDTO, MultipartFile file) throws Exception {
-        OrderDetail existingOrderDetail = orderDetailRepository
-                .findById(exchangeDTO.getOrderDetailId())
-                .orElseThrow(() ->
-                        new DataNotFoundException(
-                                "Cannot find order detail with id: "+exchangeDTO.getOrderDetailId()));
+
         User existingUser = userRepository
                 .findById(exchangeDTO.getUserId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
                                 "Cannot find user with id: "+exchangeDTO.getUserId()));
+        Store existingStore = storeRepository
+                .findById(exchangeDTO.getStoreId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+exchangeDTO.getStoreId()));
+
+        if(!existingUser.getIsActive() || !existingStore.isActive()){
+            throw new DataNotFoundException("Invalid");
+        }
         String fileName = storeFile(file);
         Exchange newExchange = Exchange.builder()
-                .orderDetail(existingOrderDetail)
-                .quantity(exchangeDTO.getQuantity())
                 .description(exchangeDTO.getDescription())
                 .imageUrl(fileName)
+                .amount(exchangeDTO.getAmount())
                 .status("PROCESSING")
                 .createDate(LocalDate.now())
                 .user(existingUser)
+                .store(existingStore)
                 .build();
-        return exchangeRepository.save(newExchange);
+        exchangeRepository.save(newExchange);
+
+        List<ExchangeDetail> exchangeDetails = new ArrayList<>();
+
+        for (CartItemExchangeDTO cartItemExchangeDTO : exchangeDTO.getCartItemExchange()){
+            // Tạo một đối tượng OrderDetail từ CartItemDTO
+            ExchangeDetail exchangeDetail = new ExchangeDetail();
+            exchangeDetail.setExchange(newExchange);
+
+            int orderDetailId = cartItemExchangeDTO.getOrderDetailId();
+            int quantity = cartItemExchangeDTO.getQuantity();
+
+            OrderDetail existingOrderDetail = orderDetailRepository
+                    .findById(orderDetailId)
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find order detail with id: "+orderDetailId));
+
+            exchangeDetail.setOrderDetail(existingOrderDetail);
+            exchangeDetail.setQuantity(quantity);
+
+            exchangeDetails.add(exchangeDetail);
+        }
+        exchangeDetailRepository.saveAll(exchangeDetails);
+        return newExchange;
 
     }
 
@@ -108,6 +134,36 @@ public class ExchangeService implements IExchangeService{
         }
 
         return null;
+    }
+
+    @Override
+    public List<ExchangeResponse> findByUserId(int userId) throws DataNotFoundException {
+        List<Exchange> exchanges = exchangeRepository.findByUserId(userId);
+
+        if (exchanges.isEmpty()) {
+            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
+        }
+
+        List<ExchangeResponse> exchangeResponses = new ArrayList<>();
+        for(Exchange exchange :exchanges){
+            exchangeResponses.add(ExchangeResponse.fromExchange(exchange));
+        }
+        return exchangeResponses;
+    }
+
+    @Override
+    public List<ExchangeResponse> findByStoreId(int storeId) throws DataNotFoundException {
+        List<Exchange> exchanges = exchangeRepository.findByStoreId(storeId);
+
+        if (exchanges.isEmpty()) {
+            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
+        }
+
+        List<ExchangeResponse> exchangeResponses = new ArrayList<>();
+        for(Exchange exchange :exchanges){
+            exchangeResponses.add(ExchangeResponse.fromExchange(exchange));
+        }
+        return exchangeResponses;
     }
 
     @Override

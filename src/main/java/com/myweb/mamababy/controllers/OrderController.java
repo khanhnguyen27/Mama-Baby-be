@@ -8,6 +8,8 @@ import com.myweb.mamababy.responses.order.OrderListResponse;
 import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.services.Order.IOrderService;
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,13 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/orders")
@@ -45,16 +49,17 @@ public class OrderController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Order newOrder = orderService.createOrder(orderDTO);
+            List<Order> newOrders = orderService.createOrder(orderDTO);
+
+            List<OrderResponse> orderResponses = newOrders.stream().map(OrderResponse::fromOrder)
+                .toList();
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Create New Order Successfully!!!")
-                    .status(HttpStatus.CREATED)
-                    .data(OrderResponse.fromOrder(newOrder))
-                    .build());
-        } catch(Exception e) {
+                .message("Create New Orders Successfully!!!").status(HttpStatus.CREATED)
+                .data(orderResponses).build());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-}
+    }
 
     //Order Find By ID
     @GetMapping("/{id}")
@@ -110,8 +115,8 @@ public class OrderController {
         }
     }
 
-    // Order Find By Type, Shipping Adress and Order Date
-    @GetMapping("/get-orders-by-keyword")
+    // Order Find By Shipping Address and Order Date
+    @GetMapping("/Keywords_by_orderDate_and_shippingAddress")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getOrdersByKeyword(
             @RequestParam(defaultValue = "", required = false) String keyword,
@@ -159,39 +164,32 @@ public class OrderController {
     // Update Order
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-//  @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateOrder(
-            @Valid @PathVariable int id,
-            @Valid @RequestBody OrderDTO orderDTO) {
+        @Valid @PathVariable int id,
+        @Valid @RequestBody OrderDTO orderDTO, BindingResult result) {
 
         try {
-            Order order = orderService.updateOrder(id, orderDTO);
+            if (result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+
+            List<Order> updatedOrders = orderService.updateOrder(id, orderDTO);
+
+            List<OrderResponse> orderResponses = updatedOrders.stream()
+                .map(OrderResponse::fromOrder)
+                .toList();
+
             return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Order With OrderId = " + id + " Updated Successfully!!!")
-                    .status(HttpStatus.OK)
-                    .data(OrderResponse.fromOrder(order))
-                    .build());
+                .message("Update Orders Successfully!!!")
+                .status(HttpStatus.OK)
+                .data(orderResponses)
+                .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // Delete Order
-//    @DeleteMapping("/{id}")
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    public  ResponseEntity<?> deleteVoucher(@Valid @PathVariable int id){
-//        try {
-//
-//            orderService.deleteOrder(id);
-//            return ResponseEntity.ok(ResponseObject.builder()
-//                    .data(null)
-//                    .message(String.format("Order With Id = %d Deleted Successfully!!!", id))
-//                    .status(HttpStatus.OK)
-//                    .build());
-//
-//        }catch (Exception e){
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
 }

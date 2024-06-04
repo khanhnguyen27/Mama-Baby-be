@@ -8,10 +8,9 @@ import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.repositories.OrderDetailRepository;
 import com.myweb.mamababy.repositories.OrderRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -78,16 +77,6 @@ public class OrderDetailService implements IOrderDetailService{
     @Override
     public List<OrderDetail> getAllOrderDetail() throws Exception {
         return orderDetailRepository.findAll();
-    }
-
-    @Override
-    public OrderDetail deleteOrderDetail(int id) throws DataNotFoundException {
-
-        OrderDetail existingOrderDetail  = orderDetailRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Cannot find order detail with id: " + id));
-
-        orderDetailRepository.deleteById(id);
-        return existingOrderDetail;
     }
 
     @Override

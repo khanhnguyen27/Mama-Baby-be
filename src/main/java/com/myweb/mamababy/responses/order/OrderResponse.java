@@ -1,10 +1,14 @@
 package com.myweb.mamababy.responses.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.models.Order;
-import lombok.*;
-
 import java.time.LocalDate;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
@@ -45,20 +49,24 @@ public class OrderResponse {
     @JsonProperty("type")
     private String type;
 
+    @JsonProperty("order_detail_list")
+    private List<OrderDetailResponse> orderDetailResponses;
+
     public static OrderResponse fromOrder(Order order) {
         return OrderResponse.builder()
-                .id(order.getId())
-                .userId(order.getUser().getId())
-                .voucherId(order.getVoucher().getId())
-                .storeId(order.getStore().getId())
-                .totalPoint(order.getTotalPoint())
-                .amount(order.getAmount())
-                .totalDiscount(order.getTotalDiscount())
-                .finalAmount(order.getFinalAmount())
-                .shippingAddress(order.getShippingAddress())
-                .paymentMethod(order.getPaymentMethod())
-                .orderDate(order.getOrderDate())
-                .type(order.getType())
-                .build();
+            .id(order.getId())
+            .userId(order.getUser().getId())
+            .voucherId(order.getVoucher() != null ? order.getVoucher().getId() : 0)
+            .storeId(order.getStore().getId())
+            .totalPoint(order.getTotalPoint())
+            .amount(order.getAmount())
+            .totalDiscount(order.getTotalDiscount())
+            .finalAmount(order.getFinalAmount())
+            .shippingAddress(order.getShippingAddress())
+            .paymentMethod(order.getPaymentMethod())
+            .orderDate(order.getOrderDate())
+            .type(order.getType())
+            .orderDetailResponses(order.getOrderDetails().stream().map(OrderDetailResponse::fromOrderDetail).toList())
+            .build();
     }
 }

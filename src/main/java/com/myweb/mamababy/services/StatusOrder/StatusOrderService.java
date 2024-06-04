@@ -7,10 +7,9 @@ import com.myweb.mamababy.models.StatusOrder;
 import com.myweb.mamababy.repositories.OrderRepository;
 import com.myweb.mamababy.repositories.StatusOrderRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class StatusOrderService implements IStatusOrderService {
 
     private final OrderRepository orderRepository;
     private final StatusOrderRepository statusOrderRepository;
-
 
     @Override
     @Transactional
@@ -59,4 +57,31 @@ public class StatusOrderService implements IStatusOrderService {
     public List<StatusOrder> getAllStatusOrder() throws Exception {
         return statusOrderRepository.findAll();
     }
+
+    @Override
+    public List<StatusOrder> findByOrderId(int orderId) throws DataNotFoundException {
+
+        List<StatusOrder> statusOrder = statusOrderRepository.findByOrderId(orderId);
+
+        if (statusOrder.isEmpty()) {
+            throw new DataNotFoundException(
+                "Cannot find statusOrder for order with id: " + orderId);
+        }
+
+        return statusOrder;
+    }
+
+    @Override
+    public List<StatusOrder> findbyStatus(String Status) throws DataNotFoundException {
+
+        List<StatusOrder> statusOrder = statusOrderRepository.findByStatus(Status);
+
+        if (statusOrder.isEmpty()) {
+            throw new DataNotFoundException(
+                "Cannot find statusOrder for Status (You need write correctly!!!): " + Status);
+        }
+
+        return statusOrder;
+    }
+
 }

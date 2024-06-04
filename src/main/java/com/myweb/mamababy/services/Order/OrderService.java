@@ -3,17 +3,30 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.*;
-import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.models.Order;
+import com.myweb.mamababy.models.OrderDetail;
+import com.myweb.mamababy.models.Product;
+import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.models.Voucher;
+import com.myweb.mamababy.repositories.OrderDetailRepository;
+import com.myweb.mamababy.repositories.OrderRepository;
+import com.myweb.mamababy.repositories.ProductRepository;
+import com.myweb.mamababy.repositories.StoreRepository;
+import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.repositories.VoucherRepository;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,25 +39,43 @@ public class OrderService implements IOrderService{
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
 
-
     @Override
     @Transactional
-    public Order createOrder(OrderDTO orderDTO) throws Exception {
+    public List<Order> createOrder(OrderDTO orderDTO) throws Exception {
 
         User existingUser = userRepository.findById(orderDTO.getUserId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
+            .orElseThrow(() -> new DataNotFoundException(
+                "Cannot find user with id: " + orderDTO.getUserId()));
 
         Voucher existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find voucher with id: " + orderDTO.getVoucherId()));
+            .orElseThrow(() -> new DataNotFoundException(
+                "Cannot find voucher with id: " + orderDTO.getVoucherId()));
 
-        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
-
-        if(!existingVoucher.isActive() || !existingStore.isActive() || !existingUser.getIsActive()){
-            throw new DataNotFoundException("Invalid");
+        if (!existingVoucher.isActive() || !existingUser.getIsActive()) {
+            throw new DataNotFoundException("Invalid voucher or user is inActive");
         }
-        Order newOrder = Order.builder()
 
+        Map<Integer, List<CartItemDTO>> itemsByStore = new HashMap<>();
+        for (CartItemDTO cartItemDTO : orderDTO.getCartItems()) {
+            int storeId = cartItemDTO.getStoreId();
+            itemsByStore.computeIfAbsent(storeId, ex -> new ArrayList<>()).add(cartItemDTO);
+        }
+
+        List<Order> orders = new ArrayList<>();
+
+        for (Map.Entry<Integer, List<CartItemDTO>> entry : itemsByStore.entrySet()) {
+            int storeId = entry.getKey();
+            List<CartItemDTO> cartItems = entry.getValue();
+
+            Store existingStore = storeRepository.findById(storeId)
+                .orElseThrow(
+                    () -> new DataNotFoundException("Cannot find store with id: " + storeId));
+
+            if (!existingStore.isActive()) {
+                throw new DataNotFoundException("Store with id " + storeId + " is inActive");
+            }
+
+            Order newOrder = Order.builder()
                 .voucher(existingVoucher)
                 .totalPoint(orderDTO.getTotalPoint())
                 .amount(orderDTO.getAmount())
@@ -52,46 +83,54 @@ public class OrderService implements IOrderService{
                 .finalAmount(orderDTO.getFinalAmount())
                 .shippingAddress(orderDTO.getShippingAddress())
                 .paymentMethod(orderDTO.getPaymentMethod())
-                .orderDate(orderDTO.getOrderDate())
+                .orderDate(LocalDate.now())
                 .type(orderDTO.getType())
                 .user(existingUser)
                 .store(existingStore)
                 .build();
 
-        orderRepository.save(newOrder);
+            List<OrderDetail> orderDetails = new ArrayList<>();
 
-        // Tạo danh sách các đối tượng OrderDetail từ cartItems
+//            float totalPrice = 0;
+//            int totalPoint = 0;
 
-        List<OrderDetail> orderDetails = new ArrayList<>();
+            for (CartItemDTO cartItemDTO : cartItems) {
 
-        for (CartItemDTO cartItemDTO : orderDTO.getCartItems()) {
-            // Tạo một đối tượng OrderDetail từ CartItemDTO
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setOrder(newOrder);
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(newOrder);
 
-            // Lấy thông tin sản phẩm từ cartItemDTO
-            int productId = cartItemDTO.getProductId();
-            int quantity = cartItemDTO.getQuantity();
+                int productId = cartItemDTO.getProductId();
+                int quantity = cartItemDTO.getQuantity();
 
-            // Tìm thông tin sản phẩm từ cơ sở dữ liệu (hoặc sử dụng cache nếu cần)
-            Product product = productRepository.findById(productId)
+                Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
 
-            // Đặt thông tin cho OrderDetail
-            orderDetail.setProduct(product);
-            orderDetail.setQuantity(quantity);
-            // Các trường khác của OrderDetail nếu cần
-            orderDetail.setUnitPrice(product.getPrice());
+                orderDetail.setProduct(product);
+                orderDetail.setQuantity(quantity);
+                orderDetail.setUnitPrice(product.getPrice());
+                orderDetail.setUnitPoint(product.getPoint());
+                orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
+                orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
 
-            // Thêm OrderDetail vào danh sách
-            orderDetails.add(orderDetail);
+//                totalPrice += orderDetail.getAmountPrice();
+//                totalPoint += orderDetail.getAmountPoint();
 
+                orderDetails.add(orderDetail);
+            }
+
+//            newOrder.setAmount(totalPrice);
+//            newOrder.setTotalPoint(totalPoint);
+//            newOrder.setFinalAmount(totalPrice - newOrder.getTotalDiscount());
+
+            newOrder.setOrderDetails(orderDetails);
+            orderDetailRepository.saveAll(orderDetails);
+
+            orderRepository.save(newOrder);
+            orders.add(newOrder);
         }
 
-        orderDetailRepository.saveAll(orderDetails);
-        return newOrder;
+        return orders;
     }
-
 
     @Override
     public Order getOrder(int id) throws DataNotFoundException {
@@ -100,19 +139,22 @@ public class OrderService implements IOrderService{
     }
 
     @Override
-    public Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException {
+    @Transactional
+    public List<Order> updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException {
 
         Order existingOrder = orderRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Cannot find order with id: " + id));
+            new DataNotFoundException("Cannot find order with id: " + id));
 
         User existingUser = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->
-                new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
+            new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
+        Voucher existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
+            .orElseThrow(() ->
+                new DataNotFoundException(
+                    "Cannot find voucher with id: " + orderDTO.getVoucherId()));
 
-        Voucher existingVoucher  = voucherRepository.findById(orderDTO.getVoucherId()).orElseThrow(() ->
-                new DataNotFoundException("Cannot find voucher with id: " + orderDTO.getVoucherId()));
-
-        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
-                .orElseThrow(() -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
+//        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
+//            .orElseThrow(() -> new DataNotFoundException(
+//                "Cannot find store with id: " + orderDTO.getStoreId()));
 
         existingOrder.setTotalPoint(orderDTO.getTotalPoint());
         existingOrder.setAmount(orderDTO.getAmount());
@@ -120,30 +162,64 @@ public class OrderService implements IOrderService{
         existingOrder.setFinalAmount(orderDTO.getFinalAmount());
         existingOrder.setShippingAddress(orderDTO.getShippingAddress());
         existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
-        existingOrder.setOrderDate(orderDTO.getOrderDate());
+//        existingOrder.setOrderDate(orderDTO.getOrderDate());
         existingOrder.setType(orderDTO.getType());
 
         existingOrder.setUser(existingUser);
         existingOrder.setVoucher(existingVoucher);
-        existingOrder.setStore(existingStore);
+//        existingOrder.setStore(existingStore);
 
-        return orderRepository.save(existingOrder);
+        Order updatedOrder = orderRepository.save(existingOrder);
+
+        Map<Integer, List<CartItemDTO>> itemsByStore = new HashMap<>();
+        for (CartItemDTO cartItemDTO : orderDTO.getCartItems()) {
+            int storeId = cartItemDTO.getStoreId();
+            itemsByStore.computeIfAbsent(storeId, k -> new ArrayList<>()).add(cartItemDTO);
+        }
+
+        List<OrderDetail> updatedOrderDetails = new ArrayList<>();
+
+        for (Map.Entry<Integer, List<CartItemDTO>> entry : itemsByStore.entrySet()) {
+            int storeId = entry.getKey();
+            List<CartItemDTO> cartItems = entry.getValue();
+
+            Store store = storeRepository.findById(storeId)
+                .orElseThrow(
+                    () -> new DataNotFoundException("Cannot find store with id: " + storeId));
+
+            for (CartItemDTO cartItemDTO : cartItems) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(updatedOrder);
+
+                int productId = cartItemDTO.getProductId();
+                int quantity = cartItemDTO.getQuantity();
+
+                Product product = productRepository.findById(productId)
+                    .orElseThrow(
+                        () -> new DataNotFoundException("Product not found with id: " + productId));
+
+                orderDetail.setProduct(product);
+                orderDetail.setQuantity(quantity);
+                orderDetail.setUnitPrice(product.getPrice());
+                orderDetail.setUnitPoint(product.getPoint());
+                orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
+                orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
+
+                updatedOrderDetails.add(orderDetail);
+            }
+        }
+
+        orderDetailRepository.deleteById(id);
+
+        orderDetailRepository.saveAll(updatedOrderDetails);
+
+        return Collections.singletonList(updatedOrder);
     }
+
 
     @Override
     public List<Order> getAllOrder() throws Exception {
         return orderRepository.findAll();
-    }
-
-    @Override
-    public Order deleteOrder(int id) throws DataNotFoundException {
-
-        Order existingOrder = orderRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Cannot find order with id: " + id));
-
-        orderRepository.deleteById(id);
-
-        return existingOrder;
     }
 
     @Override
