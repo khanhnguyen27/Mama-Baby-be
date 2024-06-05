@@ -18,4 +18,5 @@ public interface IUserService {
     User updateAccount(String token, UpdateUserDTO updateUserDTO) throws Exception;
     List<User> getAllAccount() throws Exception;
     Page<User> findUserByKeyword(String keyword, Pageable pageable) throws Exception;
+
 }
