@@ -16,7 +16,7 @@ public class VnpayController {
 
     private final PaymentService paymentService;
 
-    @GetMapping("/vn-pay")
+    @PostMapping("/vn-pay")
     public ResponseEntity<?> pay(HttpServletRequest request) {
         VnpayResponse vnpayResponse = paymentService.createVnPayPayment(request);
         return ResponseEntity.ok(ResponseObject.builder()

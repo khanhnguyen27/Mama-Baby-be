@@ -82,6 +82,9 @@ public class UserService implements IUserService {
         }
         //return optionalUser.get();//muốn trả JWT token ?
         User existingUser = optionalUser.get();
+        if(!existingUser.getIsActive()){
+            throw new RuntimeException("User is not active");
+        }
         //check password
         if(!passwordEncoder.matches(password, existingUser.getPassword())) {
                 throw new BadCredentialsException("Wrong username or password");
@@ -192,6 +195,7 @@ public class UserService implements IUserService {
             throw new Exception("Error finding users by keyword", e);
         }
     }
+
 
 
     public void cleanupExpiredTokens() {

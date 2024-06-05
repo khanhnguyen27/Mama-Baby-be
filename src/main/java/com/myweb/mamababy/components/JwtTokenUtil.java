@@ -29,6 +29,7 @@ public class JwtTokenUtil {
         //properties => claims
         Map<String, Object> claims = new HashMap<>();
         //this.generateSecretKey();
+        claims.put("userID", user.getId());
         claims.put("username", user.getUsername());
         claims.put("RoleID", user.getRole().getName());
         claims.put("FullName", user.getFullName());
