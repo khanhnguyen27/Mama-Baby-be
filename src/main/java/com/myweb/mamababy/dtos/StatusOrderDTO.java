@@ -24,7 +24,4 @@ public class StatusOrderDTO {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("date")
-    private LocalDate date;
-
 }

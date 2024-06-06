@@ -18,9 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ExchangeDTO {
 
-    @JsonProperty("image_url")
-    private String imageUrl;
-
     @NotEmpty(message = "Description is required.")
     @JsonProperty("description")
     private String description;

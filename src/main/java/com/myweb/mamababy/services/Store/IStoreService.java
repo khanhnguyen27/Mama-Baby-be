@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 public interface IStoreService {
     Store createStore(StoreDTO storeDTO) throws DataNotFoundException;
     Store getStoreById(int id);
+    Store getStoreByUserId(int id) throws DataNotFoundException;
     Page<StoreResponse> getAllStores(String keyword,String status, PageRequest pageRequest);
     Store updateStore(int id, StoreDTO storeDTO);
     Store updateStatusStore(int id, StoreDTO storeDTO);
     Store deleteStore(int id);
+
 }

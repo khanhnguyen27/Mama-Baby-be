@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Integer> {
     boolean existsByUserId (int userId);
+
     Optional<Store> findByUserId(int userId);
 
     @Query("SELECT s FROM Store s WHERE " +

@@ -20,9 +20,6 @@ public class Exchange {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
     @Column(name = "description", nullable = false)
     private String description;
 

@@ -73,4 +73,8 @@ public class Order {
 
     @Column(name = "order_date")
     private LocalDate orderDate;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<StatusOrder> statusOrders;
 }
