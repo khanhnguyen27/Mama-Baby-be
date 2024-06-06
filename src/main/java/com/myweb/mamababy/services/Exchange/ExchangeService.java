@@ -32,10 +32,9 @@ public class ExchangeService implements IExchangeService{
     private final StoreRepository storeRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeDetailRepository exchangeDetailRepository;
-    private static final String UPLOADS_FOLDER = "uploads";
 
     @Override
-    public Exchange createExchange(ExchangeDTO exchangeDTO, MultipartFile file) throws Exception {
+    public Exchange createExchange(ExchangeDTO exchangeDTO) throws Exception {
 
         User existingUser = userRepository
                 .findById(exchangeDTO.getUserId())
@@ -51,17 +50,14 @@ public class ExchangeService implements IExchangeService{
         if(!existingUser.getIsActive() || !existingStore.isActive()){
             throw new DataNotFoundException("Invalid");
         }
-        String fileName = storeFile(file);
         Exchange newExchange = Exchange.builder()
                 .description(exchangeDTO.getDescription())
-                .imageUrl(fileName)
                 .amount(exchangeDTO.getAmount())
                 .status("PROCESSING")
                 .createDate(LocalDate.now())
                 .user(existingUser)
                 .store(existingStore)
                 .build();
-        exchangeRepository.save(newExchange);
 
         List<ExchangeDetail> exchangeDetails = new ArrayList<>();
 
@@ -84,7 +80,11 @@ public class ExchangeService implements IExchangeService{
 
             exchangeDetails.add(exchangeDetail);
         }
+
+        newExchange.setExchangeDetails(exchangeDetails);
+        exchangeRepository.save(newExchange);
         exchangeDetailRepository.saveAll(exchangeDetails);
+
         return newExchange;
 
     }
@@ -171,61 +171,8 @@ public class ExchangeService implements IExchangeService{
         Optional<Exchange> optionalExchange = exchangeRepository.findById(id);
         if (optionalExchange.isPresent()) {
             Exchange exchange =optionalExchange.get();
-            deleteFile(exchange.getImageUrl());
             exchangeRepository.delete(exchange);
         }
     }
 
-    @Override
-    public Boolean checkFileImage(MultipartFile file) {
-        Boolean result = false;
-        // Kiểm tra kích thước file và định dạng
-        if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
-            return result;
-        }
-        String contentType = file.getContentType();
-        if(contentType == null || !contentType.startsWith("image/")) {
-            return result;
-        }
-        result =true;
-        return result;
-    }
-
-    @Override
-    public String storeFile(MultipartFile file) throws IOException {
-        if (!checkFileImage(file)) {
-            throw new IOException("Invalid image format");
-        }
-        //Xu li file name
-        String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = "Exchange_" + UUID.randomUUID().toString() + "_" + filename;
-        // Đường dẫn đến thư mục mà bạn muốn lưu file
-        Path uploadDir = Paths.get(UPLOADS_FOLDER);
-        // Kiểm tra và tạo thư mục nếu nó không tồn tại
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
-        }
-        // Đường dẫn đầy đủ đến file
-        Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
-        // Sao chép file vào thư mục đích
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        return uniqueFilename;
-    }
-
-    @Override
-    public void deleteFile(String filename) throws IOException {
-        // Đường dẫn đến thư mục chứa file
-        Path uploadDir = Paths.get(UPLOADS_FOLDER);
-        // Đường dẫn đầy đủ đến file cần xóa
-        Path filePath = uploadDir.resolve(filename);
-
-        // Kiểm tra xem file tồn tại hay không
-        if (Files.exists(filePath)) {
-            // Xóa file
-            Files.delete(filePath);
-        } else {
-            throw new FileNotFoundException("File not found: " + filename);
-        }
-    }
 }

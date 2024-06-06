@@ -7,6 +7,8 @@ import com.myweb.mamababy.models.StatusOrder;
 import com.myweb.mamababy.repositories.OrderRepository;
 import com.myweb.mamababy.repositories.StatusOrderRepository;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class StatusOrderService implements IStatusOrderService {
 
                 .order(existingOrder)
                 .status(statusOrderDTO.getStatus())
-                .date(statusOrderDTO.getDate())
+                .date(LocalDate.now())
                 .build();
 
         return statusOrderRepository.save(newStatusOrder);
@@ -48,7 +50,7 @@ public class StatusOrderService implements IStatusOrderService {
 
         existingStatusOrder.setOrder(existingOrder);
         existingStatusOrder.setStatus(statusOrderDTO.getStatus());
-        existingStatusOrder.setDate(statusOrderDTO.getDate());
+        existingStatusOrder.setDate(LocalDate.now());
 
         return statusOrderRepository.save(existingStatusOrder);
     }

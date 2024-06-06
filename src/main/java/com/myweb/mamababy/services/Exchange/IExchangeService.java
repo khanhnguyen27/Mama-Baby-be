@@ -17,7 +17,7 @@ import java.util.List;
 
 public interface IExchangeService {
 
-    Exchange createExchange(ExchangeDTO exchangeDTO , MultipartFile file) throws Exception;
+    Exchange createExchange(ExchangeDTO exchangeDTO) throws Exception;
 
     Exchange getExchangeById(int id) throws Exception;
 
@@ -31,9 +31,4 @@ public interface IExchangeService {
 
     void deleteExchange(int id) throws IOException;
 
-    Boolean checkFileImage(MultipartFile file);
-
-    String storeFile(MultipartFile file) throws IOException;
-
-    void deleteFile(String filename) throws IOException;
 }

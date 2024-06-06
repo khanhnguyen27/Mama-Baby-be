@@ -1,6 +1,7 @@
 package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.BrandDTO;
+import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.ExchangeDTO;
 import com.myweb.mamababy.models.Exchange;
 import com.myweb.mamababy.models.Order;
@@ -34,11 +35,10 @@ public class ExchangeController {
 
     //POST http://localhost:8080/mamababy/exchanges
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("")
     public ResponseEntity<?> createExchange(
-            @Valid @ModelAttribute ExchangeDTO exchangeDTO,
-            BindingResult result,
-            @RequestParam("image") MultipartFile file
+            @Valid @RequestBody ExchangeDTO exchangeDTO,
+            BindingResult result
     ) {
         try {
             if (result.hasErrors()) {
@@ -48,7 +48,7 @@ public class ExchangeController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Exchange newExchange = exchangeService.createExchange(exchangeDTO , file);
+            Exchange newExchange = exchangeService.createExchange(exchangeDTO);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new exchange request successfully")
                     .status(HttpStatus.CREATED)

@@ -3,18 +3,8 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Order;
-import com.myweb.mamababy.models.OrderDetail;
-import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.models.Store;
-import com.myweb.mamababy.models.User;
-import com.myweb.mamababy.models.Voucher;
-import com.myweb.mamababy.repositories.OrderDetailRepository;
-import com.myweb.mamababy.repositories.OrderRepository;
-import com.myweb.mamababy.repositories.ProductRepository;
-import com.myweb.mamababy.repositories.StoreRepository;
-import com.myweb.mamababy.repositories.UserRepository;
-import com.myweb.mamababy.repositories.VoucherRepository;
+import com.myweb.mamababy.models.*;
+import com.myweb.mamababy.repositories.*;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
@@ -38,20 +28,24 @@ public class OrderService implements IOrderService{
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final ActivedRepository activedRepository;
 
     @Override
     @Transactional
     public List<Order> createOrder(OrderDTO orderDTO) throws Exception {
 
+        Voucher existingVoucher = null;
+
         User existingUser = userRepository.findById(orderDTO.getUserId())
             .orElseThrow(() -> new DataNotFoundException(
                 "Cannot find user with id: " + orderDTO.getUserId()));
+        if( orderDTO.getVoucherId() != 0){
+             existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
+                    .orElseThrow(() -> new DataNotFoundException(
+                            "Cannot find voucher with id: " + orderDTO.getVoucherId()));
+        }
 
-        Voucher existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
-            .orElseThrow(() -> new DataNotFoundException(
-                "Cannot find voucher with id: " + orderDTO.getVoucherId()));
-
-        if (!existingVoucher.isActive() || !existingUser.getIsActive()) {
+        if (!existingUser.getIsActive()) {
             throw new DataNotFoundException("Invalid voucher or user is inActive");
         }
 
@@ -91,9 +85,6 @@ public class OrderService implements IOrderService{
 
             List<OrderDetail> orderDetails = new ArrayList<>();
 
-//            float totalPrice = 0;
-//            int totalPoint = 0;
-
             for (CartItemDTO cartItemDTO : cartItems) {
 
                 OrderDetail orderDetail = new OrderDetail();
@@ -112,23 +103,40 @@ public class OrderService implements IOrderService{
                 orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
                 orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
 
-//                totalPrice += orderDetail.getAmountPrice();
-//                totalPoint += orderDetail.getAmountPoint();
-
                 orderDetails.add(orderDetail);
             }
 
-//            newOrder.setAmount(totalPrice);
-//            newOrder.setTotalPoint(totalPoint);
-//            newOrder.setFinalAmount(totalPrice - newOrder.getTotalDiscount());
+            //  Set status order table
+            List<StatusOrder> statusOrders = new ArrayList<>();
+            if(orderDTO.getPaymentMethod().equals("VNPAY")){
+                statusOrders.add(StatusOrder.builder()
+                                .order(newOrder)
+                                .date(LocalDate.now())
+                                .status("UNPAID")
+                                .build());
+            }else{
+                statusOrders.add(StatusOrder.builder()
+                        .order(newOrder)
+                        .date(LocalDate.now())
+                        .status("PENDING")
+                        .build());
+            }
+
 
             newOrder.setOrderDetails(orderDetails);
+            newOrder.setStatusOrders(statusOrders);
             orderDetailRepository.saveAll(orderDetails);
 
             orderRepository.save(newOrder);
             orders.add(newOrder);
         }
-
+        //  Set active Voucher
+        if(existingVoucher != null){
+            activedRepository.save(Actived.builder()
+                            .userId(existingUser.getId())
+                            .voucherId(existingVoucher.getId())
+                            .build());
+        }
         return orders;
     }
 
@@ -152,22 +160,16 @@ public class OrderService implements IOrderService{
                 new DataNotFoundException(
                     "Cannot find voucher with id: " + orderDTO.getVoucherId()));
 
-//        Store existingStore = storeRepository.findById(orderDTO.getStoreId())
-//            .orElseThrow(() -> new DataNotFoundException(
-//                "Cannot find store with id: " + orderDTO.getStoreId()));
-
         existingOrder.setTotalPoint(orderDTO.getTotalPoint());
         existingOrder.setAmount(orderDTO.getAmount());
         existingOrder.setTotalDiscount(orderDTO.getTotalDiscount());
         existingOrder.setFinalAmount(orderDTO.getFinalAmount());
         existingOrder.setShippingAddress(orderDTO.getShippingAddress());
         existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
-//        existingOrder.setOrderDate(orderDTO.getOrderDate());
         existingOrder.setType(orderDTO.getType());
 
         existingOrder.setUser(existingUser);
         existingOrder.setVoucher(existingVoucher);
-//        existingOrder.setStore(existingStore);
 
         Order updatedOrder = orderRepository.save(existingOrder);
 

@@ -52,6 +52,9 @@ public class OrderResponse {
     @JsonProperty("order_detail_list")
     private List<OrderDetailResponse> orderDetailResponses;
 
+    @JsonProperty("status_order_list")
+    private List<StatusOrderResponse> statusOrderResponses;
+
     public static OrderResponse fromOrder(Order order) {
         return OrderResponse.builder()
             .id(order.getId())
@@ -67,6 +70,7 @@ public class OrderResponse {
             .orderDate(order.getOrderDate())
             .type(order.getType())
             .orderDetailResponses(order.getOrderDetails().stream().map(OrderDetailResponse::fromOrderDetail).toList())
+            .statusOrderResponses(order.getStatusOrders().stream().map(StatusOrderResponse::fromStatusOrder).toList())
             .build();
     }
 }
