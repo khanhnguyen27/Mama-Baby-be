@@ -118,6 +118,23 @@ public class StoreController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("user/{id}")
+    public ResponseEntity<?> getStoreByUserId(
+            @PathVariable("id") int storeId
+    ){
+        try{
+            Store existingStore = storeService.getStoreByUserId(storeId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get detail product successfully")
+                    .status(HttpStatus.OK)
+                    .data(StoreResponse.fromStore(existingStore))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     //Cập nhật lại một sản phẩm theo ID
     //PUT: http://localhost:8080/mamababy/stores/{id}
     @PutMapping("/{id}")

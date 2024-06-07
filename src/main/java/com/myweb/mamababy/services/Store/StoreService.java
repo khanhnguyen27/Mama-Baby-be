@@ -3,6 +3,7 @@ package com.myweb.mamababy.services.Store;
 import com.myweb.mamababy.dtos.StoreDTO;
 
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.store.StoreResponse;
@@ -14,6 +15,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +58,17 @@ public class StoreService implements IStoreService{
     public Store getStoreById(int id) {
         return storeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Store not found"));
+    }
+
+    @Override
+    public Store getStoreByUserId(int id) throws DataNotFoundException {
+
+        Optional<Store> store = storeRepository.findByUserId(id);
+
+        if (store.isPresent()) {
+            return store.get();
+        }
+        throw new DataNotFoundException("Cannot find store with user id =" + id);
     }
 
     @Override

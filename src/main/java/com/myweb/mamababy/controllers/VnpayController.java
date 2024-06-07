@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.net.URI;
+import org.springframework.http.HttpHeaders;
 
 @RestController
 @RequestMapping("${api.prefix}/payment")
@@ -29,15 +31,9 @@ public class VnpayController {
     public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-
-            VnpayResponse vnpayResponse = new VnpayResponse(
-                    "00", "Payment success page", "https://");
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Payment success")
-                    .status(HttpStatus.OK)
-                    .data(vnpayResponse)
-                    .build());
-
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create("https://example.com/payment-success"));
+            return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
         } else {
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Payment fail")
