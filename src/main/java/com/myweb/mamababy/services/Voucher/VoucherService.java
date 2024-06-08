@@ -2,9 +2,14 @@ package com.myweb.mamababy.services.Voucher;
 
 import com.myweb.mamababy.dtos.VoucherDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.models.Actived;
 import com.myweb.mamababy.models.Voucher;
 import com.myweb.mamababy.repositories.VoucherRepository;
+import com.myweb.mamababy.services.Actived.ActivedService;
+import com.myweb.mamababy.services.Actived.IActivedService;
 import jakarta.transaction.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class VoucherService implements IVoucherService{
 
     private final VoucherRepository voucherRepository;
+    private final IActivedService activedService;
 
     @Override
     public int calculateVoucherValue(String code, int discountValue) {
@@ -42,8 +48,28 @@ public class VoucherService implements IVoucherService{
     }
 
   @Override
-    public List<Voucher> getAllVoucher() throws Exception {
-        return voucherRepository.findAll();
+    public List<Voucher> getAllVoucher(int userId) throws Exception {
+      List<Actived> activedList = new ArrayList<>();
+      List<Voucher> listAll = voucherRepository.findAll();
+      List<Voucher> listVoucherValid = new ArrayList<>();
+      if (userId != 0) {
+          activedList = activedService.getActivedByUserId(userId);
+      }
+      for(Voucher voucher : listAll) {
+          if (voucher.isActive()) {
+              boolean isInActivedList = false;
+              for (Actived actived : activedList) {
+                  if (actived.getVoucherId() == voucher.getId()) {
+                      isInActivedList = true;
+                      break;
+                  }
+              }
+              if(!isInActivedList){
+                  listVoucherValid.add(voucher);
+              }
+          }
+      }
+      return listVoucherValid;
     }
 
     @Override

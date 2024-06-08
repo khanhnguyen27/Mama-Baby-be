@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.net.URI;
-import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("${api.prefix}/payment")
@@ -28,18 +27,12 @@ public class VnpayController {
                 .build());
     }
     @GetMapping("/vn-pay-callback")
-    public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
+    public RedirectView payCallbackHandler(HttpServletRequest request) {
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create("https://example.com/payment-success"));
-            return new ResponseEntity<>(headers, HttpStatus.SEE_OTHER);
+            return new RedirectView("/payment-success.html");
         } else {
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .message("Payment fail")
-                    .status(HttpStatus.OK)
-                    .data(null)
-                    .build());
+            return new RedirectView("/payment-fail.html");
         }
     }
 }

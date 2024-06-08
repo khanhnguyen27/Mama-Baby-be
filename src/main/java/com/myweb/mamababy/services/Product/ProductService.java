@@ -136,7 +136,7 @@ public class ProductService implements IProductService {
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
-            existingProduct.setStore(existingStore);
+//            existingProduct.setStore(existingStore);
 
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
                 existingProduct.setName(productDTO.getName());
