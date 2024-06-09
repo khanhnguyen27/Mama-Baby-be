@@ -49,29 +49,29 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 filterChain.doFilter(request, response); //enable bypass
                 return;
             }
-            final String authHeader = request.getHeader("Authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                return;
-            }
-            final String token = authHeader.substring(7);
-            final String username = jwtTokenUtil.extractUserName(token);
-            if (username != null
-                    && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User userDetails = (User) userDetailsService.loadUserByUsername(username);
-                if(jwtTokenUtil.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-            }
+//            final String authHeader = request.getHeader("Authorization");
+//            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                return;
+//            }
+//            final String token = authHeader.substring(7);
+//            final String username = jwtTokenUtil.extractUserName(token);
+//            if (username != null
+//                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                User userDetails = (User) userDetailsService.loadUserByUsername(username);
+//                if(jwtTokenUtil.validateToken(token, userDetails)) {
+//                    UsernamePasswordAuthenticationToken authenticationToken =
+//                            new UsernamePasswordAuthenticationToken(
+//                                    userDetails,
+//                                    null,
+//                                    userDetails.getAuthorities()
+//                            );
+//                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//                }
+//            }
 
-            // Check if token is blacklisted
+//             Check if token is blacklisted
 //            if (blacklistedTokenRepository.findByToken(token).isPresent()) {
 //                logger.warn("JWT Token is blacklisted");
 //                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
@@ -103,7 +103,6 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 Pair.of(String.format("%s/comments", apiPrefix), "GET"),
                 Pair.of(String.format("%s/article", apiPrefix), "GET"),
                 Pair.of(String.format("%s/vouchers", apiPrefix), "GET")
-
         );
         for(Pair<String, String> bypassToken: bypassTokens) {
             if (request.getServletPath().contains(bypassToken.getFirst()) &&

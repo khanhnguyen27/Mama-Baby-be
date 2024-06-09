@@ -83,6 +83,7 @@ public class ProductService implements IProductService {
                 .age(existingAge)
                 .store(existingStore)
                 .isActive(true)
+                .comments(null)
                 .build();
         return productRepository.save(newProduct);
     }
@@ -138,8 +139,11 @@ public class ProductService implements IProductService {
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
+
             existingProduct.setUpdatedAt(LocalDateTime.now());
             //existingProduct.setStore(existingStore);
+
+
 
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
                 existingProduct.setName(productDTO.getName());
@@ -205,7 +209,6 @@ public class ProductService implements IProductService {
         result =true;
         return result;
     }
-
 
     @Override
     public String storeFile(MultipartFile file) throws IOException {

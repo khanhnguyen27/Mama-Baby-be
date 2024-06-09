@@ -8,6 +8,8 @@ import com.myweb.mamababy.responses.order.OrderListResponse;
 import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.services.Order.IOrderService;
 import jakarta.validation.Valid;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +86,7 @@ public class OrderController {
         try {
             List<Order> orders = orderService.findByUserId(userId);
             List<OrderResponse> orderResponses = orders.stream()
+                    .sorted(Comparator.comparing(Order::getOrderDate).reversed())
                     .map(OrderResponse::fromOrder)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(ResponseObject.builder()
@@ -103,6 +106,7 @@ public class OrderController {
         try {
             List<Order> orders = orderService.findByStoreId(storeId);
             List<OrderResponse> orderResponses = orders.stream()
+                    .sorted(Comparator.comparing(Order::getOrderDate).reversed())
                     .map(OrderResponse::fromOrder)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(ResponseObject.builder()

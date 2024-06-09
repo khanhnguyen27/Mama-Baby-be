@@ -1,10 +1,15 @@
 package com.myweb.mamababy.responses.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.models.Order;
 import java.time.LocalDate;
 import java.util.List;
+
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +24,18 @@ import lombok.NoArgsConstructor;
 public class OrderResponse {
 
     private int id;
+
+
+    @JsonProperty("full_name")
+    private String fullName;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
     private String shippingAddress;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate orderDate;
 
     @JsonProperty("user_id")
@@ -65,6 +81,8 @@ public class OrderResponse {
             .amount(order.getAmount())
             .totalDiscount(order.getTotalDiscount())
             .finalAmount(order.getFinalAmount())
+            .fullName(order.getFullName())
+            .phoneNumber(order.getPhoneNumber())
             .shippingAddress(order.getShippingAddress())
             .paymentMethod(order.getPaymentMethod())
             .orderDate(order.getOrderDate())

@@ -25,7 +25,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -33,6 +32,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/products")
 @RequiredArgsConstructor
 public class ProductController {
+
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final IProductService productService;
 

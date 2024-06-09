@@ -1,7 +1,10 @@
 package com.myweb.mamababy.responses.voucher;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Voucher;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -21,6 +24,8 @@ public class VoucherResponse {
 
     private String description;
 
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate endAt;
 
     private boolean isActive;

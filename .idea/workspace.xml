@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/IArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/IArticleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Product_087154c1-9846-4977-8228-2d58c457b3f8_15d7d502799ad22fd80f6827a6ae79d1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Product_7ef14a59-85e1-4f50-bc18-baaf171889f0_15d7d502799ad22fd80f6827a6ae79d1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Product_c6f5fa0d-61e5-4ea8-969b-fc93af75c6bb_Product_0e07296f-8dc9-44b5-a298-e0187c3a90a2_15d7d502799ad22fd80f6827a6ae79d1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Product_e8ac937b-8ae2-4c30-96bf-f71e1803df64_Product_6a7f1c8c-73ba-4787-b2c1-69f5cb559ca6_Product_f118efa7-3618-4ed8-a1e5-99fa27b70209_bat-tron-99-hinh-nen-mat-trang-dep-nhat-lam-hinh-nen-may-tinh_6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Product_ea5a43cb-effd-4a54-beeb-dc34e1ecabc9_15d7d502799ad22fd80f6827a6ae79d1.png" beforeDir="false" />
-    </list>
+    <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,7 +59,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.MamababyApplication.executor": "Debug",
+    "Application.MamababyApplication.executor": "Run",
     "JUnit.All in mamababy (1).executor": "Run",
     "JUnit.All in mamababy.executor": "Run",
     "JUnit.MamababyApplicationTests.executor": "Run",
@@ -188,39 +177,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ExchangeController.java</url>
           <line>50</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java</url>
-          <line>145</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
-          <line>166</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
-          <line>169</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java</url>
-          <line>139</line>
-          <properties class="com.myweb.mamababy.controllers.ProductController" method="updateProduct">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
-          <line>107</line>
-          <properties class="com.myweb.mamababy.services.Product.ProductService" method="updateProduct">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
