@@ -42,30 +42,7 @@ public class ArticleController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-
-            // Kiểm tra kích thước file và định dạng
-            if (file.getSize() > 10 * 1024 * 1024) { // Kích thước > 10MB
-                return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                        .body(ResponseObject.builder()
-                                .message("Cannot upload images >10MB !!!")
-                                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                                .build());
-            }
-            String contentType = file.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                        .body(ResponseObject.builder()
-                                .message("The file is not suitable !!!")
-                                .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                                .build());
-            }
-
-            // Lưu file và cập nhật thumbnail trong DTO
-            String filename = articleService.storeFile(file);
-
-            // lưu vào đối tượng product trong DB
-            articleDTO.setLink_image(filename);
-            Article newArticle = articleService.createArticle(articleDTO);
+            Article newArticle = articleService.createArticle(articleDTO, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     ResponseObject.builder()
                             .message("Create new article successfully")
@@ -138,31 +115,8 @@ public class ArticleController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-
-            // Kiểm tra kích thước file và định dạng
-            if (file.getSize() > 10 * 1024 * 1024) { // Kích thước > 10MB
-                return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                        .body(ResponseObject.builder()
-                                .message("Cannot upload images >10MB !!!")
-                                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                                .build());
-            }
-            String contentType = file.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                        .body(ResponseObject.builder()
-                                .message("The file is not suitable !!!")
-                                .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                                .build());
-            }
-
-            // Lưu file và cập nhật thumbnail trong DTO
-            String filename = articleService.storeFile(file);
-
             String extractedToken = token.substring(7);
-            // lưu vào đối tượng product trong DB
-            articleDTO.setLink_image(filename);
-            Article updatedArticle = articleService.updateArticle(id, articleDTO, extractedToken);
+            Article updatedArticle = articleService.updateArticle(id, articleDTO, extractedToken, file);
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
                             .message("Update article successfully")
