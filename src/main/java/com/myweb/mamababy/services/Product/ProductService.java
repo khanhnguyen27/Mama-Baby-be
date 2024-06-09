@@ -68,10 +68,8 @@ public class ProductService implements IProductService {
             throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
         }
 
-        String fileName = file.getName();
-        if (!fileName.startsWith("Product")) {
-            fileName = storeFile(file);
-        }
+        String fileName = storeFile(file);
+
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
@@ -219,8 +217,13 @@ public class ProductService implements IProductService {
         }
         //Xu li file name
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = "Product_" + UUID.randomUUID().toString() + "_" + filename;
+        String uniqueFilename = filename;
+
+        if (!uniqueFilename.startsWith("Product_")) {
+            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
+            uniqueFilename = "Product_" + UUID.randomUUID().toString() + "_" + filename;
+        }
+
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
         // Kiểm tra và tạo thư mục nếu nó không tồn tại

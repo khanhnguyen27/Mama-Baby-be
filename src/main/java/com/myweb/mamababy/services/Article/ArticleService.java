@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,18 +39,22 @@ public class ArticleService implements IArticleService{
 
     private static final String UPLOADS_FOLDER = "uploads";
     @Override
-    public Article createArticle(ArticleDTO articleDTO) throws Exception {
+    public Article createArticle(ArticleDTO articleDTO, MultipartFile file) throws Exception {
         Store existingStore = storeRepository
                 .findById(articleDTO.getStore_id())
                 .orElseThrow(() ->
                         new DataNotFoundException(
                                 "Cannot find store with id: "+ articleDTO.getStore_id()));
 
+        String fileName = file.getName();
+        if (!fileName.startsWith("Article")) {
+            fileName = storeFile(file);
+        }
         Article newArticle = Article.builder()
                 .header(articleDTO.getHeader())
                 .content(articleDTO.getContent())
                 .link_product(articleDTO.getLink_product())
-                .link_image(articleDTO.getLink_image())
+                .link_image(fileName)
                 .store(existingStore)
                 .date(new Date())
                 .status(articleDTO.getStatus())
@@ -59,9 +64,16 @@ public class ArticleService implements IArticleService{
 
     @Override
     public String storeFile(MultipartFile file) throws IOException {
+        if (!checkFileImage(file)) {
+            throw new IOException("Invalid image format");
+        }
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
-        String uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
+        String uniqueFilename = filename;
+
+        if (!uniqueFilename.startsWith("Article_")) {
+            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
+            uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
+        }
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads");
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
@@ -109,7 +121,7 @@ public class ArticleService implements IArticleService{
     }
 
     @Override
-    public Article updateArticle(int id, ArticleDTO articleDTO, String token) throws Exception {
+    public Article updateArticle(int id, ArticleDTO articleDTO, String token, MultipartFile file) throws Exception {
 
             User retrievedUser = userService.getUserDetailsFromToken(token);
             Store existingStore = storeRepository
@@ -124,21 +136,53 @@ public class ArticleService implements IArticleService{
                 existingArticle.setHeader(articleDTO.getHeader());
                 existingArticle.setContent(articleDTO.getContent());
                 existingArticle.setLink_product(articleDTO.getLink_product());
-                existingArticle.setLink_image(articleDTO.getLink_image());
                 existingArticle.setStatus(articleDTO.getStatus());
+
+                if(file != null && !file.isEmpty()) {
+                    deleteFile(existingArticle.getLink_image());
+                    String fileName = storeFile(file);
+                    existingArticle.setLink_image(fileName);
+                }
+
                 articleReponsitory.save(existingArticle);
                 return existingArticle;
             }
 
     }
 
-    @Override
-    public void deleteArticle(int id) {
-        articleReponsitory.deleteById(id);
+    public Boolean checkFileImage(MultipartFile file) {
+        Boolean result = false;
+        // Kiểm tra kích thước file và định dạng
+        if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
+            return result;
+        }
+        String contentType = file.getContentType();
+        if(contentType == null || !contentType.startsWith("image/")) {
+            return result;
+        }
+
+        result =true;
+        return result;
     }
 
     @Override
     public void deleteFile(String filename) throws IOException {
+        // Đường dẫn đến thư mục chứa file
+        Path uploadDir = Paths.get(UPLOADS_FOLDER);
+        // Đường dẫn đầy đủ đến file cần xóa
+        Path filePath = uploadDir.resolve(filename);
 
+        // Kiểm tra xem file tồn tại hay không
+        if (Files.exists(filePath)) {
+            // Xóa file
+            Files.delete(filePath);
+        } else {
+            throw new FileNotFoundException("File not found: " + filename);
+        }
+    }
+
+    @Override
+    public void deleteArticle(int id) {
+        articleReponsitory.deleteById(id);
     }
 }

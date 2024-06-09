@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IArticleService {
-    Article createArticle(ArticleDTO articleDTO) throws Exception;
+    Article createArticle(ArticleDTO articleDTO, MultipartFile file) throws Exception;
 
     Article getArticleById(int id) throws Exception;
 
     List<Article> getAllArticle() throws Exception;
 
-    Article updateArticle(int id, ArticleDTO articleDTO, String token) throws Exception;
+    Article updateArticle(int id, ArticleDTO articleDTO, String token, MultipartFile file) throws Exception;
 
     void deleteArticle(int id);
 
