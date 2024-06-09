@@ -8,6 +8,9 @@ import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Product.IProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,13 +26,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
 @RequiredArgsConstructor
 public class ProductController {
-
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final IProductService productService;
 
     //POST http://localhost:8080/mamababy/products
@@ -149,6 +153,29 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+
+    @GetMapping("/images/{imageName}")
+    public ResponseEntity<?> viewImage(@PathVariable String imageName) {
+        try {
+            java.nio.file.Path imagePath = Paths.get("uploads/"+imageName);
+            UrlResource resource = new UrlResource(imagePath.toUri());
+
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                logger.info(imageName + " not found");
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(new UrlResource(Paths.get("uploads/notfound.jpeg").toUri()));
+                //return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving image: " + e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
