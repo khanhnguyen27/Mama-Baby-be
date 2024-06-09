@@ -155,6 +155,7 @@ public class ProductController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/images/{imageName}")
     public ResponseEntity<?> viewImage(@PathVariable String imageName) {
         try {

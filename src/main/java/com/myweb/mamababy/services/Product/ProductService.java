@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
@@ -67,7 +68,10 @@ public class ProductService implements IProductService {
             throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
         }
 
-        String fileName = storeFile(file);
+        String fileName = file.getName();
+        if (!fileName.startsWith("Product")) {
+            fileName = storeFile(file);
+        }
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
@@ -137,7 +141,11 @@ public class ProductService implements IProductService {
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
-//            existingProduct.setStore(existingStore);
+
+            existingProduct.setUpdatedAt(LocalDateTime.now());
+            //existingProduct.setStore(existingStore);
+
+
 
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
                 existingProduct.setName(productDTO.getName());
