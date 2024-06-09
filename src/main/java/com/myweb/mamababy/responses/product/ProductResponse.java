@@ -63,10 +63,6 @@ public class ProductResponse extends BaseResponse {
                 .age(product.getAge().getId())
                 .storeId(product.getStore().getId())
                 .isActive(product.isActive())
-                .commentResponses(product.getComments().stream()
-                        .sorted(Comparator.comparing(Comment::getDate).reversed())
-                        .map(CommentResponse::fromComment)
-                        .toList())
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());
