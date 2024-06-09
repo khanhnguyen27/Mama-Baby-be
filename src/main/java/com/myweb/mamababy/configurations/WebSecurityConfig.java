@@ -23,6 +23,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
@@ -35,7 +36,7 @@ import static org.springframework.http.HttpMethod.*;
 @EnableWebSecurity
 @EnableWebMvc
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig implements  WebMvcConfigurer{
     private final JwtTokenFilter jwtTokenFilter;
     @Value("${api.prefix}")
     private String apiPrefix;
@@ -48,9 +49,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests
                             .requestMatchers("**")
-                            .permitAll();
+                            .permitAll()
 
+                            .requestMatchers("/payment-fail.html", "/payment-success.html", "/**")
+                            .permitAll();
                 }).csrf(AbstractHttpConfigurer::disable);
+
 
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
             @Override
@@ -68,22 +72,24 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Allow all paths
-                        .allowedOrigins("http://localhost:3000") // Allow only this origin
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD") // Allow these methods
-                        .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Allow all paths
+                .allowedOrigins("http://localhost:3000") // Allow only this origin
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD") // Allow these methods
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
     }
 
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+    }
+
 }

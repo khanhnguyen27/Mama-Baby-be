@@ -62,6 +62,12 @@ public class Order {
     @Column(name = "final_amount")
     private float finalAmount;
 
+    @Column(name = "full_name")
+    private String fullName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "shipping_address")
     private String shippingAddress;
 

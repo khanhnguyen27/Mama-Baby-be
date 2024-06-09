@@ -1,8 +1,12 @@
 package com.myweb.mamababy.responses.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.StatusOrder;
 import java.time.LocalDate;
+
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +26,8 @@ public class StatusOrderResponse {
     @JsonProperty("status")
     private String status;
 
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     @JsonProperty("date")
     private LocalDate date;
 
