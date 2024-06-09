@@ -27,6 +27,14 @@ public class OrderDTO {
 //    @JsonProperty("store_id")
 //    private int storeId;
 
+    @NotBlank(message = "Full name is required.")
+    @JsonProperty("full_name")
+    private String fullName;
+
+    @JsonProperty("phone_number")
+    @NotBlank(message = "Phone number is required.")
+    private String phoneNumber;
+
     @JsonProperty("voucher_id")
     private int voucherId;
 
@@ -39,11 +47,11 @@ public class OrderDTO {
     @JsonProperty("total_discount")
     private float totalDiscount;
 
-    @Min(value = 0, message = "Final money must be >= 0")
+    @Min(value = 5000, message = "Final money must be >= 0")
     @JsonProperty("final_amount")
     private float finalAmount;
 
-    @NotBlank(message = "shipping_address is required")
+    @NotBlank(message = "shipping_address is required.")
     @JsonProperty("shipping_address")
     private String shippingAddress;
 

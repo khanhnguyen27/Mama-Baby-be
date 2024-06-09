@@ -71,7 +71,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 //                }
 //            }
 
-            // Check if token is blacklisted
+//             Check if token is blacklisted
 //            if (blacklistedTokenRepository.findByToken(token).isPresent()) {
 //                logger.warn("JWT Token is blacklisted");
 //                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
@@ -102,7 +102,6 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 Pair.of(String.format("%s/comments", apiPrefix), "GET"),
                 Pair.of(String.format("%s/article", apiPrefix), "GET"),
                 Pair.of(String.format("%s/vouchers", apiPrefix), "GET")
-
         );
         for(Pair<String, String> bypassToken: bypassTokens) {
             if (request.getServletPath().contains(bypassToken.getFirst()) &&

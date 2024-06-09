@@ -9,6 +9,7 @@ import java.util.List;
 
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,13 @@ import lombok.NoArgsConstructor;
 public class OrderResponse {
 
     private int id;
+
+
+    @JsonProperty("full_name")
+    private String fullName;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
 
     private String shippingAddress;
 
@@ -73,6 +81,8 @@ public class OrderResponse {
             .amount(order.getAmount())
             .totalDiscount(order.getTotalDiscount())
             .finalAmount(order.getFinalAmount())
+            .fullName(order.getFullName())
+            .phoneNumber(order.getPhoneNumber())
             .shippingAddress(order.getShippingAddress())
             .paymentMethod(order.getPaymentMethod())
             .orderDate(order.getOrderDate())

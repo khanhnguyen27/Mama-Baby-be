@@ -2,6 +2,7 @@ package com.myweb.mamababy.services.Payment;
 
 import com.myweb.mamababy.components.VnpayUtil;
 import com.myweb.mamababy.configurations.VnpayConfig;
+import com.myweb.mamababy.dtos.PaymentDTO;
 import com.myweb.mamababy.responses.payment.VnpayResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,11 @@ public class PaymentService implements IPaymentService{
     private final VnpayConfig vnPayConfig;
 
     @Override
-    public VnpayResponse createVnPayPayment(HttpServletRequest request) {
-        long amount = Integer.parseInt(request.getParameter("finalAmount")) * 100L;
-        String bankCode = request.getParameter("bankCode");
+    public VnpayResponse createVnPayPayment(HttpServletRequest request, PaymentDTO paymentDTO) {
+//        long amount = Integer.parseInt(request.getParameter("finalAmount")) * 100L;
+//        String bankCode = request.getParameter("bankCode");
+        long amount = paymentDTO.getFinalAmount() * 100L;
+        String bankCode = paymentDTO.getBankCode();
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         if (bankCode != null && !bankCode.isEmpty()) {
