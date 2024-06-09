@@ -81,6 +81,7 @@ public class ProductService implements IProductService {
                 .age(existingAge)
                 .store(existingStore)
                 .isActive(true)
+                .comments(null)
                 .build();
         return productRepository.save(newProduct);
     }
@@ -202,7 +203,6 @@ public class ProductService implements IProductService {
         result =true;
         return result;
     }
-
 
     @Override
     public String storeFile(MultipartFile file) throws IOException {

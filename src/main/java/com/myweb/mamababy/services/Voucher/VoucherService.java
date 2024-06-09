@@ -9,6 +9,7 @@ import com.myweb.mamababy.services.Actived.ActivedService;
 import com.myweb.mamababy.services.Actived.IActivedService;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class VoucherService implements IVoucherService{
           activedList = activedService.getActivedByUserId(userId);
       }
       for(Voucher voucher : listAll) {
-          if (voucher.isActive()) {
+          if (voucher.isActive() && !(LocalDate.now().isAfter(voucher.getEndAt()) || LocalDate.now().isEqual(voucher.getEndAt()))) {
               boolean isInActivedList = false;
               for (Actived actived : activedList) {
                   if (actived.getVoucherId() == voucher.getId()) {

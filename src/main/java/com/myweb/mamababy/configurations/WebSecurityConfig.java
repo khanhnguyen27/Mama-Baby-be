@@ -55,6 +55,7 @@ public class WebSecurityConfig implements  WebMvcConfigurer{
                             .permitAll();
                 }).csrf(AbstractHttpConfigurer::disable);
 
+
         http.cors(new Customizer<CorsConfigurer<HttpSecurity>>() {
             @Override
             public void customize(CorsConfigurer<HttpSecurity> httpSecurityCorsConfigurer) {
