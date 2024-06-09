@@ -75,6 +75,8 @@ public class OrderService implements IOrderService{
                 .amount(orderDTO.getAmount())
                 .totalDiscount(orderDTO.getTotalDiscount())
                 .finalAmount(orderDTO.getFinalAmount())
+                .fullName(orderDTO.getFullName())
+                .phoneNumber(orderDTO.getPhoneNumber())
                 .shippingAddress(orderDTO.getShippingAddress())
                 .paymentMethod(orderDTO.getPaymentMethod())
                 .orderDate(LocalDate.now())
