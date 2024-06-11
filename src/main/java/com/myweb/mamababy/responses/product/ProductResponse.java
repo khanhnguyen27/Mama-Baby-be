@@ -45,9 +45,6 @@ public class ProductResponse extends BaseResponse {
     @JsonProperty("is_active")
     private boolean isActive;
 
-    @JsonProperty("comment_list")
-    private List<CommentResponse>  commentResponses;
-
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())

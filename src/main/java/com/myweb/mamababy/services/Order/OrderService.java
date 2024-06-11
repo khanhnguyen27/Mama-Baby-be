@@ -72,9 +72,9 @@ public class OrderService implements IOrderService{
             Order newOrder = Order.builder()
                 .voucher(existingVoucher)
                 .totalPoint(orderDTO.getTotalPoint())
-                .amount(orderDTO.getAmount())
-                .totalDiscount(orderDTO.getTotalDiscount())
-                .finalAmount(orderDTO.getFinalAmount())
+//                .amount(orderDTO.getAmount())
+                .totalDiscount(0)
+//                .finalAmount(orderDTO.getFinalAmount())
                 .fullName(orderDTO.getFullName())
                 .phoneNumber(orderDTO.getPhoneNumber())
                 .shippingAddress(orderDTO.getShippingAddress())
@@ -85,6 +85,10 @@ public class OrderService implements IOrderService{
                 .store(existingStore)
                 .build();
 
+            float amountPrice = 0;
+            int amountPonit = 0;
+
+            //get order detail for each order
             List<OrderDetail> orderDetails = new ArrayList<>();
 
             for (CartItemDTO cartItemDTO : cartItems) {
@@ -98,6 +102,7 @@ public class OrderService implements IOrderService{
                 Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
 
+                // Set product and quantity in order detail.
                 orderDetail.setProduct(product);
                 orderDetail.setQuantity(quantity);
                 orderDetail.setUnitPrice(product.getPrice());
@@ -106,9 +111,12 @@ public class OrderService implements IOrderService{
                 orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
 
                 orderDetails.add(orderDetail);
+
+                amountPrice += orderDetail.getUnitPrice() * orderDetail.getQuantity();
+                amountPonit += orderDetail.getUnitPoint() * orderDetail.getQuantity();
             }
 
-            //  Set status order table
+            //  Set status for order
             List<StatusOrder> statusOrders = new ArrayList<>();
             if(orderDTO.getPaymentMethod().equals("VNPAY")){
                 statusOrders.add(StatusOrder.builder()
@@ -124,14 +132,27 @@ public class OrderService implements IOrderService{
                         .build());
             }
 
+            //set amountPrice, amountPoint for each order
+            newOrder.setAmount(amountPrice);
+            newOrder.setTotalPoint(amountPonit);
+            newOrder.setFinalAmount(amountPrice);
 
+            //set order detail for each order
             newOrder.setOrderDetails(orderDetails);
             newOrder.setStatusOrders(statusOrders);
             orderDetailRepository.saveAll(orderDetails);
 
-            orderRepository.save(newOrder);
             orders.add(newOrder);
         }
+        //add discount into first order
+        orders.getFirst().setTotalDiscount(orderDTO.getTotalDiscount());
+
+        float finalAmount = orders.getFirst().getAmount()-orders.getFirst().getTotalDiscount();
+        if(finalAmount < 0){
+            finalAmount = 0;
+        }
+        orders.getFirst().setFinalAmount(finalAmount);
+
         //  Set active Voucher
         if(existingVoucher != null){
             activedRepository.save(Actived.builder()
@@ -139,7 +160,7 @@ public class OrderService implements IOrderService{
                             .voucherId(existingVoucher.getId())
                             .build());
         }
-        return orders;
+    return orderRepository.saveAll(orders);
     }
 
     @Override
@@ -222,7 +243,7 @@ public class OrderService implements IOrderService{
 
 
     @Override
-    public List<Order> getAllOrder() throws Exception {
+    public List<Order> getAllOrder(){
         return orderRepository.findAll();
     }
 

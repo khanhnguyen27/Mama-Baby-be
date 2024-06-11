@@ -44,10 +44,10 @@ public class CommentController {
     public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) throws Exception {
         List<Comment> comments = commentService.getCommentsByProductId(id);
         if (comments == null || comments.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.ok()
                     .body(ResponseObject.builder()
                             .message("No comments found for product with ID: " + id)
-                            .status(HttpStatus.NOT_FOUND)
+                            .status(HttpStatus.OK)
                             .build());
         }
 
