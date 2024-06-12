@@ -3,6 +3,9 @@ package com.myweb.mamababy.services.Article;
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.models.Article;
 import com.myweb.mamababy.models.Comment;
+import com.myweb.mamababy.responses.Article.ArticleResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -13,7 +16,7 @@ public interface IArticleService {
 
     Article getArticleById(int id) throws Exception;
 
-    List<Article> getAllArticle() throws Exception;
+    Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception;
 
     Article updateArticle(int id, ArticleDTO articleDTO, String token, MultipartFile file) throws Exception;
 

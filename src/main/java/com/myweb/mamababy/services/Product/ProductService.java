@@ -139,7 +139,7 @@ public class ProductService implements IProductService {
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
-
+            existingProduct.setActive(false);
             existingProduct.setUpdatedAt(LocalDateTime.now());
             //existingProduct.setStore(existingStore);
 

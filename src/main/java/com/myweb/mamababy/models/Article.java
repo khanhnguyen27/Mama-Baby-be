@@ -35,8 +35,11 @@ public class Article {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "created_at ")
+    private Date created_at;
+
+    @Column(name = "updated_at ")
+    private Date updated_at;
 
     @Column(name = "status")
     private Boolean status;
