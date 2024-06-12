@@ -36,8 +36,13 @@ public class ArticleResponse {
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
-    @JsonProperty("date")
-    private Date date;
+    @JsonProperty("created_at")
+    private Date created_at;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+    @JsonProperty("updated_at")
+    private Date updated_at;
 
     @JsonProperty("status")
     private Boolean status;
@@ -50,7 +55,8 @@ public class ArticleResponse {
                 .link_product(article.getLink_product())
                 .link_image(article.getLink_image())
                 .store_id(article.getStore().getId())
-                .date(article.getDate())
+                .created_at(article.getCreated_at())
+                .updated_at(article.getUpdated_at())
                 .status(article.getStatus())
                 .build();
     }

@@ -4,14 +4,15 @@ import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
-import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.models.Store;
-import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.responses.Article.ArticleResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.User.IUserService;
 import com.myweb.mamababy.services.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -56,35 +57,11 @@ public class ArticleService implements IArticleService{
                 .link_product(articleDTO.getLink_product())
                 .link_image(fileName)
                 .store(existingStore)
-                .date(new Date())
+                .created_at(new Date())
+                .updated_at(new Date())
                 .status(articleDTO.getStatus())
                 .build();
         return articleReponsitory.save(newArticle);
-    }
-
-    @Override
-    public String storeFile(MultipartFile file) throws IOException {
-        if (!checkFileImage(file)) {
-            throw new IOException("Invalid image format");
-        }
-        String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        String uniqueFilename = filename;
-
-        if (!uniqueFilename.startsWith("Article_")) {
-            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-            uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
-        }
-        // Đường dẫn đến thư mục mà bạn muốn lưu file
-        java.nio.file.Path uploadDir = Paths.get("uploads");
-        // Kiểm tra và tạo thư mục nếu nó không tồn tại
-        if (!Files.exists(uploadDir)) {
-            Files.createDirectories(uploadDir);
-        }
-        // Đường dẫn đầy đủ đến file
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
-        // Sao chép file vào thư mục đích
-        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-        return uniqueFilename;
     }
 
     @Override
@@ -116,8 +93,9 @@ public class ArticleService implements IArticleService{
     }
 
     @Override
-    public List<Article> getAllArticle() throws Exception {
-        return articleReponsitory.findAll();
+    public Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception {
+        Page<Article> productsPage= articleReponsitory.searchArticles(keyword, storeId, pageRequest);
+        return productsPage.map(ArticleResponse::fromArticle);
     }
 
     @Override
@@ -136,6 +114,7 @@ public class ArticleService implements IArticleService{
                 existingArticle.setHeader(articleDTO.getHeader());
                 existingArticle.setContent(articleDTO.getContent());
                 existingArticle.setLink_product(articleDTO.getLink_product());
+                existingArticle.setUpdated_at(new Date());
                 existingArticle.setStatus(articleDTO.getStatus());
 
                 if(file != null && !file.isEmpty()) {
@@ -148,6 +127,31 @@ public class ArticleService implements IArticleService{
                 return existingArticle;
             }
 
+    }
+
+    @Override
+    public String storeFile(MultipartFile file) throws IOException {
+        if (!checkFileImage(file)) {
+            throw new IOException("Invalid image format");
+        }
+        String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String uniqueFilename = filename;
+
+        if (!uniqueFilename.startsWith("Article_")) {
+            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
+            uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
+        }
+        // Đường dẫn đến thư mục mà bạn muốn lưu file
+        java.nio.file.Path uploadDir = Paths.get("uploads");
+        // Kiểm tra và tạo thư mục nếu nó không tồn tại
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+        // Đường dẫn đầy đủ đến file
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
+        // Sao chép file vào thư mục đích
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+        return uniqueFilename;
     }
 
     public Boolean checkFileImage(MultipartFile file) {
