@@ -95,8 +95,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductResponse> getProductByStoreId(int id) throws Exception {
-        return productRepository.findByStoreId(id).stream().map(ProductResponse::fromProduct).toList();
+    public Page<ProductResponse> getProductByStoreId(String keyword, int categoryId, int brandId, int age, int storeId, PageRequest pageRequest)throws Exception {
+        Page<Product> productsPage= productRepository.searchProductsByStore(keyword, categoryId, brandId, age, storeId, pageRequest);
+        return productsPage.map(ProductResponse::fromProduct);
     }
 
     @Override

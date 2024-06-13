@@ -108,24 +108,42 @@ public class ArticleController {
 
     //Store nào chỉ xem được article của shop đó
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/store/{id}")
-    public ResponseEntity<?> getArticlesByStore(@PathVariable("id") int id,
+    @GetMapping("/store")
+    public ResponseEntity<?> getArticlesByStore(@RequestParam(defaultValue = "") String keyword,
+                                                @RequestParam(defaultValue = "0", name = "store_id") int storeId,
+                                                @RequestParam(defaultValue = "0", name = "page") int page,
+                                                @RequestParam(defaultValue = "12", name = "limit") int limit,
                                                 @RequestHeader("Authorization") String token) throws Exception {
         String extractedToken = token.substring(7);
-        List<Article> articles = articleService.getArticlesByStoreId(id, extractedToken);
-        if (articles.isEmpty()) {
+        int totalPages = 0;
+
+        // Tạo Pageable từ thông tin trang và giới hạn
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                //Sort.by("createdAt").descending()
+                Sort.by("id").descending()
+        );
+        Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, pageRequest);
+        // Lấy tổng số trang
+        totalPages = articlePage.getTotalPages();
+        List<ArticleResponse> products = articlePage.getContent();
+
+        ArticleListResponse articleListResponse = ArticleListResponse
+                .builder()
+                .articles(products)
+                .totalPages(totalPages)
+                .build();
+        if (articlePage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ResponseObject.builder()
-                            .message("No posts found for store with id: " + id)
+                            .message("No posts found for store with id: " + storeId)
                             .status(HttpStatus.NOT_FOUND)
                             .build());
         } else {
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
-                            .message("Retrieve successful posts for store with id: " + id)
-                            .data(articles.stream()
-                                    .map(ArticleResponse::fromArticle)
-                                    .collect(Collectors.toList()))
+                            .message("Get articles successfully")
+                            .data(articleListResponse)
                             .status(HttpStatus.OK)
                             .build()
             );

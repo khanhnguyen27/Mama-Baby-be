@@ -26,6 +26,6 @@ public interface IArticleService {
 
     void deleteFile(String filename) throws IOException;
 
-    List<Article> getArticlesByStoreId(int storeId, String token) throws Exception;
+    Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, PageRequest pageRequest) throws Exception;
 
 }

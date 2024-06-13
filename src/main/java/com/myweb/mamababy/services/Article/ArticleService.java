@@ -71,7 +71,7 @@ public class ArticleService implements IArticleService{
     }
 
     @Override
-    public List<Article> getArticlesByStoreId(int storeId, String token) throws Exception {
+    public Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, PageRequest pageRequest) throws Exception {
 
 
             User retrievedUser = userService.getUserDetailsFromToken(token);
@@ -83,19 +83,16 @@ public class ArticleService implements IArticleService{
             if (existingStore.getId() != storeId) {
                 throw new Exception("Store does not match");
             } else {
-                List<Article> articles = articleReponsitory.findByStoreId(existingStore.getId());
-                if (articles == null || articles.isEmpty()) {
-                    return Collections.emptyList(); // hoặc trả về null
-                }
-                return articles;
+                Page<Article> articlesPage= articleReponsitory.searchArticlesByStore(keyword, storeId, pageRequest);
+                return articlesPage.map(ArticleResponse::fromArticle);
             }
 
     }
 
     @Override
     public Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception {
-        Page<Article> productsPage= articleReponsitory.searchArticles(keyword, storeId, pageRequest);
-        return productsPage.map(ArticleResponse::fromArticle);
+        Page<Article> articlesPage= articleReponsitory.searchArticles(keyword, storeId, pageRequest);
+        return articlesPage.map(ArticleResponse::fromArticle);
     }
 
     @Override
