@@ -85,6 +85,21 @@ public class VoucherController {
         );
     }
 
+    @GetMapping("/admin")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getAllVoucherAdmin() throws Exception {
+        List<Voucher> vouchers = voucherService.getAllVoucherAdmin();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get all voucher Successfully!!!")
+                        .data(vouchers.stream()
+                                .map(VoucherResponse::fromVoucher)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
     // Update Voucher
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")

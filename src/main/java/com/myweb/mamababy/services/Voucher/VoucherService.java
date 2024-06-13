@@ -74,6 +74,11 @@ public class VoucherService implements IVoucherService{
     }
 
     @Override
+    public List<Voucher> getAllVoucherAdmin() throws Exception {
+        return voucherRepository.findAll();
+    }
+
+    @Override
     public Voucher updateVoucher(int id, VoucherDTO voucherDTO) throws Exception {
 
         Voucher existingVoucher  = voucherRepository.findById(id).orElseThrow(() ->
@@ -83,6 +88,7 @@ public class VoucherService implements IVoucherService{
         existingVoucher.setDiscountValue(voucherDTO.getDiscountValue());
         existingVoucher.setDescription(voucherDTO.getDescription());
         existingVoucher.setEndAt(voucherDTO.getEndAt());
+        existingVoucher.setActive(voucherDTO.isActive());
 
         return voucherRepository.save(existingVoucher);
     }
