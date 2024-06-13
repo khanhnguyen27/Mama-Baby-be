@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher">
+      <change afterPath="$PROJECT_DIR$/uploads/Article_50b74ff1-a124-4932-a951-130060b713e2_IMG_1961.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/Article_6ef720e4-8e3d-4abe-95f8-62baf5f8a864_night-the-city-lights-view-wallpaper-preview.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/Article_a31999a1-9257-492d-bf96-f4576e5a093d_night-the-city-lights-view-wallpaper-preview.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/Product_7b12a65f-d006-4f64-8dae-e6598a020c37_fbde59f5611d0cbe013289cff0a6e0b0.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ArticleReponsitory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ArticleReponsitory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/ProductRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" afterDir="false" />
     </list>
