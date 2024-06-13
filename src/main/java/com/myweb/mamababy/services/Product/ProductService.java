@@ -24,10 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -95,6 +92,11 @@ public class ProductService implements IProductService {
             return optionalProduct.get();
         }
         throw new DataNotFoundException("Cannot find product with id =" + id);
+    }
+
+    @Override
+    public List<ProductResponse> getProductByStoreId(int id) throws Exception {
+        return productRepository.findByStoreId(id).stream().map(ProductResponse::fromProduct).toList();
     }
 
     @Override

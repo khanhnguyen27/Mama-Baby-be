@@ -30,4 +30,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
              @Param("storeId") int storeId,
               Pageable pageable);
 
+    List<Product> findByStoreId(int id);
 }

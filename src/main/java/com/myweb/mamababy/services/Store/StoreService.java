@@ -79,7 +79,7 @@ public class StoreService implements IStoreService{
 
     @Override
     public Store updateStore(int id, StoreDTO storeDTO) {
-        // Tìm sản phẩm tồn tại trong DB
+        // Tìm cửa hàng tồn tại trong DB
         Store existingStore = getStoreById(id);
 
         existingStore.setNameStore(storeDTO.getNameStore());

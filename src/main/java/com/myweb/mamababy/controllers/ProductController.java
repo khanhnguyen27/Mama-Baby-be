@@ -120,6 +120,23 @@ public class ProductController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("store/{id}")
+    public ResponseEntity<?> getProductByStoreId(
+            @PathVariable("id") int storeId
+    ){
+        try{
+            List<ProductResponse> listProduct = productService.getProductByStoreId(storeId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get detail product successfully")
+                    .status(HttpStatus.OK)
+                    .data(listProduct)
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id) {
         try {
