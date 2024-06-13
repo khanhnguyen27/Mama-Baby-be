@@ -120,6 +120,43 @@ public class ProductController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/store")
+    public ResponseEntity<?> getProductByStoreId(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
+            @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
+            @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
+            @RequestParam(defaultValue = "0", name = "store_id") int storeId,
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "12", name = "limit") int limit
+    ) throws Exception {
+        int totalPages = 0;
+        // Tạo Pageable từ thông tin trang và giới hạn
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                //Sort.by("createdAt").descending()
+                Sort.by("id").ascending()
+        );
+        //Lay tat ca cac product theo yeu cau
+        Page<ProductResponse> productPage = productService
+                .getProductByStoreId(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
+        // Lấy tổng số trang
+        totalPages = productPage.getTotalPages();
+        List<ProductResponse> products = productPage.getContent();
+
+        ProductListResponse productListResponse = ProductListResponse
+                .builder()
+                .products(products)
+                .totalPages(totalPages)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Get products details successfully")
+                .data(productListResponse)
+                .status(HttpStatus.OK)
+                .build());
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable int id) {
         try {

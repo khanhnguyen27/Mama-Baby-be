@@ -30,4 +30,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
              @Param("storeId") int storeId,
               Pageable pageable);
 
+    @Query("SELECT p FROM Product p WHERE " +
+            "(:keyword IS NULL OR :keyword = '' OR p.name LIKE %:keyword%) " +
+            "AND (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
+            "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId)" +
+            "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)" +
+            "AND (:age IS NULL OR :age = 0 OR p.age.id = :age) ")
+    Page<Product> searchProductsByStore
+            (@Param("keyword") String keyword,
+             @Param("categoryId") int categoryId,
+             @Param("brandId") int brandId,
+             @Param("age") int age,
+             @Param("storeId") int storeId,
+             Pageable pageable);
+
+    List<Product> findByStoreId(int id);
 }

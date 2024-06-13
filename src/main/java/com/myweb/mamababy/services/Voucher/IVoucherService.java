@@ -16,6 +16,8 @@ public interface IVoucherService {
 
     List<Voucher> getAllVoucher(int userId) throws Exception;
 
+    List<Voucher> getAllVoucherAdmin() throws Exception;
+
     Voucher updateVoucher(int id, VoucherDTO voucherDTO) throws Exception;
 
     Voucher deleteVoucher(int id) throws DataNotFoundException;

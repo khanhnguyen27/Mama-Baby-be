@@ -70,7 +70,7 @@ public class OrderService implements IOrderService{
             }
 
             Order newOrder = Order.builder()
-                .voucher(existingVoucher)
+//                .voucher(existingVoucher)
                 .totalPoint(orderDTO.getTotalPoint())
 //                .amount(orderDTO.getAmount())
                 .totalDiscount(0)
@@ -145,6 +145,7 @@ public class OrderService implements IOrderService{
             orders.add(newOrder);
         }
         //add discount into first order
+        orders.getFirst().setVoucher(existingVoucher);
         orders.getFirst().setTotalDiscount(orderDTO.getTotalDiscount());
 
         float finalAmount = orders.getFirst().getAmount()-orders.getFirst().getTotalDiscount();
