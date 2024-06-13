@@ -20,6 +20,7 @@ public class VoucherResponse {
 
     private String code;
 
+    @JsonProperty("discount_value")
     private int discountValue;
 
     private String description;
