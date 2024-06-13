@@ -18,4 +18,9 @@ public interface ArticleReponsitory extends JpaRepository<Article, Integer> {
             "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)" +
             "AND p.status = true")
     Page<Article> searchArticles(String keyword, int storeId, PageRequest pageRequest);
+
+    @Query("SELECT p FROM Article p WHERE " +
+            "(:keyword IS NULL OR :keyword = '' OR p.header LIKE %:keyword%) " +
+            "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)")
+    Page<Article> searchArticlesByStore(String keyword, int storeId, PageRequest pageRequest);
 }
