@@ -1,4 +1,4 @@
-package com.myweb.mamababy.responses.Article;
+package com.myweb.mamababy.responses.article;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -59,5 +59,9 @@ public class ArticleResponse {
                 .updated_at(article.getUpdated_at())
                 .status(article.getStatus())
                 .build();
+    }
+
+    public void test(){
+
     }
 }
