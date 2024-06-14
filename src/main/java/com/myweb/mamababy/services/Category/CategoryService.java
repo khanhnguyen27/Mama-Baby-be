@@ -60,4 +60,9 @@ public class CategoryService implements ICategoryService {
         categoryRepository.save(existingCategory);
         return existingCategory;
     }
+
+    @Override
+    public List<Category> findByIsActiveTrue() {
+        return categoryRepository.findAllActiveCategories();
+    }
 }
