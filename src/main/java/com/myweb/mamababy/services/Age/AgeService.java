@@ -60,4 +60,9 @@ public class AgeService implements IAgeService{
         ageRepository.save(existingAge);
         return existingAge;
     }
+
+    @Override
+    public List<Age> findByIsActiveTrue() {
+        return ageRepository.findAllActiveAge();
+    }
 }

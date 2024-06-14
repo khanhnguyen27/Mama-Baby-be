@@ -11,4 +11,5 @@ public interface IBrandService {
     List<Brand> getAllBrands();
     Brand updateBrand(int brandId, BrandDTO brandDTO);
     Brand deleteBrand(int id);
+    List<Brand> findByIsActiveTrue();
 }
