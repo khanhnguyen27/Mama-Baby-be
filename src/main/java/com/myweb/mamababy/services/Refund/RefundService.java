@@ -54,6 +54,7 @@ public class RefundService implements IRefundService{
                 .user(existingUser)
                 .exchange(existingExchange)
                 .order(existingOrder)
+                .amount(refundDTO.getAmount())
                 .createDate(LocalDate.now())
                 .build();
 

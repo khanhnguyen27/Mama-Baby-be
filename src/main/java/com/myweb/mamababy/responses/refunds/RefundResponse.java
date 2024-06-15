@@ -29,6 +29,8 @@ public class RefundResponse {
     @JsonProperty("exchange_id")
     private int exchangeId;
 
+    private float amount;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate  createDate;
@@ -37,6 +39,7 @@ public class RefundResponse {
         RefundResponse refundResponse = RefundResponse.builder()
                 .id(refund.getId())
                 .userId(refund.getUser().getId())
+                .amount(refund.getAmount())
                 .createDate(refund.getCreateDate())
                 .build();
         if(refund.getOrder() != null){
