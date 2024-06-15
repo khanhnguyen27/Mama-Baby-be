@@ -1,6 +1,5 @@
-package com.myweb.mamababy.responses.Article;
+package com.myweb.mamababy.responses.article;
 
-import com.myweb.mamababy.responses.product.ProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
