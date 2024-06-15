@@ -60,4 +60,8 @@ public class ArticleResponse {
                 .status(article.getStatus())
                 .build();
     }
+
+    public void test(){
+
+    }
 }

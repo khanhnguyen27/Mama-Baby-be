@@ -19,6 +19,7 @@ public class CommentDTO {
     @JsonProperty("product_id")
     private int productId;
 
+    @NotBlank(message = "rating is required")
     @JsonProperty("rating")
     private int rating;
 
