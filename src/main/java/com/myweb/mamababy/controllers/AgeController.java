@@ -40,7 +40,7 @@ public class AgeController {
     }
 
     //GET: http://localhost:8080/mamababy/products
-    //Hiện tất cả các age is true
+    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAges(
@@ -56,7 +56,6 @@ public class AgeController {
                 .build());
     }
 
-    //Hiện tất cả các age
     @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAgesIsTrue(

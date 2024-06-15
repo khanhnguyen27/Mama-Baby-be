@@ -38,7 +38,7 @@ public class BrandController {
         return ResponseEntity.ok(brand);
     }
 
-    //Hiện tất cả các brand is true
+    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrands(
@@ -54,7 +54,6 @@ public class BrandController {
                 .build());
     }
 
-    //Hiện tất cả các brand
     @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrandsIsTrue(

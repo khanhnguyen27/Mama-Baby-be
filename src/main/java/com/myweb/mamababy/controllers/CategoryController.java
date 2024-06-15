@@ -40,7 +40,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    //Hiện tất cả các categories id is true
+    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategories(
@@ -56,7 +56,6 @@ public class CategoryController {
                 build());
     }
 
-    //Hiện tất cả các categories
     @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategoriesIsTrue(

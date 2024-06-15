@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreDTO {
+
     @NotBlank(message = "Name store is required")
     @JsonProperty("name_store")
     private String nameStore;
