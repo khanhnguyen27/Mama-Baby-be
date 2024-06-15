@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/Article/ArticleResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/myweb/mamababy/controllers/UserControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/myweb/mamababy/services/UserServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ArticleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ArticleDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/UserDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +52,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -65,11 +72,16 @@
     &quot;JUnit.All in mamababy (1).executor&quot;: &quot;Run&quot;,
     &quot;JUnit.All in mamababy.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.MamababyApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.createUser.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.createUser_usernameInvalid_fail.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserControllerTest.createUser_validRequest_success.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceTest.createUser_userExisted_fail.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceTest.createUser_validRequest_success.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;ManhCuong&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/khoitd/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/manhc/OneDrive/Desktop/Ky 5 Chuyen Nganh/SWT_302_10w/SWT_Project&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -91,33 +103,66 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in mamababy (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="mamababy" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="All in mamababy" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="mamababy" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MamababyApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserControllerTest.createUser_usernameInvalid_fail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="mamababy" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.myweb.mamababy.reponses.*" />
+          <option name="PATTERN" value="com.myweb.mamababy.controllers.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.myweb.mamababy" />
-      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplicationTests" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.controllers.UserControllerTest" />
+      <option name="METHOD_NAME" value="createUser_usernameInvalid_fail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest.createUser_validRequest_success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.controllers.UserControllerTest" />
+      <option name="METHOD_NAME" value="createUser_validRequest_success" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.createUser_userExisted_fail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy.services" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.services.UserServiceTest" />
+      <option name="METHOD_NAME" value="createUser_userExisted_fail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.createUser_validRequest_success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy.services" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.services.UserServiceTest" />
+      <option name="METHOD_NAME" value="createUser_validRequest_success" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -125,9 +170,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.MamababyApplication" />
-        <item itemvalue="JUnit.All in mamababy (1)" />
-        <item itemvalue="JUnit.All in mamababy" />
-        <item itemvalue="JUnit.MamababyApplicationTests" />
+        <item itemvalue="JUnit.UserServiceTest.createUser_userExisted_fail" />
+        <item itemvalue="JUnit.UserServiceTest.createUser_validRequest_success" />
+        <item itemvalue="JUnit.UserControllerTest.createUser_usernameInvalid_fail" />
+        <item itemvalue="JUnit.UserControllerTest.createUser_validRequest_success" />
       </list>
     </recent_temporary>
   </component>
