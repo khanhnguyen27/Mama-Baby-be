@@ -40,14 +40,14 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    //Hiện tất cả các categories
+    //Hiện tất cả các categories id is true
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategories(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Category> categories = categoryService.getAllCategories();
+        List<Category> categories = categoryService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
                 .message("Get list category successfully !!!")
@@ -56,13 +56,14 @@ public class CategoryController {
                 build());
     }
 
-    @GetMapping("ActiveIsTrue")
+    //Hiện tất cả các categories
+    @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategoriesIsTrue(
         @RequestParam(defaultValue = "0",name = "page")     int page,
         @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Category> categories = categoryService.findByIsActiveTrue();
+        List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(ResponseObject
             .builder()
             .message("Get list category successfully !!!")

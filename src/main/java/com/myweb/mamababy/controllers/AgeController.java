@@ -40,14 +40,14 @@ public class AgeController {
     }
 
     //GET: http://localhost:8080/mamababy/products
-    //Hiện tất cả các categories
+    //Hiện tất cả các age is true
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAges(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Age> ages = ageService.getAllAges();
+        List<Age> ages = ageService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
                 .message("Get list ages successfully !!!")
@@ -56,13 +56,14 @@ public class AgeController {
                 .build());
     }
 
-    @GetMapping("ActiveIsTrue")
+    //Hiện tất cả các age
+    @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAgesIsTrue(
         @RequestParam(defaultValue = "0",name = "page")     int page,
         @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Age> ages = ageService.findByIsActiveTrue();
+        List<Age> ages = ageService.getAllAges();
         return ResponseEntity.ok(ResponseObject
             .builder()
             .message("Get list ages successfully !!!")

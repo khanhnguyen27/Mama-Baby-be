@@ -38,14 +38,14 @@ public class BrandController {
         return ResponseEntity.ok(brand);
     }
 
-    //Hiện tất cả các categories
+    //Hiện tất cả các brand is true
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrands(
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Brand> brands = brandService.getAllBrands();
+        List<Brand> brands = brandService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
                 .message("Get list brands successfully !!!")
@@ -54,13 +54,14 @@ public class BrandController {
                 .build());
     }
 
-    @GetMapping("ActiveIsTrue")
+    //Hiện tất cả các brand
+    @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrandsIsTrue(
         @RequestParam(defaultValue = "0",name = "page")     int page,
         @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Brand> brands = brandService.findByIsActiveTrue();
+        List<Brand> brands = brandService.getAllBrands();
         return ResponseEntity.ok(ResponseObject
             .builder()
             .message("Get list brands successfully !!!")
