@@ -47,7 +47,7 @@ public class AgeController {
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Age> ages = ageService.getAllAges();
+        List<Age> ages = ageService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
                 .message("Get list ages successfully !!!")
@@ -56,13 +56,13 @@ public class AgeController {
                 .build());
     }
 
-    @GetMapping("ActiveIsTrue")
+    @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAgesIsTrue(
         @RequestParam(defaultValue = "0",name = "page")     int page,
         @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Age> ages = ageService.findByIsActiveTrue();
+        List<Age> ages = ageService.getAllAges();
         return ResponseEntity.ok(ResponseObject
             .builder()
             .message("Get list ages successfully !!!")

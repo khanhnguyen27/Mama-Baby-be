@@ -2,12 +2,9 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.responses.Article.ArticleListResponse;
-import com.myweb.mamababy.responses.Article.ArticleResponse;
+import com.myweb.mamababy.responses.article.ArticleListResponse;
+import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.responses.product.ProductListResponse;
-import com.myweb.mamababy.responses.product.ProductResponse;
-import com.myweb.mamababy.services.Article.ArticleService;
 import com.myweb.mamababy.services.Article.IArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/article")

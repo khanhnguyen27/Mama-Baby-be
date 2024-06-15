@@ -45,7 +45,7 @@ public class BrandController {
             @RequestParam(defaultValue = "0",name = "page")     int page,
             @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Brand> brands = brandService.getAllBrands();
+        List<Brand> brands = brandService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
                 .message("Get list brands successfully !!!")
@@ -54,13 +54,13 @@ public class BrandController {
                 .build());
     }
 
-    @GetMapping("ActiveIsTrue")
+    @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrandsIsTrue(
         @RequestParam(defaultValue = "0",name = "page")     int page,
         @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
-        List<Brand> brands = brandService.findByIsActiveTrue();
+        List<Brand> brands = brandService.getAllBrands();
         return ResponseEntity.ok(ResponseObject
             .builder()
             .message("Get list brands successfully !!!")
