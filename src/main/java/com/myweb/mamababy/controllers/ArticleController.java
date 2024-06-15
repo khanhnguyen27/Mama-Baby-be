@@ -130,10 +130,10 @@ public class ArticleController {
                 .totalPages(totalPages)
                 .build();
         if (articlePage.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseObject.builder()
                             .message("No posts found for store with id: " + storeId)
-                            .status(HttpStatus.NOT_FOUND)
+                            .status(HttpStatus.OK)
                             .build());
         } else {
             return ResponseEntity.ok().body(

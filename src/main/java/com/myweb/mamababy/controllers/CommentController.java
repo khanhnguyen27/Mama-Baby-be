@@ -28,10 +28,10 @@ public class CommentController {
     public ResponseEntity<?> getAllComments() throws Exception {
         List<Comment> comments = commentService.getAllComment();
         if (comments == null || comments.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseObject.builder()
                             .message("No comments found")
-                            .status(HttpStatus.NOT_FOUND)
+                            .status(HttpStatus.OK)
                             .build());
         }
 
@@ -70,10 +70,10 @@ public class CommentController {
         String extractedToken = token.substring(7);
         List<Comment> comments = commentService.getCommentsByUserId(UserId, extractedToken);
         if (comments == null || comments.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(ResponseObject.builder()
                             .message("No comments found for user with ID: " + UserId)
-                            .status(HttpStatus.NOT_FOUND)
+                            .status(HttpStatus.OK)
                             .build());
         }
 
