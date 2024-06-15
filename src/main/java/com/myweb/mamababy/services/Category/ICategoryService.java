@@ -11,4 +11,5 @@ public interface ICategoryService {
     List<Category> getAllCategories();
     Category updateCategory(int categoryId, CategoryDTO categoryDTO);
     Category deleteCategory(int id);
+    List<Category> findByIsActiveTrue();
 }

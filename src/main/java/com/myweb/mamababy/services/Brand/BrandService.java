@@ -60,4 +60,9 @@ public class BrandService implements IBrandService{
         brandRepository.save(existingBrand);
         return existingBrand;
     }
+
+    @Override
+    public List<Brand> findByIsActiveTrue() {
+        return brandRepository.findAllActiveBrand();
+    }
 }

@@ -11,4 +11,5 @@ public interface IAgeService {
     List<Age> getAllAges();
     Age updateAge(int ageId, AgeDTO ageDTO);
     Age deleteAge(int id);
+    List<Age> findByIsActiveTrue();
 }

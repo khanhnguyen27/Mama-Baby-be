@@ -56,6 +56,21 @@ public class CategoryController {
                 build());
     }
 
+    @GetMapping("ActiveIsTrue")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getAllCategoriesIsTrue(
+        @RequestParam(defaultValue = "0",name = "page")     int page,
+        @RequestParam(defaultValue = "12",name = "limit")    int limit
+    ) {
+        List<Category> categories = categoryService.findByIsActiveTrue();
+        return ResponseEntity.ok(ResponseObject
+            .builder()
+            .message("Get list category successfully !!!")
+            .status(HttpStatus.OK)
+            .data(categories).
+            build());
+    }
+
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Category> updateCategory(
