@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data//toString
 @Getter
@@ -15,9 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDTO {
-    @NotBlank(message = "product_id is required")
-    @JsonProperty("product_id")
-    private int productId;
+    @JsonProperty("cart_items")
+    private List<CartItemDTO> cartItems;
 
     @NotBlank(message = "rating is required")
     @JsonProperty("rating")

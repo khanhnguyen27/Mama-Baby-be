@@ -70,18 +70,18 @@ public class ArticleService implements IArticleService{
     public Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, PageRequest pageRequest) throws Exception {
 
 
-            User retrievedUser = userService.getUserDetailsFromToken(token);
-            Store existingStore = storeRepository
-                    .findByUserId(retrievedUser.getId())
-                    .orElseThrow(() ->
-                            new DataNotFoundException(
-                                    "Cannot find store with id: "+ retrievedUser.getId()));
-            if (existingStore.getId() != storeId) {
-                throw new Exception("Store does not match");
-            } else {
-                Page<Article> articlesPage= articleReponsitory.searchArticlesByStore(keyword, storeId, pageRequest);
-                return articlesPage.map(ArticleResponse::fromArticle);
-            }
+        User retrievedUser = userService.getUserDetailsFromToken(token);
+        Store existingStore = storeRepository
+                .findByUserId(retrievedUser.getId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+ retrievedUser.getId()));
+        if (existingStore.getId() != storeId) {
+            throw new Exception("Store does not match");
+        } else {
+            Page<Article> articlesPage= articleReponsitory.searchArticlesByStore(keyword, storeId, pageRequest);
+            return articlesPage.map(ArticleResponse::fromArticle);
+        }
 
     }
 
@@ -94,31 +94,31 @@ public class ArticleService implements IArticleService{
     @Override
     public Article updateArticle(int id, ArticleDTO articleDTO, String token, MultipartFile file) throws Exception {
 
-            User retrievedUser = userService.getUserDetailsFromToken(token);
-            Store existingStore = storeRepository
-                    .findByUserId(retrievedUser.getId())
-                    .orElseThrow(() ->
-                            new DataNotFoundException(
-                                    "Cannot find store with id: "+ retrievedUser.getId()));
-            if (existingStore.getId() != (articleDTO.getStore_id())) {
-                throw new Exception("Store does not match");
-            } else {
-                Article existingArticle = getArticleById(id);
-                existingArticle.setHeader(articleDTO.getHeader());
-                existingArticle.setContent(articleDTO.getContent());
-                existingArticle.setLink_product(articleDTO.getLink_product());
-                existingArticle.setUpdated_at(new Date());
-                existingArticle.setStatus(articleDTO.getStatus());
+        User retrievedUser = userService.getUserDetailsFromToken(token);
+        Store existingStore = storeRepository
+                .findByUserId(retrievedUser.getId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+ retrievedUser.getId()));
+        if (existingStore.getId() != (articleDTO.getStore_id())) {
+            throw new Exception("Store does not match");
+        } else {
+            Article existingArticle = getArticleById(id);
+            existingArticle.setHeader(articleDTO.getHeader());
+            existingArticle.setContent(articleDTO.getContent());
+            existingArticle.setLink_product(articleDTO.getLink_product());
+            existingArticle.setUpdated_at(new Date());
+            existingArticle.setStatus(articleDTO.getStatus());
 
-                if(file != null && !file.isEmpty()) {
-                    deleteFile(existingArticle.getLink_image());
-                    String fileName = storeFile(file);
-                    existingArticle.setLink_image(fileName);
-                }
-
-                articleReponsitory.save(existingArticle);
-                return existingArticle;
+            if(file != null && !file.isEmpty()) {
+                deleteFile(existingArticle.getLink_image());
+                String fileName = storeFile(file);
+                existingArticle.setLink_image(fileName);
             }
+
+            articleReponsitory.save(existingArticle);
+            return existingArticle;
+        }
 
     }
 

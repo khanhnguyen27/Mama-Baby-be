@@ -2,6 +2,7 @@ package com.myweb.mamababy.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,9 +37,12 @@ public class Comment {
     @JsonBackReference
     private User user;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Date date;
 
     @Column(name = "status")
     private Boolean status;
+
 }
