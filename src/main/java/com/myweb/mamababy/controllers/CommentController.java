@@ -35,7 +35,16 @@ public class CommentController {
                             .build());
         }
 
-        return ResponseEntity.ok(comments);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get comments of product successfully")
+                        .data(comments.stream()
+                                .map(CommentResponse::fromComment)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+
     }
 
 
@@ -93,7 +102,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody CommentDTO commentDTO) throws Exception {
         try {
-            Comment createdComment = commentService.createComment(commentDTO);
+            List<Comment> createdComment = commentService.createComments(commentDTO);
             return ResponseEntity.ok().body(
                     ResponseObject.builder()
                             .message("Create comments successfully")

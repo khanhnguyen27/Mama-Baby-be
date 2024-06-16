@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/article")

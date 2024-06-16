@@ -8,7 +8,7 @@ import com.myweb.mamababy.models.Comment;
 import java.util.List;
 
 public interface ICommentService {
-    Comment createComment(CommentDTO commentDTO) throws Exception;
+    List<Comment> createComments(CommentDTO commentDTO) throws Exception;
     Comment getCommentById(int Id) throws Exception;
     List<Comment> getAllComment() throws Exception;
     Comment updateComment(int Id, CommentDTO commentDTO, String extractedToken) throws Exception;

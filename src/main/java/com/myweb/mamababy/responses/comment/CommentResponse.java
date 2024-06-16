@@ -12,6 +12,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -41,6 +43,20 @@ public class CommentResponse {
 
     @JsonProperty("status")
     private Boolean status;
+
+    public static List<CommentResponse> fromComment(List<Comment> comments) {
+        return comments.stream()
+                .map(comment -> CommentResponse.builder()
+                        .id(comment.getId())
+                        .product_id(comment.getProduct().getId())
+                        .rating(comment.getRating())
+                        .comment(comment.getComment())
+                        .user_id(comment.getUser().getId())
+                        .date(comment.getDate())
+                        .status(comment.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     public static CommentResponse fromComment(Comment comment) {
         return CommentResponse.builder()

@@ -1,0 +1,21 @@
+<!-- src/main/resources/logback.xml -->
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- Định dạng log -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d [%thread] %-5level %logger{35} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!-- Ghi log cho các class cụ thể -->
+    <logger name="com.example.YourControllerClass" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- Cấu hình mặc định -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

@@ -1,6 +1,7 @@
 package com.myweb.mamababy.services.Comment;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
+import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.CommentDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
@@ -10,13 +11,11 @@ import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import com.myweb.mamababy.services.User.IUserService;
 import com.myweb.mamababy.services.User.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,27 +27,38 @@ public class CommentService implements ICommentService{
     private final IUserService userService;
 
     @Override
-    public Comment createComment(CommentDTO commentDTO) throws Exception{
-        if(commentRepository.existsByUserIdAndProductId(commentDTO.getUserId(), commentDTO.getProductId()
-        )){
-            throw new Exception("User has already commented on this product");
-        }
-        Product product = productRepository.findById(commentDTO.getProductId())
-                    .orElseThrow(() -> new DataNotFoundException("Product not found"));
+    @Transactional
+    public List<Comment> createComments(CommentDTO commentDTO) throws Exception {
         User user = userRepository.findById(commentDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        Comment newCom = Comment
-                .builder()
-                .rating(commentDTO.getRating())
-                .comment(commentDTO.getComment())
-                .date(new Date())
-                .status(true)
-                .build();
-        newCom.setProduct(product);
-        newCom.setUser(user);
-        return commentRepository.save(newCom);
+        List<Comment> comments = new ArrayList<>();
+
+        for (CartItemDTO cartItem : commentDTO.getCartItems()) {
+            int productId = cartItem.getProductId();
+
+//            if (commentRepository.existsByUserIdAndProductId(commentDTO.getUserId(), productId)) {
+//                throw new Exception("User has already commented on product with ID: " + productId);
+//            }
+
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new DataNotFoundException("Product not found with ID: " + productId));
+
+            Comment newComment = Comment.builder()
+                    .rating(commentDTO.getRating())
+                    .comment(commentDTO.getComment())
+                    .date(new Date())
+                    .status(true)
+                    .build();
+            newComment.setProduct(product);
+            newComment.setUser(user);
+
+            comments.add(commentRepository.save(newComment));
+        }
+
+        return comments;
     }
+
 
     @Override
     public Comment getCommentById(int Id) {
@@ -91,13 +101,23 @@ public class CommentService implements ICommentService{
     public Comment updateComment(int Id, CommentDTO commentDTO, String token) throws Exception {
 
         User user = userService.getUserDetailsFromToken(token);
+        List<Comment> existingCom1 = commentRepository.findByUserId(commentDTO.getUserId());
         Comment existingCom;
+
+        // Kiểm tra xem danh sách existingCom1 có chứa Id hay không
+        boolean isIdExist = existingCom1.stream()
+                .anyMatch(comment -> comment.getId() == Id);
+
+        if (!isIdExist) {
+            throw new Exception("Comment with id " + Id + " not found for user " + commentDTO.getUserId());
+        }
             if (user.getId() != commentDTO.getUserId()) {
                 throw new Exception("User does not match");
             } else {
 
                 existingCom = getCommentById(Id);
                 existingCom.setComment(commentDTO.getComment());
+                existingCom.setRating(commentDTO.getRating());
                 commentRepository.save(existingCom);
                 return existingCom;
             }
