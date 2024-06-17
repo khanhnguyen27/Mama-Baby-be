@@ -42,7 +42,7 @@ public class Product extends BaseEntity{
     private String imageUrl;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

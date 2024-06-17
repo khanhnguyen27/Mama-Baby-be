@@ -59,7 +59,7 @@ public class ProductResponse extends BaseResponse {
                 .brandId(product.getBrand().getId())
                 .age(product.getAge().getId())
                 .storeId(product.getStore().getId())
-                .isActive(product.isActive())
+                .isActive(product.getIsActive())
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());

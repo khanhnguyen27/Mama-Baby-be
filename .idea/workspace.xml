@@ -5,22 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eee779-674f-49f4-a555-36c1d7e7daca" name="Changes" comment="1 tí nguyên mẫu Order, OrderDetail và Voucher">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Article_3dec4965-34c3-45cc-95de-af45c6d5cd6f_night-the-city-lights-view-wallpaper-preview.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Article_3fffa926-5e47-4b7d-9c84-0a538984b142_night-the-city-lights-view-wallpaper-preview.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uploads/Article_58aa8ed6-7cb2-4b3c-9d86-b8dfe8c56c7e_night-the-city-lights-view-wallpaper-preview.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ArticleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ArticleDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/CommentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/comment/CommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/comment/CommentResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Article/ArticleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/ICommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Comment/ICommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/ProductDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/product/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/product/ProductResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uploads/Article_6ef720e4-8e3d-4abe-95f8-62baf5f8a864_night-the-city-lights-view-wallpaper-preview.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/myweb/mamababy/services/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/myweb/mamababy/services/UserServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/Product_7b12a65f-d006-4f64-8dae-e6598a020c37_fbde59f5611d0cbe013289cff0a6e0b0.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,15 +69,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.MamababyApplication.executor": "Run",
+    "Application.MamababyApplication.executor": "Debug",
     "JUnit.All in mamababy (1).executor": "Run",
     "JUnit.All in mamababy.executor": "Run",
     "JUnit.MamababyApplicationTests.executor": "Run",
+    "JUnit.UserServiceTest.testLoginSuccess.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "ManhCuong",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/khoitd/.m2/repository/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar",
+    "last_opened_file_path": "C:/Users/manhc/OneDrive/Desktop/Ky 5 Chuyen Nganh/SWT_302_10w/SWT_Project",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -137,9 +131,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceTest.testLoginSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mamababy" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.myweb.mamababy.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.myweb.mamababy.services" />
+      <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.services.UserServiceTest" />
+      <option name="METHOD_NAME" value="testLoginSuccess" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MamababyApplication" />
+        <item itemvalue="JUnit.UserServiceTest.testLoginSuccess" />
         <item itemvalue="JUnit.All in mamababy (1)" />
         <item itemvalue="JUnit.All in mamababy" />
         <item itemvalue="JUnit.MamababyApplicationTests" />
@@ -200,6 +211,11 @@
           <line>165</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java</url>
+          <line>182</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java</url>
           <line>151</line>
@@ -226,6 +242,24 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
+          <line>111</line>
+          <properties class="com.myweb.mamababy.services.Product.ProductService" method="updateProduct">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java</url>
+          <line>176</line>
+          <properties class="com.myweb.mamababy.controllers.ProductController" method="updateProduct">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

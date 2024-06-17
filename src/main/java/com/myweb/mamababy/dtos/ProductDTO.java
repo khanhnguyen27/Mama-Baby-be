@@ -59,5 +59,6 @@ public class ProductDTO {
     private int storeId;
 
     @JsonProperty("is_active")
-    private boolean isActive;
+    private Boolean isActive;
+
 }

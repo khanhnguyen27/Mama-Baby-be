@@ -1,5 +1,6 @@
 package com.myweb.mamababy.services;
 
+import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.models.Role;
 import com.myweb.mamababy.models.User;
@@ -8,10 +9,13 @@ import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.User.UserService;
 import org.assertj.core.api.Assertions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +25,19 @@ import org.springframework.http.HttpStatus;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
+import java.util.Optional;
+
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserServiceTest {
 
     @Autowired
@@ -32,6 +45,15 @@ public class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private AuthenticationManager authenticationManager;
+
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
     private UserDTO userDTO;
     private User user;
@@ -42,7 +64,7 @@ public class UserServiceTest {
         // Setup UserDTO
         userDTO = UserDTO.builder()
                 .username("HooHellp01234")
-                .password("123456789")
+                .password("password")
                 .fullName("hk")
                 .address("duong ao 10")
                 .phoneNumber("03759357393")
@@ -57,6 +79,7 @@ public class UserServiceTest {
         user = new User();
         user.setId(57);
         user.setUsername("HooHellp01234");
+        user.setPassword("$2a$10$someEncodedPassword");
         user.setFullName("hk");
         user.setAddress("duong ao 10");
         user.setPhoneNumber("03759357393");
@@ -103,5 +126,17 @@ public class UserServiceTest {
         var exception = assertThrows(DataIntegrityViolationException.class, () -> userService.createUser(userDTO));
 
         Assertions.assertThat(exception.getMessage()).containsIgnoringCase("Username already exists");
+    }
+
+    @Test
+    public void testLoginSuccess() throws Exception {
+        when(userRepository.findByUsername("HooHellp01234")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("password", user.getPassword())).thenReturn(true);
+        when(jwtTokenUtil.generateToken(user)).thenReturn("jwt-token");
+
+        String token = userService.login("HooHellp01234", "password");
+
+        assertEquals("jwt-token", token);
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
     }
 }
