@@ -252,8 +252,6 @@ public class ProductService implements IProductService {
         if (Files.exists(filePath)) {
             // Xóa file
             Files.delete(filePath);
-        } else {
-            throw new FileNotFoundException("File not found: " + filename);
         }
     }
 }
