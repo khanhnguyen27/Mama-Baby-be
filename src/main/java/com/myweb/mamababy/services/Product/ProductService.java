@@ -142,7 +142,7 @@ public class ProductService implements IProductService {
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
-            existingProduct.setActive(productDTO.isActive());
+            existingProduct.setIsActive(productDTO.getIsActive());
             existingProduct.setUpdatedAt(LocalDateTime.now());
             //existingProduct.setStore(existingStore);
 
@@ -187,7 +187,7 @@ public class ProductService implements IProductService {
     @Transactional
     public Product deleteProduct(int id) throws Exception {
         Product existingProduct = getProductById(id);
-        existingProduct.setActive(false);
+        existingProduct.setIsActive(false);
         return productRepository.save(existingProduct);
 
     }
