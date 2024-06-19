@@ -16,8 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDTO {
-    @JsonProperty("cart_items")
-    private List<CartItemDTO> cartItems;
+    @NotBlank(message = "product_id is required")
+    @JsonProperty("product_id")
+    private int productId;
 
     @NotBlank(message = "rating is required")
     @JsonProperty("rating")
