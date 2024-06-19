@@ -34,8 +34,8 @@ public class CommentService implements ICommentService{
 
         List<Comment> comments = new ArrayList<>();
 
-        for (CartItemDTO cartItem : commentDTO.getCartItems()) {
-            int productId = cartItem.getProductId();
+
+            int productId = commentDTO.getProductId();
 
 //            if (commentRepository.existsByUserIdAndProductId(commentDTO.getUserId(), productId)) {
 //                throw new Exception("User has already commented on product with ID: " + productId);
@@ -54,7 +54,6 @@ public class CommentService implements ICommentService{
             newComment.setUser(user);
 
             comments.add(commentRepository.save(newComment));
-        }
 
         return comments;
     }
