@@ -29,6 +29,9 @@ public class VoucherResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate endAt;
 
+    @JsonProperty("store_id")
+    private int storeId;
+
     private boolean isActive;
 
     public static VoucherResponse fromVoucher(Voucher voucher) {
@@ -38,6 +41,7 @@ public class VoucherResponse {
                 .discountValue(voucher.getDiscountValue())
                 .description(voucher.getDescription())
                 .endAt(voucher.getEndAt())
+                .storeId(voucher.getStore().getId())
                 .isActive(voucher.isActive())
                 .build();
     }

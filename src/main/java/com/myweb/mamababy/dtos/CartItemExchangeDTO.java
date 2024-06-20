@@ -11,8 +11,8 @@ import lombok.*;
 @Setter
 public class CartItemExchangeDTO {
 
-    @JsonProperty("order_detail_id")
-    private int orderDetailId;
+    @JsonProperty("product_id")
+    private int productId;
 
     @JsonProperty("quantity")
     private int quantity;

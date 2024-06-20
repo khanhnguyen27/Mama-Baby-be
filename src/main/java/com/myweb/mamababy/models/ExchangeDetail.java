@@ -18,8 +18,8 @@ public class ExchangeDetail {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "order_detail_id")
-    private OrderDetail orderDetail;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;

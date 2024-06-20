@@ -29,6 +29,9 @@ public class Product extends BaseEntity{
     @Column(name = "point")
     private int point;
 
+    @Column(name = "remain")
+    private int remain;
+
     @Column(name = "status")
     private String status;
 

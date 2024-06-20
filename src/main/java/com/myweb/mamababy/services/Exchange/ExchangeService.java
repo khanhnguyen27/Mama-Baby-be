@@ -27,11 +27,13 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ExchangeService implements IExchangeService{
 
+    private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeDetailRepository exchangeDetailRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Exchange createExchange(ExchangeDTO exchangeDTO) throws Exception {
@@ -46,36 +48,42 @@ public class ExchangeService implements IExchangeService{
                 .orElseThrow(() ->
                         new DataNotFoundException(
                                 "Cannot find store with id: "+exchangeDTO.getStoreId()));
+        Order existingOrder = orderRepository
+                .findById(exchangeDTO.getOrderId())
+                .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find store with id: "+exchangeDTO.getStoreId()));
 
         if(!existingUser.getIsActive() || !existingStore.isActive()){
             throw new DataNotFoundException("Invalid");
         }
         Exchange newExchange = Exchange.builder()
                 .description(exchangeDTO.getDescription())
-                .amount(exchangeDTO.getAmount())
                 .status("PROCESSING")
                 .createDate(LocalDate.now())
                 .user(existingUser)
                 .store(existingStore)
+                .order(existingOrder)
                 .build();
 
         List<ExchangeDetail> exchangeDetails = new ArrayList<>();
 
         for (CartItemExchangeDTO cartItemExchangeDTO : exchangeDTO.getCartItemExchange()){
-            // Tạo một đối tượng OrderDetail từ CartItemDTO
+
+            // Tạo một đối tượng ExchangeDetail từ CartItemDTO
             ExchangeDetail exchangeDetail = new ExchangeDetail();
             exchangeDetail.setExchange(newExchange);
 
-            int orderDetailId = cartItemExchangeDTO.getOrderDetailId();
+            int productId = cartItemExchangeDTO.getProductId();
             int quantity = cartItemExchangeDTO.getQuantity();
 
-            OrderDetail existingOrderDetail = orderDetailRepository
-                    .findById(orderDetailId)
+            Product existingProduct = productRepository
+                    .findById(productId)
                     .orElseThrow(() ->
                             new DataNotFoundException(
-                                    "Cannot find order detail with id: "+orderDetailId));
+                                    "Cannot find product with id: "+productId));
 
-            exchangeDetail.setOrderDetail(existingOrderDetail);
+            exchangeDetail.setProduct(existingProduct);
             exchangeDetail.setQuantity(quantity);
 
             exchangeDetails.add(exchangeDetail);
@@ -84,7 +92,6 @@ public class ExchangeService implements IExchangeService{
         newExchange.setExchangeDetails(exchangeDetails);
         exchangeRepository.save(newExchange);
         exchangeDetailRepository.saveAll(exchangeDetails);
-
         return newExchange;
 
     }

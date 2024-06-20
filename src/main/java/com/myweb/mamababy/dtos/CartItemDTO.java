@@ -19,8 +19,8 @@ public class CartItemDTO {
     @JsonProperty("product_id")
     private int productId;
 
-    @JsonProperty("store_id")
-    private int storeId;
+//    @JsonProperty("store_id")
+//    private int storeId;
 
     @JsonProperty("quantity")
     private int quantity;

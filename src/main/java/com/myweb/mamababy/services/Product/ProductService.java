@@ -6,6 +6,7 @@ import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.product.ProductResponse;
+import com.myweb.mamababy.services.Store.IStoreService;
 import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,6 +36,7 @@ public class ProductService implements IProductService {
     private final BrandRepository brandRepository;
     private final AgeRepository ageRepository;
     private final StoreRepository storeRepository;
+    private final IStoreService storeService;
     private static final String UPLOADS_FOLDER = "uploads";
 
     @Override
@@ -71,6 +73,7 @@ public class ProductService implements IProductService {
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .point(productDTO.getPoint())
+                .remain(productDTO.getRemain())
                 .status(productDTO.getStatus())
                 .description(productDTO.getDescription())
                 .type(productDTO.getType())
@@ -146,8 +149,6 @@ public class ProductService implements IProductService {
             existingProduct.setUpdatedAt(LocalDateTime.now());
             //existingProduct.setStore(existingStore);
 
-
-
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {
                 existingProduct.setName(productDTO.getName());
             }
@@ -157,6 +158,9 @@ public class ProductService implements IProductService {
             }
             if(productDTO.getPoint() >= 0) {
                 existingProduct.setPoint(productDTO.getPoint());
+            }
+            if(productDTO.getRemain() >= 0) {
+                existingProduct.setRemain(productDTO.getRemain());
             }
             if(productDTO.getStatus() != null &&
                     !productDTO.getStatus().isEmpty()) {

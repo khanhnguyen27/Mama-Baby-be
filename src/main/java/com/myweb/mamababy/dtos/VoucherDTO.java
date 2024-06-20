@@ -3,6 +3,8 @@ package com.myweb.mamababy.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +33,10 @@ public class VoucherDTO {
 
     @JsonProperty("end_at")
     private LocalDate endAt;
+
+    @NotNull(message = "Store ID is required.")
+    @JsonProperty("store_id")
+    private int storeId;
 
     @JsonProperty("is_active")
     private boolean isActive;

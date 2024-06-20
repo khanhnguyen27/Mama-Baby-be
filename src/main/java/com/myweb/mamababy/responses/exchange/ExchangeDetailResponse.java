@@ -13,8 +13,8 @@ public class ExchangeDetailResponse {
 
     private int id;
 
-    @JsonProperty("order_detail_id")
-    private int orderDetailId;
+    @JsonProperty("product_id")
+    private int productId;
 
     @JsonProperty("quantity")
     private int quantity;
@@ -25,7 +25,7 @@ public class ExchangeDetailResponse {
     public static ExchangeDetailResponse fromExchangeDetail(ExchangeDetail exchangeDetail){
         return ExchangeDetailResponse.builder()
                 .id(exchangeDetail.getId())
-                .orderDetailId(exchangeDetail.getOrderDetail().getId())
+                .productId(exchangeDetail.getProduct().getId())
                 .quantity(exchangeDetail.getQuantity())
                 .exchangeId(exchangeDetail.getExchange().getId())
                 .build();

@@ -27,6 +27,10 @@ public class ProductDTO {
     @JsonProperty("point")
     private int point;
 
+    @Min(value = 0, message = "Remain must be greater than or equal to 0")
+    @JsonProperty("remain")
+    private int remain;
+
     @NotEmpty(message = "Status is required")
     @JsonProperty("status")
     private String status;

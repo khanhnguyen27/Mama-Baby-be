@@ -13,9 +13,9 @@ import lombok.*;
 @Setter
 public class ExchangeDetailDTO {
 
-    @NotNull(message = "Order detail ID is required.")
-    @JsonProperty("order_detail_id")
-    private int orderDetailId;
+    @NotNull(message = "Product ID is required.")
+    @JsonProperty("product_id")
+    private int productId;
 
     @Min(value = 0, message = "Quantity must be greater than or equal to 0")
     @JsonProperty("quantity")

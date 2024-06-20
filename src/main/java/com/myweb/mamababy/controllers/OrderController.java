@@ -51,13 +51,11 @@ public class OrderController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            List<Order> newOrders = orderService.createOrder(orderDTO);
-
-            List<OrderResponse> orderResponses = newOrders.stream().map(OrderResponse::fromOrder)
-                .toList();
+            Order newOrders = orderService.createOrder(orderDTO);
             return ResponseEntity.ok(ResponseObject.builder()
                 .message("Create New Orders Successfully!!!").status(HttpStatus.CREATED)
-                .data(orderResponses).build());
+                .data(OrderResponse.fromOrder(newOrders))
+                .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
