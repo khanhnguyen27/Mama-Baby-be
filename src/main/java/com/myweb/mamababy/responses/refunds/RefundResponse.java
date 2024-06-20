@@ -2,14 +2,12 @@ package com.myweb.mamababy.responses.refunds;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myweb.mamababy.models.Exchange;
-import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Refund;
-import com.myweb.mamababy.models.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,14 +18,9 @@ public class RefundResponse {
 
     private int id;
 
-    @JsonProperty("user_id")
-    private int userId;
+    private String description;
 
-    @JsonProperty("order_id")
-    private int orderId;
-
-    @JsonProperty("exchange_id")
-    private int exchangeId;
+    private String status;
 
     private float amount;
 
@@ -35,19 +28,29 @@ public class RefundResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate  createDate;
 
+    @JsonProperty("user_id")
+    private int userId;
+
+    @JsonProperty("order_id")
+    private int orderId;
+
+    @JsonProperty("store_id")
+    private int storeId;
+
+    @JsonProperty("refund_detail_list")
+    private List<RefundDetailResponse> refundDetails;
+
     public static RefundResponse fromRefund(Refund refund){
-        RefundResponse refundResponse = RefundResponse.builder()
+        return RefundResponse.builder()
                 .id(refund.getId())
-                .userId(refund.getUser().getId())
+                .description(refund.getDescription())
+                .status(refund.getStatus())
                 .amount(refund.getAmount())
                 .createDate(refund.getCreateDate())
+                .userId(refund.getUser().getId())
+                .storeId(refund.getStore().getId())
+                .orderId(refund.getOrder().getId())
+                .refundDetails(refund.getRefundDetails().stream().map(RefundDetailResponse::fromRefundDetail).toList())
                 .build();
-        if(refund.getOrder() != null){
-            refundResponse.setOrderId(refund.getOrder().getId());
-        }
-        if(refund.getExchange() != null){
-            refundResponse.setExchangeId(refund.getExchange().getId());
-        }
-        return refundResponse;
     }
 }

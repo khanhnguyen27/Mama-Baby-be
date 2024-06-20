@@ -251,6 +251,8 @@ public class OrderService implements IOrderService{
                             .build());
         }
 
+
+
         orderRepository.save(newOrder);
         statusOrderRepository.saveAll(statusOrders);
         orderDetailRepository.saveAll(orderDetails);
