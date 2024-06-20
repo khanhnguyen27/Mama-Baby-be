@@ -3,7 +3,9 @@ package com.myweb.mamababy.services.Voucher;
 import com.myweb.mamababy.dtos.VoucherDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Actived;
+import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.Voucher;
+import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.VoucherRepository;
 import com.myweb.mamababy.services.Actived.ActivedService;
 import com.myweb.mamababy.services.Actived.IActivedService;
@@ -21,6 +23,7 @@ public class VoucherService implements IVoucherService{
 
     private final VoucherRepository voucherRepository;
     private final IActivedService activedService;
+    private final StoreRepository storeRepository;
 
     @Override
     public int calculateVoucherValue(String code, int discountValue) {
@@ -30,13 +33,20 @@ public class VoucherService implements IVoucherService{
     @Override
     public Voucher createVoucher(VoucherDTO voucherDTO) throws Exception {
 
+        Store existingStore = storeRepository
+                .findById(voucherDTO.getStoreId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+voucherDTO.getStoreId()));
+
         Voucher newVoucher = Voucher.builder()
 
                 .code(voucherDTO.getCode())
                 .discountValue(voucherDTO.getDiscountValue())
                 .description(voucherDTO.getDescription())
                 .endAt(voucherDTO.getEndAt())
-                .isActive(true)
+                .store(existingStore)
+                .isActive(voucherDTO.isActive())
                 .build();
 
         return voucherRepository.save(newVoucher);
@@ -49,9 +59,9 @@ public class VoucherService implements IVoucherService{
     }
 
   @Override
-    public List<Voucher> getAllVoucher(int userId) throws Exception {
+    public List<Voucher> getAllVoucher(int storeId, int userId) throws Exception {
       List<Actived> activedList = new ArrayList<>();
-      List<Voucher> listAll = voucherRepository.findAll();
+      List<Voucher> listAll = voucherRepository.findByStoreId(storeId);
       List<Voucher> listVoucherValid = new ArrayList<>();
       if (userId != 0) {
           activedList = activedService.getActivedByUserId(userId);
@@ -71,6 +81,11 @@ public class VoucherService implements IVoucherService{
           }
       }
       return listVoucherValid;
+    }
+
+    @Override
+    public List<Voucher> getAllVoucherByStoreId(int storeId) throws Exception {
+        return voucherRepository.findByStoreId(storeId);
     }
 
     @Override

@@ -22,9 +22,6 @@ public class ExchangeDTO {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("amount")
-    private float amount;
-
     @JsonProperty("status")
     private String status;
 
@@ -35,6 +32,10 @@ public class ExchangeDTO {
     @NotNull(message = "User ID is required.")
     @JsonProperty("user_id")
     private int userId;
+
+    @NotNull(message = "Order ID is required.")
+    @JsonProperty("order_id")
+    private int orderId;
 
     @JsonProperty("cart_items_exchange")
     private List<CartItemExchangeDTO> cartItemExchange;

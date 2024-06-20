@@ -14,7 +14,9 @@ public interface IVoucherService {
 
     Voucher getVoucherById(int id) throws Exception;
 
-    List<Voucher> getAllVoucher(int userId) throws Exception;
+    List<Voucher> getAllVoucher(int storeId, int userId) throws Exception;
+
+    List<Voucher> getAllVoucherByStoreId(int storeId) throws Exception;
 
     List<Voucher> getAllVoucherAdmin() throws Exception;
 

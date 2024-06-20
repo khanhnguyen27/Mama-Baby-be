@@ -23,9 +23,6 @@ public class Exchange {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "amount", nullable = false)
-    private float amount;
-
     @Column(name = "status", nullable = false)
     private String status;
 
@@ -39,6 +36,10 @@ public class Exchange {
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @OneToMany(mappedBy = "exchange", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

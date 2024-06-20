@@ -24,8 +24,8 @@ public class OrderDTO {
     @JsonProperty("user_id")
     private int userId;
 
-//    @JsonProperty("store_id")
-//    private int storeId;
+    @JsonProperty("store_id")
+    private int storeId;
 
     @NotBlank(message = "Full name is required.")
     @JsonProperty("full_name")

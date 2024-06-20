@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface IOrderService {
 
-    List<Order> createOrder(OrderDTO orderDTO) throws Exception;
+    Order createOrder(OrderDTO orderDTO) throws Exception;
 
     Order getOrder(int id) throws DataNotFoundException;
 

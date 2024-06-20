@@ -8,6 +8,7 @@ import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Product.IProductService;
+import com.myweb.mamababy.services.Store.IStoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
@@ -26,6 +27,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,6 +37,7 @@ public class ProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final IProductService productService;
+    private final IStoreService storeService;
 
     //POST http://localhost:8080/mamababy/products
     @CrossOrigin(origins = "http://localhost:3000")
@@ -90,9 +93,16 @@ public class ProductController {
         totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
 
+        List<ProductResponse> productResponsesValid = new ArrayList<>();
+        for(ProductResponse productResponse : products){
+            if(storeService.getStoreById(productResponse.getStoreId()).isActive()){
+                productResponsesValid.add(productResponse);
+            }
+        }
+
         ProductListResponse productListResponse = ProductListResponse
                 .builder()
-                .products(products)
+                .products(productResponsesValid)
                 .totalPages(totalPages)
                 .build();
         return ResponseEntity.ok(ResponseObject.builder()

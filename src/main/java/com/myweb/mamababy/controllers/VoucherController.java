@@ -54,7 +54,7 @@ public class VoucherController {
     //Find Voucher By Id
     @GetMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getVoucher(@Valid @PathVariable("id") int voucherId) {
+    public ResponseEntity<?> getVoucher(@PathVariable("id") int voucherId) {
         try {
             Voucher exitingVoucher = voucherService.getVoucherById(voucherId);
             return ResponseEntity.ok(ResponseObject.builder()
@@ -71,9 +71,28 @@ public class VoucherController {
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllVoucher(
-            @RequestParam(defaultValue = "0", name = "user_id") int userId
+            @RequestParam(defaultValue = "0", name = "user_id") int userId,
+            @RequestParam(defaultValue = "0", name = "store_id") int storeId
     ) throws Exception {
-        List<Voucher> vouchers = voucherService.getAllVoucher(userId);
+        List<Voucher> vouchers = voucherService.getAllVoucher(storeId, userId);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get all voucher Successfully!!!")
+                        .data(vouchers.stream()
+                                .map(VoucherResponse::fromVoucher)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    //Get All Voucher by store ID
+    @GetMapping("store/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getAllVoucherByStoreId(
+            @PathVariable("id") int storeId
+    ) throws Exception {
+        List<Voucher> vouchers = voucherService.getAllVoucherByStoreId(storeId);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get all voucher Successfully!!!")

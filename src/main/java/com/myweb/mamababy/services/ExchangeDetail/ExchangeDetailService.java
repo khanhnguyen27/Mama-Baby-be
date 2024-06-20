@@ -5,9 +5,11 @@ import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Exchange;
 import com.myweb.mamababy.models.ExchangeDetail;
 import com.myweb.mamababy.models.OrderDetail;
+import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.repositories.ExchangeDetailRepository;
 import com.myweb.mamababy.repositories.ExchangeRepository;
 import com.myweb.mamababy.repositories.OrderDetailRepository;
+import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,18 +25,19 @@ public class ExchangeDetailService implements IExchangeDetailService{
     private final OrderDetailRepository orderDetailRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeDetailRepository exchangeDetailRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public ExchangeDetailResponse createExchangeDetailResponse(ExchangeDetailDTO newExchangeDetail) throws Exception {
-        OrderDetail existingOrderDetail = orderDetailRepository.findById(newExchangeDetail.getOrderDetailId())
+        Product existingProduct = productRepository.findById(newExchangeDetail.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find order detail with id : " + newExchangeDetail.getOrderDetailId()));
+                        "Cannot find product with id : " + newExchangeDetail.getProductId()));
         Exchange existingExchange = exchangeRepository.findById(newExchangeDetail.getExchangeId())
                 .orElseThrow(() -> new DataNotFoundException(
                         "Cannot find exchange with id : " + newExchangeDetail.getExchangeId()));
 
         ExchangeDetail exchangeDetail = ExchangeDetail.builder()
-                .orderDetail(existingOrderDetail)
+                .product(existingProduct)
                 .exchange(existingExchange)
                 .quantity(newExchangeDetail.getQuantity())
                 .build();
@@ -57,15 +60,15 @@ public class ExchangeDetailService implements IExchangeDetailService{
                 .orElseThrow(() -> new DataNotFoundException(
                         "Cannot find exchange detail with id : " + id));
 
-        OrderDetail existingOrderDetail = orderDetailRepository.findById(newExchangeDetail.getOrderDetailId())
+        Product existingProduct = productRepository.findById(newExchangeDetail.getProductId())
                 .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find order detail with id : " + newExchangeDetail.getOrderDetailId()));
+                        "Cannot find product with id : " + newExchangeDetail.getProductId()));
 
         Exchange existingExchange = exchangeRepository.findById(newExchangeDetail.getExchangeId())
                 .orElseThrow(() -> new DataNotFoundException(
                         "Cannot find exchange with id : " + newExchangeDetail.getExchangeId()));
 
-        existingExchangeDetail.setOrderDetail(existingOrderDetail);
+        existingExchangeDetail.setProduct(existingProduct);
         existingExchangeDetail.setExchange(existingExchange);
         existingExchangeDetail.setQuantity(newExchangeDetail.getQuantity());
 

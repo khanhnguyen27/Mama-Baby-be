@@ -1,12 +1,11 @@
 package com.myweb.mamababy.responses.exchange;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Exchange;
 import com.myweb.mamababy.models.ExchangeDetail;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -23,10 +22,10 @@ public class ExchangeResponse {
 
     private String description;
 
-    private float amount;
-
     private String status;
 
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     @JsonProperty("create_date")
     private LocalDate createDate;
 
@@ -36,6 +35,9 @@ public class ExchangeResponse {
     @JsonProperty("store_id")
     private int storeId;
 
+    @JsonProperty("order_id")
+    private int orderId;
+
     @JsonProperty("exchange_detail_list")
     private List<ExchangeDetailResponse> exchangeDetails;
 
@@ -43,11 +45,11 @@ public class ExchangeResponse {
         return ExchangeResponse.builder()
                 .id(exchange.getId())
                 .description(exchange.getDescription())
-                .amount(exchange.getAmount())
                 .status(exchange.getStatus())
                 .createDate(exchange.getCreateDate())
                 .userId(exchange.getUser().getId())
                 .storeId(exchange.getStore().getId())
+                .orderId(exchange.getOrder().getId())
                 .exchangeDetails(exchange.getExchangeDetails().stream().map(ExchangeDetailResponse::fromExchangeDetail).toList())
                 .build();
     }
