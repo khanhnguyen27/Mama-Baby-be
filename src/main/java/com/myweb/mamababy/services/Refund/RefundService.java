@@ -1,18 +1,21 @@
 package com.myweb.mamababy.services.Refund;
 
+import com.myweb.mamababy.dtos.CartItemExchangeDTO;
+import com.myweb.mamababy.dtos.CartItemRefundDTO;
 import com.myweb.mamababy.dtos.RefundDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.InvalidParamException;
 import com.myweb.mamababy.models.*;
-import com.myweb.mamababy.repositories.ExchangeRepository;
-import com.myweb.mamababy.repositories.OrderRepository;
-import com.myweb.mamababy.repositories.RefundRepository;
-import com.myweb.mamababy.repositories.UserRepository;
+import com.myweb.mamababy.repositories.*;
+import com.myweb.mamababy.responses.exchange.ExchangeResponse;
 import com.myweb.mamababy.responses.refunds.RefundResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,65 +26,126 @@ import static java.util.stream.Collectors.toList;
 public class RefundService implements IRefundService{
 
     private final RefundRepository refundRepository;
+    private final RefundDetailRepository refundDetailRepository;
     private final UserRepository userRepository;
     private final ExchangeRepository exchangeRepository;
     private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Refund createRefund(RefundDTO refundDTO) throws Exception {
 
-        Exchange existingExchange = null;
-        Order existingOrder = null;
+        User existingUser = userRepository
+                .findById(refundDTO.getUserId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find user with id: "+refundDTO.getUserId()));
+        Store existingStore = storeRepository
+                .findById(refundDTO.getStoreId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+refundDTO.getStoreId()));
+        Order existingOrder = orderRepository
+                .findById(refundDTO.getOrderId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+refundDTO.getStoreId()));
 
-        User existingUser = userRepository.findById(refundDTO.getUserId())
-                .orElseThrow(() -> new DataNotFoundException(
-                        "Cannot find user with id: " + refundDTO.getUserId()));
-        if(refundDTO.getExchangeId() == 0 && refundDTO.getOrderId() == 0){
-            throw new InvalidParamException("Both exchange id and order id attributes cannot be left blank !");
+        if(!existingUser.getIsActive() || !existingStore.isActive()){
+            throw new DataNotFoundException("Invalid");
         }
-        if(refundDTO.getExchangeId() != 0){
-            existingExchange = exchangeRepository.findById(refundDTO.getExchangeId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            "Cannot find exchange with id: " + refundDTO.getExchangeId()));
-        }
-        if(refundDTO.getOrderId() != 0){
-            existingOrder = orderRepository.findById(refundDTO.getOrderId())
-                    .orElseThrow(() -> new DataNotFoundException(
-                            "Cannot find exchange with id: " + refundDTO.getOrderId()));
-        }
-
         Refund newRefund = Refund.builder()
-                .user(existingUser)
-                .exchange(existingExchange)
-                .order(existingOrder)
+                .description(refundDTO.getDescription())
+                .status("PROCESSING")
                 .amount(refundDTO.getAmount())
                 .createDate(LocalDate.now())
+                .user(existingUser)
+                .store(existingStore)
+                .order(existingOrder)
                 .build();
 
-        return refundRepository.save(newRefund);
+        List<RefundDetail> refundDetails = new ArrayList<>();
+
+        for (CartItemRefundDTO cartItemRefundDTO : refundDTO.getCartItemRefund()){
+
+            // Tạo một đối tượng ExchangeDetail từ CartItemDTO
+            RefundDetail refundDetail = new RefundDetail();
+            refundDetail.setRefund(newRefund);
+
+            int productId = cartItemRefundDTO.getProductId();
+            int quantity = cartItemRefundDTO.getQuantity();
+            float unitPrice = cartItemRefundDTO.getUnitPrice();
+            float amount = cartItemRefundDTO.getAmount();
+
+            Product existingProduct = productRepository
+                    .findById(productId)
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find product with id: "+productId));
+
+            refundDetail.setProduct(existingProduct);
+            refundDetail.setQuantity(quantity);
+            refundDetail.setUnitPrice(unitPrice);
+            refundDetail.setAmount(amount);
+
+            refundDetails.add(refundDetail);
+        }
+
+        newRefund.setRefundDetails(refundDetails);
+        refundRepository.save(newRefund);
+        refundDetailRepository.saveAll(refundDetails);
+        return newRefund;
     }
 
     @Override
-    public RefundResponse getRefund(int id) throws DataNotFoundException {
-        Refund refund =  refundRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find refund with id: " + id));
-        return RefundResponse.fromRefund(refund);
+    public Refund getRefundById(int id) throws DataNotFoundException {
+        Optional<Refund> optionalRefund = refundRepository.findById(id);
+        if (optionalRefund.isPresent()) {
+            return optionalRefund.get();
+        }
+        throw new DataNotFoundException("Cannot find refund with id =" + id);
+    }
+
+    @Override
+    public Page<RefundResponse> getAllRefund(String status, PageRequest pageRequest) {
+        Page<Refund> refundPage = refundRepository.searchExchange(status, pageRequest);
+        return refundPage.map(RefundResponse::fromRefund);
     }
 
     @Override
     public Refund updateRefund(int id, RefundDTO refundDTO) throws DataNotFoundException {
+        Refund existingExchange = getRefundById(id);
+        if (existingExchange != null) {
+
+            if (refundDTO.getStatus() != null &&
+                    !refundDTO.getStatus().isEmpty())
+                existingExchange.setStatus(refundDTO.getStatus());
+
+            return refundRepository.save(existingExchange);
+        }
         return null;
     }
 
     @Override
-    public List<RefundResponse> getAllRefund() throws Exception {
-        List<Refund> refundList = refundRepository.findAll();
-        return refundList.stream().map(RefundResponse::fromRefund).toList();
+    public List<Refund> findByUserId(int userId) throws DataNotFoundException {
+        List<Refund> refunds = refundRepository.findByUserId(userId);
+
+        if (refunds.isEmpty()) {
+            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
+        }
+        return refunds;
     }
 
+
     @Override
-    public List<RefundResponse> findByUserId(int userId) throws DataNotFoundException {
-        List<Refund> refundList = refundRepository.findByUserId(userId);
-        return refundList.stream().map(RefundResponse::fromRefund).toList();
+    public List<Refund> findByStoreId(int storeId) throws DataNotFoundException {
+        List<Refund> refunds = refundRepository.findByStoreId(storeId);
+
+        if (refunds.isEmpty()) {
+            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
+        }
+
+        return refunds;
     }
 }

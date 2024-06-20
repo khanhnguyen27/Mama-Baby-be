@@ -22,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ExchangeDetailService implements IExchangeDetailService{
 
-    private final OrderDetailRepository orderDetailRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeDetailRepository exchangeDetailRepository;
     private final ProductRepository productRepository;
