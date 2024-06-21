@@ -73,8 +73,7 @@ public class ArticleController {
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "store_id") int storeId,
             @RequestParam(defaultValue = "0", name = "page") int page,
-            @RequestParam(defaultValue = "12", name = "limit") int limit,
-            @RequestHeader("Authorization") String token
+            @RequestParam(defaultValue = "12", name = "limit") int limit
     ) throws Exception {
         int totalPages = 0;
 
