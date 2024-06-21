@@ -5,6 +5,7 @@ import com.myweb.mamababy.models.Brand;
 import com.myweb.mamababy.repositories.BrandRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class BrandService implements IBrandService{
     @Override
     public List<Brand> getAllBrands()
     {
-        return brandRepository.findAll();
+        return brandRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override

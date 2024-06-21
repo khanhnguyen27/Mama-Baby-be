@@ -5,6 +5,7 @@ import com.myweb.mamababy.models.Age;
 import com.myweb.mamababy.repositories.AgeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class AgeService implements IAgeService{
     @Override
     public List<Age> getAllAges()
     {
-        return ageRepository.findAll();
+        return ageRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.repositories.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public List<Category> getAllCategories()
     {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
