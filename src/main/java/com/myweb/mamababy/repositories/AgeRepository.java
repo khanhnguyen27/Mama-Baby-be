@@ -11,6 +11,6 @@ public interface AgeRepository extends JpaRepository<Age, Integer> {
   @Query("SELECT c FROM Age c WHERE c.isActive = true")
   List<Age> findAllActiveAge();
 
-  @Query("SELECT c FROM Age c")
-  List<Age> findAll(Sort c);
+//  @Query("SELECT c FROM Age c")
+//  List<Age> findAll(Sort c);
 }

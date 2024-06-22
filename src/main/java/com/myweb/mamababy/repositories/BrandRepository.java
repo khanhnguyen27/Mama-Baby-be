@@ -11,6 +11,6 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
   @Query("SELECT c FROM Brand c WHERE c.isActive = true")
   List<Brand> findAllActiveBrand();
 
-  @Query("SELECT c FROM Brand c")
-  List<Brand> findAll(Sort c);
+//  @Query("SELECT c FROM Brand c")
+//  List<Brand> findAll(Sort c);
 }

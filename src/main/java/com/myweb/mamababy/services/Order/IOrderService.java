@@ -3,12 +3,15 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Order;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
 public interface IOrderService {
+
+    List<Order> findByYear(int year) throws DataNotFoundException; ;
 
     Order createOrder(OrderDTO orderDTO) throws Exception;
 

@@ -11,6 +11,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
   @Query("SELECT c FROM Category c WHERE c.isActive = true")
   List<Category> findAllActiveCategories();
 
-  @Query("SELECT c FROM Category c")
-  List<Category> findAll(Sort c);
+//  @Query("SELECT c FROM Category c")
+//  List<Category> findAll(Sort c);
 }

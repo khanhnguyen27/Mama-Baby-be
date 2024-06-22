@@ -1,14 +1,12 @@
 package com.myweb.mamababy.services.Refund;
 
-import com.myweb.mamababy.dtos.CartItemExchangeDTO;
 import com.myweb.mamababy.dtos.CartItemRefundDTO;
 import com.myweb.mamababy.dtos.RefundDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.exceptions.InvalidParamException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
-import com.myweb.mamababy.responses.exchange.ExchangeResponse;
 import com.myweb.mamababy.responses.refunds.RefundResponse;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +30,14 @@ public class RefundService implements IRefundService{
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
+
+
+    @Override
+    public List<Refund> findByYear(int year) {
+        List<Refund> refunds = refundRepository.findByRefundDateYear(year);
+        return refunds.stream().filter(refund -> refund.getCreateDate().getYear() == year).collect(
+            Collectors.toList());
+    }
 
     @Override
     public Refund createRefund(RefundDTO refundDTO) throws Exception {
