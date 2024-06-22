@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -165,6 +166,14 @@ public class OrderService implements IOrderService{
 //        }
 //    return orderRepository.saveAll(orders);
 //    }
+
+    @Override
+    public List<Order> findByYear(int year) {
+        List<Order> orders = orderRepository.findByOrderDateYear(year);
+        return orders.stream()
+            .filter(order -> order.getOrderDate().getYear() == year)
+            .collect(Collectors.toList()); // Removed .orElseThrow(...)
+    }
 
     @Override
     public Order createOrder(OrderDTO orderDTO) throws Exception {

@@ -17,6 +17,9 @@ public interface RefundRepository extends JpaRepository<Refund, Integer> {
 
     List<Refund> findByStoreId(int storeId);
 
+    @Query("SELECT o FROM Refund o WHERE YEAR(o.createDate) = :year")
+    List<Refund> findByRefundDateYear(int year);
+
     @Query("SELECT r FROM Refund r WHERE " +
             "(:status IS NULL OR :status = '' OR r.status LIKE %:status%)")
     Page<Refund> searchExchange

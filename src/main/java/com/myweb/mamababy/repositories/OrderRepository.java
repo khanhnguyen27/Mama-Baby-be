@@ -1,6 +1,7 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Order;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByUserId(int userId);
 
     List<Order> findByStoreId(int storeId);
+
+    @Query("SELECT o FROM Order o WHERE YEAR(o.orderDate) = :year")
+    List<Order> findByOrderDateYear(int year);
 
     @Query("SELECT o FROM Order o WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
