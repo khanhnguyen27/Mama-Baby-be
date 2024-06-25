@@ -83,6 +83,12 @@ public class CommentService implements ICommentService{
         return handleEmptyList(comments);
     }
 
+    @Override
+    public List<Comment> getCommentsByProductIdWithStore(int productId) {
+        List<Comment> comments = commentRepository.findByProductIdWithStore(productId);
+        return handleEmptyList(comments);
+    }
+
     private List<Comment> handleEmptyList(List<Comment> comments) {
         if (comments == null || comments.isEmpty()) {
             return Collections.emptyList(); // hoặc trả về null
@@ -92,7 +98,7 @@ public class CommentService implements ICommentService{
 
     @Override
     public List<Comment> getAllComment() {
-        List<Comment> comments = commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAllByStatusTrue();
         return handleEmptyList(comments);
     }
 

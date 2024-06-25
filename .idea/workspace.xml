@@ -230,7 +230,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ArticleController.java</url>
           <line>151</line>
-          <properties class="com.myweb.mamababy.controllers.ArticleController">
+          <properties class="com.myweb.mamababy.controllers.ArticleController" method="updateArticle">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -257,7 +257,9 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
           <line>111</line>
+
           <properties class="com.myweb.mamababy.services.Product.ProductService">
+
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -266,7 +268,9 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/ProductController.java</url>
           <line>176</line>
+
           <properties class="com.myweb.mamababy.controllers.ProductController">
+
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -275,7 +279,9 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
           <line>244</line>
+
           <properties class="com.myweb.mamababy.services.Product.ProductService">
+
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -284,7 +290,9 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
           <line>216</line>
+
           <properties class="com.myweb.mamababy.services.Product.ProductService">
+
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -293,7 +301,9 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Product/ProductService.java</url>
           <line>200</line>
+
           <properties class="com.myweb.mamababy.services.Product.ProductService">
+
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

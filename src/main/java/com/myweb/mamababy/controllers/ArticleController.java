@@ -86,11 +86,11 @@ public class ArticleController {
         Page<ArticleResponse> articlePage = articleService.getAllArticle(keyword, storeId, pageRequest);
         // Lấy tổng số trang
         totalPages = articlePage.getTotalPages();
-        List<ArticleResponse> products = articlePage.getContent();
+        List<ArticleResponse> articles = articlePage.getContent();
 
         ArticleListResponse articleListResponse = ArticleListResponse
                 .builder()
-                .articles(products)
+                .articles(articles)
                 .totalPages(totalPages)
                 .build();
         return ResponseEntity.ok().body(
@@ -122,11 +122,11 @@ public class ArticleController {
         Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, pageRequest);
         // Lấy tổng số trang
         totalPages = articlePage.getTotalPages();
-        List<ArticleResponse> products = articlePage.getContent();
+        List<ArticleResponse> articles = articlePage.getContent();
 
         ArticleListResponse articleListResponse = ArticleListResponse
                 .builder()
-                .articles(products)
+                .articles(articles)
                 .totalPages(totalPages)
                 .build();
         if (articlePage.isEmpty()) {

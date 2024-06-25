@@ -11,6 +11,7 @@ import lombok.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -66,5 +67,11 @@ public class ProductResponse extends BaseResponse {
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());
         return productResponse;
+    }
+
+    public static List<ProductResponse> fromProduct(List<Product> products) {
+        return products.stream()
+                .map(ProductResponse::fromProduct)
+                .collect(Collectors.toList());
     }
 }

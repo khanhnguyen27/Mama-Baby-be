@@ -18,8 +18,9 @@ public interface IProductService {
     Page<ProductResponse> getProductByStoreId(String keyword,
                                               int categoryId, int brandId, int age, int storeId, PageRequest pageRequest) throws Exception;
 
-    Page<ProductResponse> getAllProducts(String keyword,
+    Page<ProductResponse> getAllProducts(String keyword, String type,
                                          int categoryId, int brandId, int age, int storeId, PageRequest pageRequest);
+    List<ProductResponse> getAllProductsCH(String type);
 
     Product updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws Exception;
 

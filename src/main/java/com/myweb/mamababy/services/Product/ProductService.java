@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,9 +105,19 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<ProductResponse> getAllProducts(String keyword, int categoryId, int brandId, int age, int storeId, PageRequest pageRequest) {
-        Page<Product> productsPage= productRepository.searchProducts(keyword, categoryId, brandId, age, storeId, pageRequest);
+    public Page<ProductResponse> getAllProducts(String keyword, String type, int categoryId, int brandId, int age, int storeId, PageRequest pageRequest) {
+        Page<Product> productsPage= productRepository.searchProducts(keyword, type, categoryId, brandId, age, storeId, pageRequest);
         return productsPage.map(ProductResponse::fromProduct);
+    }
+
+    @Override
+    public List<ProductResponse> getAllProductsCH(String type) {
+        List<Product> products = productRepository.searchProductsCH(type);
+        List<ProductResponse> productResponses = products.stream()
+                .map(ProductResponse::fromProduct) // Map Product to ProductResponse
+                .collect(Collectors.toList());    // Collect into a List
+
+        return productResponses;
     }
 
 
@@ -153,13 +164,13 @@ public class ProductService implements IProductService {
                 existingProduct.setName(productDTO.getName());
             }
 
-            if(productDTO.getPrice() > 0) {
+            if(productDTO.getPrice() >= 0) {
                 existingProduct.setPrice(productDTO.getPrice());
             }
-            if(productDTO.getPoint() > 0) {
+            if(productDTO.getPoint() >= 0) {
                 existingProduct.setPoint(productDTO.getPoint());
             }
-            if(productDTO.getRemain() > 0) {
+            if(productDTO.getRemain() >= 0) {
                 existingProduct.setRemain(productDTO.getRemain());
             }
             if(productDTO.getStatus() != null &&

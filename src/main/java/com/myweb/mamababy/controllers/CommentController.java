@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,11 +49,33 @@ public class CommentController {
 
     }
 
-
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/product/{id}") // Lấy tất cả bình luận của sản phẩm
     public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) throws Exception {
         List<Comment> comments = commentService.getCommentsByProductId(id);
+        if (comments == null || comments.isEmpty()) {
+            return ResponseEntity.ok()
+                    .body(ResponseObject.builder()
+                            .message("No comments found for product with ID: " + id)
+                            .status(HttpStatus.OK)
+                            .build());
+        }
+
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get comments of product successfully")
+                        .data(comments.stream()
+                                .map(CommentResponse::fromComment)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/store/product/{id}") // Lấy tất cả bình luận của sản phẩm
+    public ResponseEntity<?> getCommentByProductWithStore(@PathVariable("id") int id) throws Exception {
+        List<Comment> comments = commentService.getCommentsByProductIdWithStore(id);
         if (comments == null || comments.isEmpty()) {
             return ResponseEntity.ok()
                     .body(ResponseObject.builder()
@@ -143,8 +166,8 @@ public class CommentController {
     //Ẩn hiện comment, xóa mềm, dành cho staff admin
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/status/{id}")
-    public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody String status) throws Exception {
-        boolean parsedStatus = Boolean.parseBoolean(status);
+    public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody Map<String, Boolean> requestBody) throws Exception {
+        Boolean parsedStatus = requestBody.get("status");
         Comment updatedComment = commentService.updateCommentStatus(id, parsedStatus);
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
