@@ -58,32 +58,32 @@ public class VoucherService implements IVoucherService{
                 .orElseThrow(() -> new DataNotFoundException("Cannot find voucher with id: " + id));
     }
 
-  @Override
+    @Override
     public List<Voucher> getAllVoucher(int storeId, int userId) throws Exception {
-      List<Actived> activedList = new ArrayList<>();
-      List<Voucher> listAll = voucherRepository.findAll();
-      List<Voucher> listVoucherValid = new ArrayList<>();
-      if (userId != 0) {
-          activedList = activedService.getActivedByUserId(userId);
-      }
-      if (storeId != 0) {
-          listAll = voucherRepository.findByStoreId(storeId);
-      }
-      for(Voucher voucher : listAll) {
-          if (voucher.isActive() && !(LocalDate.now().isAfter(voucher.getEndAt()) || LocalDate.now().isEqual(voucher.getEndAt()))) {
-              boolean isInActivedList = false;
-              for (Actived actived : activedList) {
-                  if (actived.getVoucherId() == voucher.getId()) {
-                      isInActivedList = true;
-                      break;
-                  }
-              }
-              if(!isInActivedList){
-                  listVoucherValid.add(voucher);
-              }
-          }
-      }
-      return listVoucherValid;
+        List<Actived> activedList = new ArrayList<>();
+        List<Voucher> listAll = voucherRepository.findAll();
+        List<Voucher> listVoucherValid = new ArrayList<>();
+        if (userId != 0) {
+            activedList = activedService.getActivedByUserId(userId);
+        }
+        if (storeId != 0) {
+            listAll = voucherRepository.findByStoreId(storeId);
+        }
+        for(Voucher voucher : listAll) {
+            if (voucher.isActive() && !(LocalDate.now().isAfter(voucher.getEndAt()) || LocalDate.now().isEqual(voucher.getEndAt()))) {
+                boolean isInActivedList = false;
+                for (Actived actived : activedList) {
+                    if (actived.getVoucherId() == voucher.getId()) {
+                        isInActivedList = true;
+                        break;
+                    }
+                }
+                if(!isInActivedList){
+                    listVoucherValid.add(voucher);
+                }
+            }
+        }
+        return listVoucherValid;
     }
 
     @Override

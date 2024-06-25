@@ -72,6 +72,7 @@ public class ProductController {
     @GetMapping("")
     public ResponseEntity<?> getProducts(
             @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "") String type,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
             @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
             @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
@@ -88,7 +89,7 @@ public class ProductController {
         );
         //Lay tat ca cac product theo yeu cau
         Page<ProductResponse> productPage = productService
-                .getAllProducts(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
+                .getAllProducts(keyword, type, categoryId, brandId, rangeAge, storeId, pageRequest);
         // Lấy tổng số trang
         totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
@@ -110,6 +111,34 @@ public class ProductController {
                         .data(productListResponse)
                         .status(HttpStatus.OK)
                         .build());
+    }
+
+    //GET http://localhost:8080/mamababy/products
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/comment_history")
+    public ResponseEntity<?> getAllProducts(
+            @RequestParam(defaultValue = "") String type
+    ){
+        //Lay tat ca cac product theo yeu cau
+        List<ProductResponse> products = productService
+                .getAllProductsCH(type);
+
+        List<ProductResponse> productResponsesValid = new ArrayList<>();
+        for(ProductResponse productResponse : products){
+            if(storeService.getStoreById(productResponse.getStoreId()).isActive()){
+                productResponsesValid.add(productResponse);
+            }
+        }
+
+        ProductListResponse productListResponse = ProductListResponse
+                .builder()
+                .products(productResponsesValid)
+                .build();
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message("Get products details successfully")
+                .data(productListResponse)
+                .status(HttpStatus.OK)
+                .build());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
