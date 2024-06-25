@@ -153,13 +153,13 @@ public class ProductService implements IProductService {
                 existingProduct.setName(productDTO.getName());
             }
 
-            if(productDTO.getPrice() >= 0) {
+            if(productDTO.getPrice() > 0) {
                 existingProduct.setPrice(productDTO.getPrice());
             }
-            if(productDTO.getPoint() >= 0) {
+            if(productDTO.getPoint() > 0) {
                 existingProduct.setPoint(productDTO.getPoint());
             }
-            if(productDTO.getRemain() >= 0) {
+            if(productDTO.getRemain() > 0) {
                 existingProduct.setRemain(productDTO.getRemain());
             }
             if(productDTO.getStatus() != null &&

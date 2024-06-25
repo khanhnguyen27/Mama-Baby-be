@@ -9,6 +9,7 @@ import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.services.Order.IOrderService;
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -189,6 +191,25 @@ public class OrderController {
                 .message("Update Orders Successfully!!!")
                 .status(HttpStatus.OK)
                 .data(orderResponses)
+                .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Get By Year
+    @GetMapping("/findByYear")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getOrdersByYear(
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) int year) {
+        try {
+            List<Order> orders = orderService.findByYear(year);
+            return ResponseEntity.ok(ResponseObject.builder()
+                .message("Orders for year " + year + " found successfully!!!")
+                .data(orders.stream()
+                    .map(OrderResponse::fromOrder)
+                    .collect(Collectors.toList()))
+                .status(HttpStatus.OK)
                 .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
