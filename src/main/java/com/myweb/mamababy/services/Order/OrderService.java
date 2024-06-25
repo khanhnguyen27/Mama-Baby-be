@@ -3,6 +3,7 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.exceptions.InvalidParamException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -168,14 +170,6 @@ public class OrderService implements IOrderService{
 //    }
 
     @Override
-    public List<Order> findByYear(int year) {
-        List<Order> orders = orderRepository.findByOrderDateYear(year);
-        return orders.stream()
-            .filter(order -> order.getOrderDate().getYear() == year)
-            .collect(Collectors.toList()); // Removed .orElseThrow(...)
-    }
-
-    @Override
     public Order createOrder(OrderDTO orderDTO) throws Exception {
         User existingUser = userRepository.findById(orderDTO.getUserId())
             .orElseThrow(() -> new DataNotFoundException(
@@ -233,6 +227,30 @@ public class OrderService implements IOrderService{
         }
 
         newOrder.setOrderDetails(orderDetails);
+
+        //subtract quantity in product remain
+        for (OrderDetail orderDetail : orderDetails) {
+            Product existingProduct = productRepository.findById(orderDetail.getProduct().getId())
+                    .orElseThrow(() -> new DataNotFoundException
+                            ("Cannot find product with id: " + orderDetail.getProduct().getId()));
+
+            int quantityCurrent = existingProduct.getRemain() - orderDetail.getQuantity();
+            if (quantityCurrent < 0) {
+                quantityCurrent = 0;
+            }
+            existingProduct.setRemain(quantityCurrent);
+
+            productRepository.save(existingProduct);
+        }
+
+        //subtract point user
+        if(orderDTO.getTotalPoint() != 0 ){
+            if(orderDTO.getTotalPoint() > existingUser.getAccumulatedPoints()){
+                throw new InvalidParamException("Not enough point !!!");
+            }
+            existingUser.setAccumulatedPoints(existingUser.getAccumulatedPoints() - orderDTO.getTotalPoint());
+            userRepository.save(existingUser);
+        }
 
         //  Set status for order
             List<StatusOrder> statusOrders = new ArrayList<>();
@@ -386,5 +404,13 @@ public class OrderService implements IOrderService{
         }
 
         return orderPage;
+    }
+
+    @Override
+    public List<Order> findByYear(int year) {
+        List<Order> orders = orderRepository.findByOrderDateYear(year);
+        return orders.stream()
+                .filter(order -> order.getOrderDate().getYear() == year)
+                .collect(Collectors.toList()); // Removed .orElseThrow(...)
     }
 }
