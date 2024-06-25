@@ -1,7 +1,7 @@
 package com.myweb.mamababy.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.*;
 
 @Entity
@@ -34,6 +34,9 @@ public class Store {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "request_date")
+    private LocalDate requestDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")

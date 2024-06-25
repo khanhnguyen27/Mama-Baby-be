@@ -166,7 +166,7 @@ public class RefundController {
         try {
             List<Refund> refunds = refundService.findByYear(year);
             return ResponseEntity.ok(ResponseObject.builder()
-                .message("Orders for year " + year + " found successfully!!!")
+                .message("Refunds for year " + year + " found successfully!!!")
                 .data(refunds.stream()
                     .map(RefundResponse::fromRefund)
                     .collect(Collectors.toList()))

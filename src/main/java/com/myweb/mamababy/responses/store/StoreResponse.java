@@ -2,6 +2,7 @@ package com.myweb.mamababy.responses.store;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Store;
+import java.time.LocalDate;
 import lombok.*;
 
 @Getter
@@ -20,6 +21,7 @@ public class StoreResponse {
     private String description;
     private String phone;
     private String status;
+    private LocalDate requestDate;
 
     @JsonProperty("is_active")
     private boolean isActive;
@@ -34,6 +36,7 @@ public class StoreResponse {
                 .address(store.getAddress())
                 .description(store.getDescription())
                 .phone(store.getPhone())
+                .requestDate(store.getRequestDate())
                 .status(store.getStatus())
                 .isActive(store.isActive())
                 .userID(store.getUser().getId())
