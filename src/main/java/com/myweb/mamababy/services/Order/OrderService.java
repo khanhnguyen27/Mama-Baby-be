@@ -3,6 +3,7 @@ package com.myweb.mamababy.services.Order;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.OrderDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.exceptions.InvalidParamException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService implements IOrderService{
+public class OrderService implements IOrderService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
@@ -169,19 +171,19 @@ public class OrderService implements IOrderService{
     @Override
     public Order createOrder(OrderDTO orderDTO) throws Exception {
         User existingUser = userRepository.findById(orderDTO.getUserId())
-            .orElseThrow(() -> new DataNotFoundException(
-                "Cannot find user with id: " + orderDTO.getUserId()));
+                .orElseThrow(() -> new DataNotFoundException(
+                        "Cannot find user with id: " + orderDTO.getUserId()));
         Store existingStore = storeRepository.findById(orderDTO.getStoreId())
                 .orElseThrow(
-                    () -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
+                        () -> new DataNotFoundException("Cannot find store with id: " + orderDTO.getStoreId()));
         Voucher existingVoucher = null;
-        if( orderDTO.getVoucherId() != 0){
-             existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
+        if (orderDTO.getVoucherId() != 0) {
+            existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
                     .orElseThrow(() -> new DataNotFoundException(
                             "Cannot find voucher with id: " + orderDTO.getVoucherId()));
         }
 
-        if (!existingUser.getIsActive() || !existingStore.isActive() ) {
+        if (!existingUser.getIsActive() || !existingStore.isActive()) {
             throw new DataNotFoundException("Invalid user, store is inActive");
         }
 
@@ -210,7 +212,7 @@ public class OrderService implements IOrderService{
             int quantity = cartItemDTO.getQuantity();
 
             Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
+                    .orElseThrow(() -> new DataNotFoundException("Product not found with id: " + productId));
 
             // Set product and quantity in order detail.
             orderDetail.setProduct(product);
@@ -225,38 +227,61 @@ public class OrderService implements IOrderService{
 
         newOrder.setOrderDetails(orderDetails);
 
-        //  Set status for order
-            List<StatusOrder> statusOrders = new ArrayList<>();
-            if(orderDTO.getPaymentMethod().equals("VNPAY")){
-                statusOrders.add(StatusOrder.builder()
-                                .order(newOrder)
-                                .date(LocalDate.now())
-                                .status("UNPAID")
-                                .build());
-            }else{
-                statusOrders.add(StatusOrder.builder()
-                        .order(newOrder)
-                        .date(LocalDate.now())
-                        .status("PENDING")
-                        .build());
+        //subtract quantity in product remain
+        for (OrderDetail orderDetail : orderDetails) {
+            Product existingProduct = productRepository.findById(orderDetail.getProduct().getId())
+                    .orElseThrow(() -> new DataNotFoundException
+                            ("Cannot find product with id: " + orderDetail.getProduct().getId()));
+
+            int quantityCurrent = existingProduct.getRemain() - orderDetail.getQuantity();
+            if (quantityCurrent < 0) {
+                quantityCurrent = 0;
             }
+            existingProduct.setRemain(quantityCurrent);
+
+            productRepository.save(existingProduct);
+        }
+
+        //subtract point user
+        if(orderDTO.getTotalPoint() != 0 ){
+            if(orderDTO.getTotalPoint() > existingUser.getAccumulatedPoints()){
+                throw new InvalidParamException("Not enough point !!!");
+            }
+            existingUser.setAccumulatedPoints(existingUser.getAccumulatedPoints() - orderDTO.getTotalPoint());
+            userRepository.save(existingUser);
+        }
+
+        //  Set status for order
+        List<StatusOrder> statusOrders = new ArrayList<>();
+        if (orderDTO.getPaymentMethod().equals("VNPAY")) {
+            statusOrders.add(StatusOrder.builder()
+                    .order(newOrder)
+                    .date(LocalDate.now())
+                    .status("UNPAID")
+                    .build());
+        } else {
+            statusOrders.add(StatusOrder.builder()
+                    .order(newOrder)
+                    .date(LocalDate.now())
+                    .status("PENDING")
+                    .build());
+        }
 
         newOrder.setStatusOrders(statusOrders);
 
         //  Set active Voucher
-        if(existingVoucher != null){
+        if (existingVoucher != null) {
             activedRepository.save(Actived.builder()
-                            .userId(existingUser.getId())
-                            .voucherId(existingVoucher.getId())
-                            .build());
+                    .userId(existingUser.getId())
+                    .voucherId(existingVoucher.getId())
+                    .build());
         }
-
 
 
         orderRepository.save(newOrder);
         statusOrderRepository.saveAll(statusOrders);
         orderDetailRepository.saveAll(orderDetails);
-    return newOrder;
+        return newOrder;
     }
 
     @Override
@@ -340,7 +365,7 @@ public class OrderService implements IOrderService{
 
 
     @Override
-    public List<Order> getAllOrder(){
+    public List<Order> getAllOrder() {
         return orderRepository.findAll();
     }
 
