@@ -2,9 +2,12 @@ package com.myweb.mamababy.controllers;
 
 
 import com.myweb.mamababy.dtos.StoreDTO;
+import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.store.StoreListResponse;
@@ -14,10 +17,12 @@ import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
 import com.myweb.mamababy.services.User.IUserService;
 import jakarta.validation.Valid;
+import java.time.YearMonth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -99,6 +104,7 @@ public class StoreController {
                         .build()
         );
     }
+
     //Lấy ra một sản phẩm theo ID
     //GET: http://localhost:8080/mamababy/stores/{id}
     @CrossOrigin(origins = "http://localhost:3000")
@@ -190,4 +196,22 @@ public class StoreController {
         }
     }
 
+    // Get By Month
+    @GetMapping("/findByMonth")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> GetStoreByMonth(
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) int month) {
+        try {
+            List<Store> stores = storeService.findByCurrentMonth(month);
+            return ResponseEntity.ok(ResponseObject.builder()
+                .message("Stores for month " + month + " found successfully!!!")
+                .data(stores.stream()
+                    .map(StoreResponse::fromStore)
+                    .collect(Collectors.toList()))
+                .status(HttpStatus.OK)
+                .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

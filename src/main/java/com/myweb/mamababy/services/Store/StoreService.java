@@ -3,13 +3,13 @@ package com.myweb.mamababy.services.Store;
 import com.myweb.mamababy.dtos.StoreDTO;
 
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Store;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -107,5 +107,14 @@ public class StoreService implements IStoreService{
         existingStore.setActive(false);
         storeRepository.save(existingStore);
         return existingStore;
+    }
+
+    @Override
+    public List<Store> findByCurrentMonth(int month) throws DataNotFoundException {
+        List<Store> stores = storeRepository.findByDateMonthAndYear(month, LocalDate.now().getYear());
+        if (stores.isEmpty()) {
+            throw new DataNotFoundException("No stores found for the current month.");
+        }
+        return stores;
     }
 }
