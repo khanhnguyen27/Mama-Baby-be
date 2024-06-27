@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -60,7 +61,7 @@ public class ExchangeService implements IExchangeService{
         Exchange newExchange = Exchange.builder()
                 .description(exchangeDTO.getDescription())
                 .status("PROCESSING")
-                .createDate(LocalDate.now())
+                .createDate(LocalDateTime.now())
                 .user(existingUser)
                 .store(existingStore)
                 .order(existingOrder)

@@ -9,6 +9,7 @@ import com.myweb.mamababy.repositories.*;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -198,7 +199,7 @@ public class OrderService implements IOrderService{
                 .phoneNumber(orderDTO.getPhoneNumber())
                 .shippingAddress(orderDTO.getShippingAddress())
                 .paymentMethod(orderDTO.getPaymentMethod())
-                .orderDate(LocalDate.now())
+                .orderDate(LocalDateTime.now())
                 .type(orderDTO.getType())
                 .user(existingUser)
                 .store(existingStore)

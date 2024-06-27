@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.models.Order;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Temporal;
@@ -35,8 +36,8 @@ public class OrderResponse {
     private String shippingAddress;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
-    private LocalDate orderDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+    private LocalDateTime orderDate;
 
     @JsonProperty("user_id")
     private int userId;

@@ -1,11 +1,9 @@
 package com.myweb.mamababy.dtos;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
-import java.util.List;
 
 @Data
 @Builder
@@ -21,5 +19,7 @@ public class PaymentDTO {
     @NotEmpty(message = "Bank code is required")
     private String bankCode;
 
-    private List<PaymentOrderDTO> orders;
+    private int orderId;
+
+    private int storeId;
 }

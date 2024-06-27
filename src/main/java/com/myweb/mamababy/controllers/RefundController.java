@@ -36,7 +36,7 @@ public class RefundController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("")
-    public ResponseEntity<?> createExchange(
+    public ResponseEntity<?> createRefund(
             @Valid @RequestBody RefundDTO refundDTO,
             BindingResult result
     ) {
@@ -61,7 +61,7 @@ public class RefundController {
 
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getAllOrder(
+    public ResponseEntity<?> getAllRefund(
             @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "12", name = "limit") int limit
@@ -110,7 +110,7 @@ public class RefundController {
 
     @GetMapping("/user/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getOrdersByUserId(
+    public ResponseEntity<?> getRefundByUserId(
             @Valid @PathVariable("id") int userId) {
         try {
             List<Refund> refundResponseList = refundService.findByUserId(userId);
@@ -126,7 +126,7 @@ public class RefundController {
 
     @GetMapping("/store/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getExchangesByStoreId(
+    public ResponseEntity<?> getRefundByStoreId(
             @Valid @PathVariable("id") int storeId) {
         try{
             List<Refund> refundResponseList = refundService.findByStoreId(storeId);
@@ -142,7 +142,7 @@ public class RefundController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateExchange(
+    public ResponseEntity<?> updateRefund(
             @PathVariable int id,
             @Valid @RequestBody RefundDTO refundDTO
     ) {

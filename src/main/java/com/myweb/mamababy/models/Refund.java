@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,7 +33,7 @@ public class Refund {
     private float amount;
 
     @Column(name = "create_date")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
