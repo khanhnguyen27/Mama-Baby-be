@@ -17,12 +17,9 @@ public class UserDTO {
 
     @JsonProperty("username")
     @NotBlank(message = "Username is mandatory")
-    @Size(min = 6, message = "Username must be at least 6 characters")
     private String username;
 
     @JsonProperty("password")
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
     @JsonProperty("fullName")

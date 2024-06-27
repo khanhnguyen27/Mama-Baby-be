@@ -66,7 +66,6 @@ public class ArticleController {
         }
     }
 
-    //Ai cũng xem được
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public ResponseEntity<?> getAllArticles(
@@ -80,8 +79,7 @@ public class ArticleController {
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
-                //Sort.by("createdAt").descending()
-                Sort.by("id").descending()
+                Sort.by("created_at").descending()
         );
         Page<ArticleResponse> articlePage = articleService.getAllArticle(keyword, storeId, pageRequest);
         // Lấy tổng số trang
@@ -116,8 +114,7 @@ public class ArticleController {
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
-                //Sort.by("createdAt").descending()
-                Sort.by("id").descending()
+                Sort.by("created_at").descending()
         );
         Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, pageRequest);
         // Lấy tổng số trang
