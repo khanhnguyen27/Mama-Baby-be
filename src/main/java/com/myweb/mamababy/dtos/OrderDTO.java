@@ -47,7 +47,6 @@ public class OrderDTO {
     @JsonProperty("total_discount")
     private float totalDiscount;
 
-    @Min(value = 5000, message = "Final money must be >= 0")
     @JsonProperty("final_amount")
     private float finalAmount;
 

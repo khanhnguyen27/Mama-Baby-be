@@ -24,10 +24,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,10 +45,12 @@ public class StoreController {
     //Tạo mới một cửa hàng
     //POST: http://localhost:8080/mamababy/stores
     @CrossOrigin(origins = "http://localhost:3000")
-    @PostMapping("")
+    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createStore(
-            @Valid @RequestBody StoreDTO storeDTO,
-            BindingResult result){
+            @Valid @ModelAttribute StoreDTO storeDTO,
+            BindingResult result,
+            @RequestParam("license") MultipartFile file
+    ){
 
         try {
             if(result.hasErrors()) {
@@ -56,7 +60,7 @@ public class StoreController {
                         .toList();
                 return ResponseEntity.badRequest().body(errorMessages);
             }
-            Store store  = storeService.createStore(storeDTO);
+            Store store  = storeService.createStore(storeDTO, file);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new store successfully !!!")
                     .status(HttpStatus.OK)
@@ -147,10 +151,11 @@ public class StoreController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> updateStore(
             @PathVariable int id,
-            @Valid @RequestBody StoreDTO storeDTO
+            @Valid @ModelAttribute StoreDTO storeDTO,
+            @RequestParam("license") MultipartFile file
     ) {
         try{
-            Store updateStore = storeService.updateStore(id, storeDTO);
+            Store updateStore = storeService.updateStore(id, storeDTO, file);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new store successfully !!!")
                     .status(HttpStatus.OK)

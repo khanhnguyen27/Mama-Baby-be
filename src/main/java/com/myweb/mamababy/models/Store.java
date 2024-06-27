@@ -2,6 +2,8 @@ package com.myweb.mamababy.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Entity
@@ -26,8 +28,11 @@ public class Store {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "phone", length = 10, nullable = false)
+    @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Column(name = "license_url")
+    private String licenseUrl ;
 
     @Column(name = "status")
     private String status;
@@ -36,7 +41,7 @@ public class Store {
     private boolean isActive;
 
     @Column(name = "request_date")
-    private LocalDate requestDate;
+    private LocalDateTime requestDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")

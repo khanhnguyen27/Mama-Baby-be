@@ -73,6 +73,7 @@ public class ProductController {
     public ResponseEntity<?> getProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "") String type,
+            @RequestParam(defaultValue = "", name = "sort_price") String sort,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
             @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
             @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
@@ -81,12 +82,25 @@ public class ProductController {
             @RequestParam(defaultValue = "12", name = "limit") int limit
             ){
         int totalPages = 0;
+        PageRequest pageRequest = null;
         // Tạo Pageable từ thông tin trang và giới hạn
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                //Sort.by("createdAt").descending()
-                Sort.by("id").ascending()
-        );
+        if(sort.equals("DESC")){
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("price").descending()
+            );
+        }else if(sort.equals("ASC")){
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("price").ascending()
+            );
+        }else {
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("createdAt").descending()
+            );
+        }
+
         //Lay tat ca cac product theo yeu cau
         Page<ProductResponse> productPage = productService
                 .getAllProducts(keyword, type, categoryId, brandId, rangeAge, storeId, pageRequest);
@@ -162,6 +176,7 @@ public class ProductController {
     @GetMapping("/store")
     public ResponseEntity<?> getProductByStoreId(
             @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "", name = "sort_price") String sort,
             @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
             @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
             @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
@@ -170,12 +185,24 @@ public class ProductController {
             @RequestParam(defaultValue = "12", name = "limit") int limit
     ) throws Exception {
         int totalPages = 0;
+        PageRequest pageRequest = null;
         // Tạo Pageable từ thông tin trang và giới hạn
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                //Sort.by("createdAt").descending()
-                Sort.by("id").ascending()
-        );
+        if(sort.equals("DESC")){
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("price").descending()
+            );
+        }else if(sort.equals("ASC")){
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("price").ascending()
+            );
+        }else {
+            pageRequest = PageRequest.of(
+                    page, limit,
+                    Sort.by("createdAt").descending()
+            );
+        }
         //Lay tat ca cac product theo yeu cau
         Page<ProductResponse> productPage = productService
                 .getProductByStoreId(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);

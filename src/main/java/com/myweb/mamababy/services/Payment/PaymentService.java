@@ -3,6 +3,9 @@ package com.myweb.mamababy.services.Payment;
 import com.myweb.mamababy.components.VnpayUtil;
 import com.myweb.mamababy.configurations.VnpayConfig;
 import com.myweb.mamababy.dtos.PaymentDTO;
+import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.responses.payment.VnpayResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +17,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PaymentService implements IPaymentService{
     private final VnpayConfig vnPayConfig;
+    private final StoreRepository storeRepository;
 
     @Override
-    public VnpayResponse createVnPayPayment(HttpServletRequest request, PaymentDTO paymentDTO) {
-//        long amount = Integer.parseInt(request.getParameter("finalAmount")) * 100L;
-//        String bankCode = request.getParameter("bankCode");
+    public VnpayResponse createVnPayPayment(HttpServletRequest request, PaymentDTO paymentDTO) throws DataNotFoundException {
+
+        Store existingStore = storeRepository
+                .findById(paymentDTO.getStoreId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find store with id: "+paymentDTO.getStoreId()));
+
         long amount = (int)paymentDTO.getFinalAmount() * 100L;
         String bankCode = paymentDTO.getBankCode();
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
+        vnpParamsMap.put("vnp_OrderInfo", "Order payment:" +  VnpayUtil.getRandomNumber(8) + " of " + existingStore.getNameStore() + " store.");
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }

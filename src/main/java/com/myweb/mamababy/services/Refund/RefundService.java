@@ -6,6 +6,8 @@ import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import com.myweb.mamababy.responses.refunds.RefundResponse;
+
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +28,6 @@ public class RefundService implements IRefundService{
     private final RefundRepository refundRepository;
     private final RefundDetailRepository refundDetailRepository;
     private final UserRepository userRepository;
-    private final ExchangeRepository exchangeRepository;
     private final OrderRepository orderRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
@@ -65,7 +66,7 @@ public class RefundService implements IRefundService{
                 .description(refundDTO.getDescription())
                 .status("PROCESSING")
                 .amount(refundDTO.getAmount())
-                .createDate(LocalDate.now())
+                .createDate(LocalDateTime.now())
                 .user(existingUser)
                 .store(existingStore)
                 .order(existingOrder)
@@ -75,7 +76,7 @@ public class RefundService implements IRefundService{
 
         for (CartItemRefundDTO cartItemRefundDTO : refundDTO.getCartItemRefund()){
 
-            // Tạo một đối tượng ExchangeDetail từ CartItemDTO
+            // Tạo một đối tượng RefundDetail từ CartItemDTO
             RefundDetail refundDetail = new RefundDetail();
             refundDetail.setRefund(newRefund);
 

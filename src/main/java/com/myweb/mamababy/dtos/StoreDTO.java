@@ -30,9 +30,6 @@ public class StoreDTO {
     @JsonProperty("phone")
     private String phone;
 
-    @JsonProperty("request_date")
-    private LocalDate requestDate;
-
     @JsonProperty("status")
     private String status;
 
