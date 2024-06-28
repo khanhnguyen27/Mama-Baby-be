@@ -17,7 +17,7 @@ public interface IOrderService {
 
     Order getOrder(int id) throws DataNotFoundException;
 
-    List<Order> updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException;
+    Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException;
 
     List<Order> getAllOrder() throws Exception;
 

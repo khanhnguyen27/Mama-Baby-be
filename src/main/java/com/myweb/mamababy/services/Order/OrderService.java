@@ -295,77 +295,16 @@ public class OrderService implements IOrderService{
 
     @Override
     @Transactional
-    public List<Order> updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException {
-//
-//        Order existingOrder = orderRepository.findById(id).orElseThrow(() ->
-//            new DataNotFoundException("Cannot find order with id: " + id));
-//
-//        User existingUser = userRepository.findById(orderDTO.getUserId()).orElseThrow(() ->
-//            new DataNotFoundException("Cannot find user with id: " + orderDTO.getUserId()));
-//        Voucher existingVoucher = voucherRepository.findById(orderDTO.getVoucherId())
-//            .orElseThrow(() ->
-//                new DataNotFoundException(
-//                    "Cannot find voucher with id: " + orderDTO.getVoucherId()));
-//
-//        existingOrder.setTotalPoint(orderDTO.getTotalPoint());
-//        existingOrder.setAmount(orderDTO.getAmount());
-//        existingOrder.setTotalDiscount(orderDTO.getTotalDiscount());
-//        existingOrder.setFinalAmount(orderDTO.getFinalAmount());
-//        existingOrder.setShippingAddress(orderDTO.getShippingAddress());
-//        existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
-//        existingOrder.setType(orderDTO.getType());
-//
-//        existingOrder.setUser(existingUser);
-//        existingOrder.setVoucher(existingVoucher);
-//
-//        Order updatedOrder = orderRepository.save(existingOrder);
-//
-//        Map<Integer, List<CartItemDTO>> itemsByStore = new HashMap<>();
-//        for (CartItemDTO cartItemDTO : orderDTO.getCartItems()) {
-//            int storeId = cartItemDTO.getStoreId();
-//            itemsByStore.computeIfAbsent(storeId, k -> new ArrayList<>()).add(cartItemDTO);
-//        }
-//
-//        List<OrderDetail> updatedOrderDetails = new ArrayList<>();
-//
-//        for (Map.Entry<Integer, List<CartItemDTO>> entry : itemsByStore.entrySet()) {
-//            int storeId = entry.getKey();
-//            List<CartItemDTO> cartItems = entry.getValue();
-//
-//            Store store = storeRepository.findById(storeId)
-//                .orElseThrow(
-//                    () -> new DataNotFoundException("Cannot find store with id: " + storeId));
-//
-//            for (CartItemDTO cartItemDTO : cartItems) {
-//                OrderDetail orderDetail = new OrderDetail();
-//                orderDetail.setOrder(updatedOrder);
-//
-//                int productId = cartItemDTO.getProductId();
-//                int quantity = cartItemDTO.getQuantity();
-//
-//                Product product = productRepository.findById(productId)
-//                    .orElseThrow(
-//                        () -> new DataNotFoundException("Product not found with id: " + productId));
-//
-//                orderDetail.setProduct(product);
-//                orderDetail.setQuantity(quantity);
-//                orderDetail.setUnitPrice(product.getPrice());
-//                orderDetail.setUnitPoint(product.getPoint());
-//                orderDetail.setAmountPrice(orderDetail.getUnitPrice() * orderDetail.getQuantity());
-//                orderDetail.setAmountPoint(orderDetail.getUnitPoint() * orderDetail.getQuantity());
-//
-//                updatedOrderDetails.add(orderDetail);
-//            }
-//        }
-//
-//        orderDetailRepository.deleteById(id);
-//
-//        orderDetailRepository.saveAll(updatedOrderDetails);
-//
-//        return Collections.singletonList(updatedOrder);
-        return null;
-    }
+    public Order updateOrder(int id, OrderDTO orderDTO) throws DataNotFoundException {
 
+        Order existingOrder = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new DataNotFoundException("Cannot find order with id: " + id));
+
+        existingOrder.setType(orderDTO.getType());
+
+        return orderRepository.save(existingOrder);
+    }
 
     @Override
     public List<Order> getAllOrder(){

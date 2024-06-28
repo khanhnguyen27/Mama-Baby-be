@@ -30,4 +30,13 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
             (@Param("keyword") String keyword,
              @Param("status") String status,
              Pageable pageable);
+
+    @Query("SELECT s FROM Store s WHERE " +
+            "(:keyword IS NULL OR :keyword = '' OR s.nameStore LIKE %:keyword%) " +
+            "AND (:status IS NULL OR :status = '' OR s.status LIKE %:status%) "
+            )
+    Page<Store> searchStoresAdmin
+            (@Param("keyword") String keyword,
+             @Param("status") String status,
+             Pageable pageable);
 }

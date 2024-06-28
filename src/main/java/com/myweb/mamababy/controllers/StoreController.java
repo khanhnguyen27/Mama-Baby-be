@@ -17,8 +17,13 @@ import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
 import com.myweb.mamababy.services.User.IUserService;
 import jakarta.validation.Valid;
+
+import java.nio.file.Paths;
 import java.time.YearMonth;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -41,6 +46,7 @@ public class StoreController {
 
     private final IStoreService storeService;
     private final IUserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     //Tạo mới một cửa hàng
     //POST: http://localhost:8080/mamababy/stores
@@ -92,6 +98,40 @@ public class StoreController {
         );
 
         Page<StoreResponse> storePage = storeService.getAllStores(keyword, status, pageRequest);
+        totalPages = storePage.getTotalPages();
+        List<StoreResponse> stores = storePage.getContent();
+
+        StoreListResponse storeListResponse = StoreListResponse
+                .builder()
+                .stores(stores)
+                .totalPages(totalPages)
+                .build();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get store' details successfully")
+                        .data(storeListResponse)
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/admin")
+    public ResponseEntity<?> getAllStoresAdmin(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "") String status,
+            @RequestParam(defaultValue = "0",name = "page")     int page,
+            @RequestParam(defaultValue = "12",name = "limit")    int limit
+    ) {
+        int totalPages = 0;
+
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                //Sort.by("createdAt").descending()
+                Sort.by("id").ascending()
+        );
+
+        Page<StoreResponse> storePage = storeService.getAllStoresAdmin(keyword, status, pageRequest);
         totalPages = storePage.getTotalPages();
         List<StoreResponse> stores = storePage.getContent();
 
@@ -184,7 +224,6 @@ public class StoreController {
         }
     }
 
-    //Xóa một sản phẩm theo ID
     //DELETE: http://localhost:8080/mamababy/stores/{id}
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
@@ -217,6 +256,30 @@ public class StoreController {
                 .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/license/{licenseName}")
+    public ResponseEntity<?> viewLicense(@PathVariable String licenseName) {
+        try {
+            java.nio.file.Path imagePath = Paths.get("uploads/"+licenseName);
+            UrlResource resource = new UrlResource(imagePath.toUri());
+
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                logger.info(licenseName + " not found");
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(new UrlResource(Paths.get("uploads/notfound.jpeg").toUri()));
+                //return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while retrieving image: " + e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -94,6 +94,12 @@ public class StoreService implements IStoreService{
     }
 
     @Override
+    public Page<StoreResponse> getAllStoresAdmin(String keyword, String status, PageRequest pageRequest) {
+        Page<Store> storesPage = storeRepository.searchStoresAdmin(keyword, status, pageRequest);
+        return storesPage.map(StoreResponse::fromStore);
+    }
+
+    @Override
     public Store updateStore(int id, StoreDTO storeDTO, MultipartFile file) throws IOException {
         // Tìm cửa hàng tồn tại trong DB
         Store existingStore = getStoreById(id);
@@ -134,8 +140,7 @@ public class StoreService implements IStoreService{
     @Override
     public Store deleteStore(int id) {
         Store existingStore = getStoreById(id);
-        existingStore.setActive(false);
-        storeRepository.save(existingStore);
+        storeRepository.delete(existingStore);
         return existingStore;
     }
 

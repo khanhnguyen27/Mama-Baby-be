@@ -33,10 +33,12 @@ public class OrderResponse {
     @JsonProperty("phone_number")
     private String phoneNumber;
 
+    @JsonProperty("shipping_address")
     private String shippingAddress;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+    @JsonProperty("order_date")
     private LocalDateTime orderDate;
 
     @JsonProperty("user_id")
