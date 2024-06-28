@@ -170,8 +170,9 @@ public class OrderController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> updateOrder(
         @Valid @PathVariable int id,
-        @Valid @RequestBody OrderDTO orderDTO, BindingResult result) {
-
+        @Valid @RequestBody OrderDTO orderDTO,
+        BindingResult result
+    ){
         try {
             if (result.hasErrors()) {
                 List<String> errorMessages = result.getFieldErrors()
@@ -181,16 +182,12 @@ public class OrderController {
                 return ResponseEntity.badRequest().body(errorMessages);
             }
 
-            List<Order> updatedOrders = orderService.updateOrder(id, orderDTO);
-
-            List<OrderResponse> orderResponses = updatedOrders.stream()
-                .map(OrderResponse::fromOrder)
-                .toList();
+            Order updatedOrders = orderService.updateOrder(id, orderDTO);
 
             return ResponseEntity.ok(ResponseObject.builder()
                 .message("Update Orders Successfully!!!")
                 .status(HttpStatus.OK)
-                .data(orderResponses)
+                .data(OrderResponse.fromOrder(updatedOrders))
                 .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

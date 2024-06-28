@@ -2,9 +2,11 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.models.Article;
+import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.article.ArticleListResponse;
 import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Article.IArticleService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -197,6 +199,23 @@ public class ArticleController {
         } catch (Exception e) {
             logger.error("Error occurred while retrieving image: " + e.getMessage());
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getArticleById(
+            @PathVariable("id") int articleId
+    ){
+        try{
+            Article existingArticle = articleService.getArticleById(articleId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Get detail product successfully")
+                    .status(HttpStatus.OK)
+                    .data(ArticleResponse.fromArticle(existingArticle))
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
