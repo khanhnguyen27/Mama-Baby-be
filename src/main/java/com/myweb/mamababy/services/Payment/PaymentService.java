@@ -22,17 +22,11 @@ public class PaymentService implements IPaymentService{
     @Override
     public VnpayResponse createVnPayPayment(HttpServletRequest request, PaymentDTO paymentDTO) throws DataNotFoundException {
 
-        Store existingStore = storeRepository
-                .findById(paymentDTO.getStoreId())
-                .orElseThrow(() ->
-                        new DataNotFoundException(
-                                "Cannot find store with id: "+paymentDTO.getStoreId()));
-
         long amount = (int)paymentDTO.getFinalAmount() * 100L;
         String bankCode = paymentDTO.getBankCode();
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
-        vnpParamsMap.put("vnp_OrderInfo", "Order payment:" +  VnpayUtil.getRandomNumber(8) + " of " + existingStore.getNameStore() + " store.");
+        vnpParamsMap.put("vnp_OrderInfo", paymentDTO.getOrderId() + "|" + paymentDTO.getStoreId());
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }

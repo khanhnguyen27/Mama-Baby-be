@@ -5,10 +5,7 @@ import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
-import com.myweb.mamababy.models.BlacklistedToken;
-import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.models.Role;
-import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
@@ -28,10 +25,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -65,6 +65,7 @@ public class UserService implements IUserService {
                 .fullName(userDTO.getFullName())
                 .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
+                .createAt(LocalDateTime.now())
                 .isActive(statusDefault)
                 .build();
         newUser.setRole(role);
@@ -196,6 +197,13 @@ public class UserService implements IUserService {
         }
     }
 
+    @Override
+    public List<User> findByYear(int year) {
+        List<User> users = userRepository.findByUserDateYear(year);
+        return users.stream()
+                .filter(user -> user.getCreateAt().getYear() == year)
+                .collect(Collectors.toList()); // Removed .orElseThrow(...)
+    }
 
 
     public void cleanupExpiredTokens() {

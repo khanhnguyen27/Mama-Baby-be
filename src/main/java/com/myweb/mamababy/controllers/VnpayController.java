@@ -22,7 +22,6 @@ public class VnpayController {
 
     private final PaymentService paymentService;
     private final IStatusOrderService statusOrderService;
-    private int  orderId;
 
 //    @PostMapping("/vn-pay")
 //    public ResponseEntity<?> pay(
@@ -43,9 +42,6 @@ public class VnpayController {
             BindingResult result
     ) throws DataNotFoundException {
 
-        orderId = 0;
-        orderId = paymentDTO.getOrderId();
-
         VnpayResponse vnpayResponse = paymentService.createVnPayPayment(request, paymentDTO);
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Payment page")
@@ -58,6 +54,8 @@ public class VnpayController {
         try{
             String status = request.getParameter("vnp_ResponseCode");
             String vnpOrderInfo = request.getParameter("vnp_OrderInfo");
+            String[] parts = vnpOrderInfo.split("\\|");
+            int orderId = Integer.parseInt(parts[0]);
             if (status.equals("00")) {
                 statusOrderService.createStatusOrder(new StatusOrderDTO(orderId, "PENDING"));
                 return new RedirectView("/payment-success.html");
