@@ -4,8 +4,10 @@ package com.myweb.mamababy.controllers;
 import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.dtos.UserLoginDTO;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.User;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.responses.user.UserListResponse;
 import com.myweb.mamababy.responses.user.UserResponse;
 import com.myweb.mamababy.services.User.IUserService;
@@ -13,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -195,6 +198,25 @@ public class UserController {
                     .build());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error searching users", e);
+        }
+    }
+
+    // Get By Year
+    @GetMapping("/findByYear")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> getUsersByYear(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) int year) {
+        try {
+            List<User> users = userService.findByYear(year);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Orders for year " + year + " found successfully!!!")
+                    .data(users.stream()
+                            .map(UserResponse::fromUser)
+                            .collect(Collectors.toList()))
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

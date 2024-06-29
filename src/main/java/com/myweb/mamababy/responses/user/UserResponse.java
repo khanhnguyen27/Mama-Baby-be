@@ -1,9 +1,13 @@
 package com.myweb.mamababy.responses.user;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.models.Role;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -30,6 +34,11 @@ public class UserResponse {
     @JsonProperty("accumulated_points")
     private int accumulated_points;
 
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+    @JsonProperty("create_at")
+    private LocalDateTime createAt;
+
     @JsonProperty("role_id")
     private com.myweb.mamababy.models.Role role;
 
@@ -44,6 +53,7 @@ public class UserResponse {
                 .address(user.getAddress())
                 .phone_number(user.getPhoneNumber())
                 .accumulated_points(user.getAccumulatedPoints())
+                .createAt(user.getCreateAt())
                 .isActive(user.getIsActive())
                 .role(user.getRole())
                 .build();
