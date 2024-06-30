@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,5 +42,5 @@ public class StatusOrder {
     private String status;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 }
