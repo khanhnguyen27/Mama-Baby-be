@@ -154,6 +154,7 @@ public class OrderController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllOrder() throws Exception {
         List<Order> orders = orderService.getAllOrder();
+
         return ResponseEntity.ok().body(
                 ResponseObject.builder()
                         .message("Get All Orders Successfully!!!")

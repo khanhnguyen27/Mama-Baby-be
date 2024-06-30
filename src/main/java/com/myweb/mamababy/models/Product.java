@@ -1,9 +1,13 @@
 package com.myweb.mamababy.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +44,9 @@ public class Product extends BaseEntity{
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "expiry_date")
+    private LocalDate expiry_date;
 
     @Column(name = "image_url")
     private String imageUrl;

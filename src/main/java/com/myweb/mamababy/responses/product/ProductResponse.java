@@ -1,5 +1,6 @@
 package com.myweb.mamababy.responses.product;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Comment;
 import com.myweb.mamababy.models.Order;
@@ -9,7 +10,10 @@ import com.myweb.mamababy.responses.comment.CommentResponse;
 import com.myweb.mamababy.responses.order.StatusOrderResponse;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,8 @@ public class ProductResponse extends BaseResponse {
     private String status;
     private String type;
     private String description;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate expiryDate;
 
     @JsonProperty("image_url")
     private String imageUrl;
@@ -57,6 +63,7 @@ public class ProductResponse extends BaseResponse {
                 .status(product.getStatus())
                 .type(product.getType())
                 .description(product.getDescription())
+                .expiryDate(product.getExpiry_date())
                 .imageUrl(product.getImageUrl())
                 .categoryId(product.getCategory().getId())
                 .brandId(product.getBrand().getId())
