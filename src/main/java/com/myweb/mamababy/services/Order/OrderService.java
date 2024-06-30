@@ -258,13 +258,13 @@ public class OrderService implements IOrderService{
             if(orderDTO.getPaymentMethod().equals("VNPAY")){
                 statusOrders.add(StatusOrder.builder()
                                 .order(newOrder)
-                                .date(LocalDate.now())
+                                .date(LocalDateTime.now())
                                 .status("UNPAID")
                                 .build());
             }else{
                 statusOrders.add(StatusOrder.builder()
                         .order(newOrder)
-                        .date(LocalDate.now())
+                        .date(LocalDateTime.now())
                         .status("PENDING")
                         .build());
             }

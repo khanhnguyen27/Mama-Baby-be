@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.StatusOrder;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -29,7 +30,7 @@ public class StatusOrderResponse {
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     @JsonProperty("date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     public static StatusOrderResponse fromStatusOrder(StatusOrder statusOrder) {
         return StatusOrderResponse.builder()

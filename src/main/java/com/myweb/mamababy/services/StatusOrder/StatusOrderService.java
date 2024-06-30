@@ -10,6 +10,7 @@ import com.myweb.mamababy.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class StatusOrderService implements IStatusOrderService {
 
                 .order(existingOrder)
                 .status(statusOrderDTO.getStatus())
-                .date(LocalDate.now())
+                .date(LocalDateTime.now())
                 .build();
 
         if(statusOrderDTO.getStatus().equals("COMPLETED")){
@@ -78,7 +79,7 @@ public class StatusOrderService implements IStatusOrderService {
 
         existingStatusOrder.setOrder(existingOrder);
         existingStatusOrder.setStatus(statusOrderDTO.getStatus());
-        existingStatusOrder.setDate(LocalDate.now());
+        existingStatusOrder.setDate(LocalDateTime.now());
 
         return statusOrderRepository.save(existingStatusOrder);
     }
