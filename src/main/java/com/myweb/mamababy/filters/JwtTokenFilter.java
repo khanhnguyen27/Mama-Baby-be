@@ -86,8 +86,6 @@ public class JwtTokenFilter extends OncePerRequestFilter{
     }
     private boolean isBypassToken(@NonNull  HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
-                //Thêm api mà người dùng không cần đăng nhập (token) vẫn xem được
-                //Nếu cần test, test xong mọi người nhớ xóa
                 Pair.of(String.format("%s/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/**", apiPrefix), "PUT"),
                 Pair.of(String.format("%s/**", apiPrefix), "DELETE"),

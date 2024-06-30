@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IArticleService {
     Article createArticle(ArticleDTO articleDTO, MultipartFile file) throws Exception;
@@ -15,6 +16,8 @@ public interface IArticleService {
     Article getArticleById(int id) throws Exception;
 
     Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception;
+
+    List<ArticleResponse> getAllArticleNoPage() throws Exception;
 
     Article updateArticle(int id, ArticleDTO articleDTO, String token, MultipartFile file) throws Exception;
 

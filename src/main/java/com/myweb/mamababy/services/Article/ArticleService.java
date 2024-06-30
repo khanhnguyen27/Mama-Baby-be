@@ -6,6 +6,7 @@ import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import com.myweb.mamababy.responses.article.ArticleResponse;
+import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.User.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -89,6 +91,15 @@ public class ArticleService implements IArticleService{
     public Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception {
         Page<Article> articlesPage= articleReponsitory.searchArticles(keyword, storeId, pageRequest);
         return articlesPage.map(ArticleResponse::fromArticle);
+    }
+
+    @Override
+    public List<ArticleResponse> getAllArticleNoPage() throws Exception {
+        List<Article> articles= articleReponsitory.searchArticlesNoPage();
+        List<ArticleResponse> articleResponses = articles.stream()
+                .map(ArticleResponse::fromArticle)
+                .toList();
+        return articleResponses;
     }
 
     @Override

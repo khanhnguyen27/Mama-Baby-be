@@ -24,7 +24,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,6 +75,10 @@ public class ProductService implements IProductService {
 
         String fileName = storeFile(file);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate expiryDate = LocalDate.parse(productDTO.getExpiryDate(), formatter);
+
+
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
@@ -77,6 +86,7 @@ public class ProductService implements IProductService {
                 .remain(productDTO.getRemain())
                 .status(productDTO.getStatus())
                 .description(productDTO.getDescription())
+                .expiry_date(expiryDate)
                 .type(productDTO.getType())
                 .imageUrl(fileName)
                 .brand(existingBrand)
@@ -153,11 +163,16 @@ public class ProductService implements IProductService {
                 throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
             }
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate expiryDate = LocalDate.parse(productDTO.getExpiryDate(), formatter);
+
+
             existingProduct.setCategory(existingCategory);
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
             existingProduct.setIsActive(productDTO.getIsActive());
             existingProduct.setUpdatedAt(LocalDateTime.now());
+            existingProduct.setExpiry_date(expiryDate);
             //existingProduct.setStore(existingStore);
 
             if(productDTO.getName() != null && !productDTO.getName().isEmpty()) {

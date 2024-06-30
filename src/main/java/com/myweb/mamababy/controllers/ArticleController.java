@@ -146,6 +146,25 @@ public class ArticleController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/no_page")
+    public ResponseEntity<?> getAllArticlesNoPage(
+    ) throws Exception {
+        List<ArticleResponse> articles = articleService.getAllArticleNoPage();
+
+        ArticleListResponse articleListResponse = ArticleListResponse
+                .builder()
+                .articles(articles)
+                .build();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get articles successfully")
+                        .data(articleListResponse)
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateArticle(@Valid @ModelAttribute ArticleDTO articleDTO,
                                            BindingResult result,
