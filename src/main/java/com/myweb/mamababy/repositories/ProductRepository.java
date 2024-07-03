@@ -19,10 +19,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:keyword IS NULL OR :keyword = '' OR p.name LIKE %:keyword%) " +
             "AND (:type IS NULL OR :type = '' OR p.type LIKE %:type%) " +
             "AND (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
-            "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId)" +
-            "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId)" +
+            "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId) " +
+            "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId) " +
             "AND (:age IS NULL OR :age = 0 OR p.age.id = :age) " +
-            "AND p.isActive = true")
+            "AND p.isActive = true " +
+            "AND p.expiry_date > current_date")
     Page<Product> searchProducts
             (@Param("keyword") String keyword,
              @Param("type") String type,
@@ -34,7 +35,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE " +
             "(:type IS NULL OR :type = '' OR p.type LIKE %:type%) " +
-            "AND p.isActive = true")
+            "AND p.isActive = true " +
+            "AND p.expiry_date > current_date")
     List<Product> searchProductsCH(@Param("type") String type);
 
     @Query("SELECT p FROM Product p WHERE " +

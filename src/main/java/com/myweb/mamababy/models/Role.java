@@ -21,5 +21,5 @@ public class Role {
 
     public static String ADMIN = "ADMIN";
     public static String STAFF = "STAFF";
-    public static String CUSTOMER = "CUSTOMER";
+    public static String MEMBER = "MEMBER";
 }

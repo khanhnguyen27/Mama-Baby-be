@@ -18,8 +18,8 @@ public class ArticleDTO {
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("link_product")
-    private String link_product;
+    @JsonProperty("product_recom")
+    private int product_recom;
 
     @JsonProperty("link_image")
     private String link_image;

@@ -68,16 +68,13 @@ public class ExchangeController {
             @RequestParam(defaultValue = "12", name = "limit") int limit
     ){
         int totalPages = 0;
-        // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
                 //Sort.by("createdAt").descending()
                 Sort.by("id").ascending()
         );
-        //Lay tat ca cac product theo yeu cau
         Page<ExchangeResponse> exchangePage = exchangeService
                 .getAllExchange(status, pageRequest);
-        // Lấy tổng số trang
         totalPages = exchangePage.getTotalPages();
         List<ExchangeResponse> exchanges = exchangePage.getContent();
 
@@ -140,21 +137,21 @@ public class ExchangeController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteExchange(@PathVariable int id) {
-        try {
-            exchangeService.deleteExchange(id);
-            return ResponseEntity.ok(ResponseObject.builder()
-                    .data(null)
-                    .message(String.format("Exchange request with id = %d deleted successfully", id))
-                    .status(HttpStatus.OK)
-                    .build());
-
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteExchange(@PathVariable int id) {
+//        try {
+//            exchangeService.deleteExchange(id);
+//            return ResponseEntity.ok(ResponseObject.builder()
+//                    .data(null)
+//                    .message(String.format("Exchange request with id = %d deleted successfully", id))
+//                    .status(HttpStatus.OK)
+//                    .build());
+//
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping(value = "/{id}")

@@ -25,8 +25,8 @@ public class ArticleResponse {
     @JsonProperty("content")
     private String content;
 
-    @JsonProperty("link_product")
-    private String link_product;
+    @JsonProperty("product_recom")
+    private int product_recom;
 
     @JsonProperty("link_image")
     private String link_image;
@@ -52,7 +52,7 @@ public class ArticleResponse {
                 .id(article.getId())
                 .header(article.getHeader())
                 .content(article.getContent())
-                .link_product(article.getLink_product())
+                .product_recom(article.getProduct_recom())
                 .link_image(article.getLink_image())
                 .store_id(article.getStore().getId())
                 .created_at(article.getCreated_at())

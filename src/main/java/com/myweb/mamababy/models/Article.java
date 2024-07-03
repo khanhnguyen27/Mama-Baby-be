@@ -25,8 +25,8 @@ public class Article {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "link_product")
-    private String link_product;
+    @Column(name = "product_recom")
+    private int product_recom;
 
     @Column(name = "link_image")
     private String link_image;

@@ -29,7 +29,6 @@ public class ExchangeDetailController {
 
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-//  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> creatExchangeDetail(
             @Valid @RequestBody ExchangeDetailDTO exchangeDetailDTO) {
         try {
@@ -95,8 +94,6 @@ public class ExchangeDetailController {
 
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-//    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> updateExchangeDetail(
             @Valid @PathVariable("id") int id,
             @RequestBody ExchangeDetailDTO exchangeDetailDTO) {
