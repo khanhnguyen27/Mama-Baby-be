@@ -9,6 +9,7 @@ import com.myweb.mamababy.responses.refunds.RefundResponse;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class RefundService implements IRefundService{
+public class RefundService implements IRefundService {
 
     private final RefundRepository refundRepository;
     private final RefundDetailRepository refundDetailRepository;
@@ -37,7 +38,7 @@ public class RefundService implements IRefundService{
     public List<Refund> findByYear(int year) {
         List<Refund> refunds = refundRepository.findByRefundDateYear(year);
         return refunds.stream().filter(refund -> refund.getCreateDate().getYear() == year).collect(
-            Collectors.toList());
+                Collectors.toList());
     }
 
     @Override
@@ -47,19 +48,19 @@ public class RefundService implements IRefundService{
                 .findById(refundDTO.getUserId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find user with id: "+refundDTO.getUserId()));
+                                "Cannot find user with id: " + refundDTO.getUserId()));
         Store existingStore = storeRepository
                 .findById(refundDTO.getStoreId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find store with id: "+refundDTO.getStoreId()));
+                                "Cannot find store with id: " + refundDTO.getStoreId()));
         Order existingOrder = orderRepository
                 .findById(refundDTO.getOrderId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find store with id: "+refundDTO.getStoreId()));
+                                "Cannot find store with id: " + refundDTO.getStoreId()));
 
-        if(!existingUser.getIsActive() || !existingStore.isActive()){
+        if (!existingUser.getIsActive() || !existingStore.isActive()) {
             throw new DataNotFoundException("Invalid");
         }
         Refund newRefund = Refund.builder()
@@ -74,7 +75,7 @@ public class RefundService implements IRefundService{
 
         List<RefundDetail> refundDetails = new ArrayList<>();
 
-        for (CartItemRefundDTO cartItemRefundDTO : refundDTO.getCartItemRefund()){
+        for (CartItemRefundDTO cartItemRefundDTO : refundDTO.getCartItemRefund()) {
 
             // Tạo một đối tượng RefundDetail từ CartItemDTO
             RefundDetail refundDetail = new RefundDetail();
@@ -89,7 +90,7 @@ public class RefundService implements IRefundService{
                     .findById(productId)
                     .orElseThrow(() ->
                             new DataNotFoundException(
-                                    "Cannot find product with id: "+productId));
+                                    "Cannot find product with id: " + productId));
 
             refundDetail.setProduct(existingProduct);
             refundDetail.setQuantity(quantity);
@@ -126,8 +127,19 @@ public class RefundService implements IRefundService{
         if (existingExchange != null) {
 
             if (refundDTO.getStatus() != null &&
-                    !refundDTO.getStatus().isEmpty())
+                    !refundDTO.getStatus().isEmpty()) {
+                if (refundDTO.getStatus().equals("ACCEPT")) {
+                    for (CartItemRefundDTO cart : refundDTO.getCartItemRefund()) {
+                        Optional<Product> existingProduct = productRepository.findById(cart.getProductId());
+                        if (existingProduct.isPresent()) {
+                            Product product = existingProduct.get();
+                            product.setRemain(product.getRemain() + cart.getQuantity());
+                            productRepository.save(product);
+                        }
+                    }
+                }
                 existingExchange.setStatus(refundDTO.getStatus());
+            }
 
             return refundRepository.save(existingExchange);
         }
@@ -136,23 +148,21 @@ public class RefundService implements IRefundService{
 
     @Override
     public List<Refund> findByUserId(int userId) throws DataNotFoundException {
-        List<Refund> refunds = refundRepository.findByUserId(userId);
 
-        if (refunds.isEmpty()) {
-            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
-        }
-        return refunds;
+//        if (refunds.isEmpty()) {
+//            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
+//        }
+        return refundRepository.findByUserId(userId);
     }
 
 
     @Override
     public List<Refund> findByStoreId(int storeId) throws DataNotFoundException {
-        List<Refund> refunds = refundRepository.findByStoreId(storeId);
 
-        if (refunds.isEmpty()) {
-            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
-        }
+//        if (refunds.isEmpty()) {
+//            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
+//        }
 
-        return refunds;
+        return refundRepository.findByStoreId(storeId);
     }
 }
