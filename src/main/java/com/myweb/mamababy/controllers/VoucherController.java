@@ -2,11 +2,15 @@ package com.myweb.mamababy.controllers;
 
 
 import com.myweb.mamababy.dtos.VoucherDTO;
+import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Voucher;
 import com.myweb.mamababy.responses.ResponseObject;
+import com.myweb.mamababy.responses.order.OrderResponse;
 import com.myweb.mamababy.responses.voucher.VoucherResponse;
 import com.myweb.mamababy.services.Voucher.IVoucherService;
 import jakarta.validation.Valid;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +101,7 @@ public class VoucherController {
                 ResponseObject.builder()
                         .message("Get all voucher Successfully!!!")
                         .data(vouchers.stream()
+                                .sorted(Comparator.comparing(Voucher::getEndAt).reversed())
                                 .map(VoucherResponse::fromVoucher)
                                 .collect(Collectors.toList()))
                         .status(HttpStatus.OK)
