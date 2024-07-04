@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ArticleService implements IArticleService{
 
-    private final ArticleReponsitory articleReponsitory;
+    private final ArticleReponsitory articleRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
@@ -52,24 +53,24 @@ public class ArticleService implements IArticleService{
         Article newArticle = Article.builder()
                 .header(articleDTO.getHeader())
                 .content(articleDTO.getContent())
-                .link_product(articleDTO.getLink_product())
+                .product_recom(articleDTO.getProduct_recom())
                 .link_image(fileName)
                 .store(existingStore)
                 .created_at(new Date())
                 .updated_at(new Date())
                 .status(articleDTO.getStatus())
                 .build();
-        return articleReponsitory.save(newArticle);
+        return articleRepository.save(newArticle);
     }
 
     @Override
     public Article getArticleById(int id) throws Exception {
-        return articleReponsitory.findById(id)
+        return articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 
     @Override
-    public Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, PageRequest pageRequest) throws Exception {
+    public Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, Date minDate, Date maxDate, PageRequest pageRequest) throws Exception {
 
 
         User retrievedUser = userService.getUserDetailsFromToken(token);
@@ -81,7 +82,12 @@ public class ArticleService implements IArticleService{
         if (existingStore.getId() != storeId) {
             throw new Exception("Store does not match");
         } else {
-            Page<Article> articlesPage= articleReponsitory.searchArticlesByStore(keyword, storeId, pageRequest);
+            Page<Article> articlesPage;
+            if (minDate != null && maxDate != null) {
+                articlesPage = articleRepository.searchArticlesByStoreAndDateRange(keyword, storeId, minDate, maxDate, pageRequest);
+            } else {
+                articlesPage = articleRepository.searchArticlesByStore(keyword, storeId, pageRequest);
+            }
             return articlesPage.map(ArticleResponse::fromArticle);
         }
 
@@ -89,13 +95,13 @@ public class ArticleService implements IArticleService{
 
     @Override
     public Page<ArticleResponse> getAllArticle(String keyword, int storeId, PageRequest pageRequest) throws Exception {
-        Page<Article> articlesPage= articleReponsitory.searchArticles(keyword, storeId, pageRequest);
+        Page<Article> articlesPage= articleRepository.searchArticles(keyword, storeId, pageRequest);
         return articlesPage.map(ArticleResponse::fromArticle);
     }
 
     @Override
     public List<ArticleResponse> getAllArticleNoPage() throws Exception {
-        List<Article> articles= articleReponsitory.searchArticlesNoPage();
+        List<Article> articles= articleRepository.searchArticlesNoPage();
         List<ArticleResponse> articleResponses = articles.stream()
                 .map(ArticleResponse::fromArticle)
                 .toList();
@@ -117,7 +123,7 @@ public class ArticleService implements IArticleService{
             Article existingArticle = getArticleById(id);
             existingArticle.setHeader(articleDTO.getHeader());
             existingArticle.setContent(articleDTO.getContent());
-            existingArticle.setLink_product(articleDTO.getLink_product());
+            existingArticle.setProduct_recom(articleDTO.getProduct_recom());
             existingArticle.setUpdated_at(new Date());
             existingArticle.setStatus(articleDTO.getStatus());
 
@@ -127,7 +133,7 @@ public class ArticleService implements IArticleService{
                 existingArticle.setLink_image(fileName);
             }
 
-            articleReponsitory.save(existingArticle);
+            articleRepository.save(existingArticle);
             return existingArticle;
         }
 
@@ -189,6 +195,6 @@ public class ArticleService implements IArticleService{
 
     @Override
     public void deleteArticle(int id) {
-        articleReponsitory.deleteById(id);
+        articleRepository.deleteById(id);
     }
 }

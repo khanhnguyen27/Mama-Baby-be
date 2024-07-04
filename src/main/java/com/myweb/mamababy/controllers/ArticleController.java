@@ -8,6 +8,8 @@ import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Article.IArticleService;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,13 +84,12 @@ public class ArticleController {
     ) throws Exception {
         int totalPages = 0;
 
-        // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
                 Sort.by("created_at").descending()
         );
         Page<ArticleResponse> articlePage = articleService.getAllArticle(keyword, storeId, pageRequest);
-        // Lấy tổng số trang
+
         totalPages = articlePage.getTotalPages();
         List<ArticleResponse> articles = articlePage.getContent();
 
@@ -102,24 +107,67 @@ public class ArticleController {
         );
     }
 
-    //Store nào chỉ xem được article của shop đó
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping("/store")
+//    public ResponseEntity<?> getArticlesByStore(@RequestParam(defaultValue = "") String keyword,
+//                                                @RequestParam(defaultValue = "0", name = "store_id") int storeId,
+//                                                @RequestParam(defaultValue = "0", name = "page") int page,
+//                                                @RequestParam(defaultValue = "12", name = "limit") int limit,
+//                                                @RequestParam(required = false, name = "min_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate minDate,
+//                                                @RequestParam(required = false, name = "max_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate maxDate,
+//                                                @RequestHeader("Authorization") String token) throws Exception {
+//        String extractedToken = token.substring(7);
+//        int totalPages = 0;
+//
+//        PageRequest pageRequest = PageRequest.of(
+//                page, limit,
+//                Sort.by("created_at").descending()
+//        );
+//        Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, minDate, maxDate, pageRequest);
+//
+//        totalPages = articlePage.getTotalPages();
+//        List<ArticleResponse> articles = articlePage.getContent();
+//
+//        ArticleListResponse articleListResponse = ArticleListResponse
+//                .builder()
+//                .articles(articles)
+//                .totalPages(totalPages)
+//                .build();
+//        if (articlePage.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body(ResponseObject.builder()
+//                            .message("No posts found for store with id: " + storeId)
+//                            .status(HttpStatus.OK)
+//                            .build());
+//        } else {
+//            return ResponseEntity.ok().body(
+//                    ResponseObject.builder()
+//                            .message("Get articles successfully")
+//                            .data(articleListResponse)
+//                            .status(HttpStatus.OK)
+//                            .build()
+//            );
+//        }
+//    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/store")
     public ResponseEntity<?> getArticlesByStore(@RequestParam(defaultValue = "") String keyword,
                                                 @RequestParam(defaultValue = "0", name = "store_id") int storeId,
                                                 @RequestParam(defaultValue = "0", name = "page") int page,
                                                 @RequestParam(defaultValue = "12", name = "limit") int limit,
+                                                @RequestParam(required = false, name = "min_date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date minDate,
+                                                @RequestParam(required = false, name = "max_date") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date maxDate,
                                                 @RequestHeader("Authorization") String token) throws Exception {
         String extractedToken = token.substring(7);
         int totalPages = 0;
 
-        // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
                 Sort.by("created_at").descending()
         );
-        Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, pageRequest);
-        // Lấy tổng số trang
+        Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, minDate, maxDate, pageRequest);
+
         totalPages = articlePage.getTotalPages();
         List<ArticleResponse> articles = articlePage.getContent();
 
@@ -238,7 +286,6 @@ public class ArticleController {
         }
     }
 
-    //Không dùng xóa cứng
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> deleteArticle(@PathVariable("id") int id) {
 //        articleService.deleteArticle(id);

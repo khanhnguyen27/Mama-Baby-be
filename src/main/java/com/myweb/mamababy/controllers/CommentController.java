@@ -50,7 +50,7 @@ public class CommentController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/product/{id}") // Lấy tất cả bình luận của sản phẩm
+    @GetMapping("/product/{id}")
     public ResponseEntity<?> getCommentByProduct(@PathVariable("id") int id) throws Exception {
         List<Comment> comments = commentService.getCommentsByProductId(id);
         if (comments == null || comments.isEmpty()) {
@@ -73,7 +73,7 @@ public class CommentController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/store/product/{id}") // Lấy tất cả bình luận của sản phẩm
+    @GetMapping("/store/product/{id}")
     public ResponseEntity<?> getCommentByProductWithStore(@PathVariable("id") int id) throws Exception {
         List<Comment> comments = commentService.getCommentsByProductIdWithStore(id);
         if (comments == null || comments.isEmpty()) {
@@ -95,9 +95,8 @@ public class CommentController {
         );
     }
 
-    //User nào chỉ xem được lịch sử comment của user đó, nếu cần lịch sử comment
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/user/{id}") // Lấy tất cả bình luận của người dùng
+    @GetMapping("/user/{id}")
     public ResponseEntity<?> getCommentByUser(@PathVariable("id") int UserId,
                                               @RequestHeader("Authorization") String token) throws Exception {
         String extractedToken = token.substring(7);
@@ -163,7 +162,6 @@ public class CommentController {
         );
     }
 
-    //Ẩn hiện comment, xóa mềm, dành cho staff admin
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/status/{id}")
     public ResponseEntity<?> updateCommentStatus(@PathVariable("id") int id, @RequestBody Map<String, Boolean> requestBody) throws Exception {
@@ -178,7 +176,6 @@ public class CommentController {
         );
     }
 
-    //Không dùng xóa cứng
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> deleteComment(@PathVariable("id") int id) {
 //        commentService.deleteComment(id);

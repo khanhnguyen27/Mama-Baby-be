@@ -83,7 +83,6 @@ public class ProductController {
             ){
         int totalPages = 0;
         PageRequest pageRequest = null;
-        // Tạo Pageable từ thông tin trang và giới hạn
         if(sort.equals("DESC")){
             pageRequest = PageRequest.of(
                     page, limit,
@@ -101,10 +100,9 @@ public class ProductController {
             );
         }
 
-        //Lay tat ca cac product theo yeu cau
         Page<ProductResponse> productPage = productService
                 .getAllProducts(keyword, type, categoryId, brandId, rangeAge, storeId, pageRequest);
-        // Lấy tổng số trang
+
         totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
 
@@ -133,7 +131,6 @@ public class ProductController {
     public ResponseEntity<?> getAllProducts(
             @RequestParam(defaultValue = "") String type
     ){
-        //Lay tat ca cac product theo yeu cau
         List<ProductResponse> products = productService
                 .getAllProductsCH(type);
 
@@ -186,7 +183,6 @@ public class ProductController {
     ) throws Exception {
         int totalPages = 0;
         PageRequest pageRequest = null;
-        // Tạo Pageable từ thông tin trang và giới hạn
         if(sort.equals("DESC")){
             pageRequest = PageRequest.of(
                     page, limit,
@@ -203,10 +199,10 @@ public class ProductController {
                     Sort.by("createdAt").descending()
             );
         }
-        //Lay tat ca cac product theo yeu cau
+
         Page<ProductResponse> productPage = productService
                 .getProductByStoreId(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
-        // Lấy tổng số trang
+
         totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
 

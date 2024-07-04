@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface IArticleService {
@@ -27,6 +29,6 @@ public interface IArticleService {
 
     void deleteFile(String filename) throws IOException;
 
-    Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, PageRequest pageRequest) throws Exception;
+    Page<ArticleResponse> getArticlesByStoreId(String keyword, int storeId, String token, Date minDate, Date maxDate, PageRequest pageRequest) throws Exception;
 
 }

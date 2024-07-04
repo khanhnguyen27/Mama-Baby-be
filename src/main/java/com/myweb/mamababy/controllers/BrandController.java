@@ -79,15 +79,15 @@ public class BrandController {
         return ResponseEntity.ok(updateBrand);
     }
 
-    @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> deleteCategory(@PathVariable int id) {
-        Brand deleteBrand = brandService.deleteBrand(id);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("Delete successfully !!!")
-                .status(HttpStatus.OK)
-                .data(deleteBrand)
-                .build());
-    }
+//    @DeleteMapping("/{id}")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public ResponseEntity<?> deleteCategory(@PathVariable int id) {
+//        Brand deleteBrand = brandService.deleteBrand(id);
+//        return ResponseEntity.ok(ResponseObject.builder()
+//                .message("Delete successfully !!!")
+//                .status(HttpStatus.OK)
+//                .data(deleteBrand)
+//                .build());
+//    }
 
 }

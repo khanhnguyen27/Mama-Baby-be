@@ -81,15 +81,15 @@ public class AgeController {
         return ResponseEntity.ok(updateAge);
     }
 
-    @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> deleteAge(@PathVariable int id) {
-        Age deleteAge = ageService.deleteAge(id);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("Delete successfully !!!")
-                .status(HttpStatus.OK)
-                .data(deleteAge)
-                .build());
-    }
+//    @DeleteMapping("/{id}")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public ResponseEntity<?> deleteAge(@PathVariable int id) {
+//        Age deleteAge = ageService.deleteAge(id);
+//        return ResponseEntity.ok(ResponseObject.builder()
+//                .message("Delete successfully !!!")
+//                .status(HttpStatus.OK)
+//                .data(deleteAge)
+//                .build());
+//    }
 
 }

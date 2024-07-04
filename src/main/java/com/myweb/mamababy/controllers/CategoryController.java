@@ -81,15 +81,15 @@ public class CategoryController {
         return ResponseEntity.ok(updateCategory);
     }
 
-    @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> deleteCategory(@PathVariable int id) {
-
-        Category deleteCategory= categoryService.deleteCategory(id);
-        return ResponseEntity.ok(ResponseObject.builder()
-                .message("Delete successfully !!!")
-                .status(HttpStatus.OK)
-                .data(deleteCategory)
-                .build());
-    }
+//    @DeleteMapping("/{id}")
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    public ResponseEntity<?> deleteCategory(@PathVariable int id) {
+//
+//        Category deleteCategory= categoryService.deleteCategory(id);
+//        return ResponseEntity.ok(ResponseObject.builder()
+//                .message("Delete successfully !!!")
+//                .status(HttpStatus.OK)
+//                .data(deleteCategory)
+//                .build());
+//    }
 }
