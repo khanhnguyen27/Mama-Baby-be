@@ -148,9 +148,9 @@ public class ExchangeService implements IExchangeService{
     public List<ExchangeResponse> findByUserId(int userId) throws DataNotFoundException {
         List<Exchange> exchanges = exchangeRepository.findByUserId(userId);
 
-        if (exchanges.isEmpty()) {
-            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
-        }
+//        if (exchanges.isEmpty()) {
+//            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
+//        }
 
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
         for(Exchange exchange :exchanges){
@@ -163,9 +163,9 @@ public class ExchangeService implements IExchangeService{
     public List<ExchangeResponse> findByStoreId(int storeId) throws DataNotFoundException {
         List<Exchange> exchanges = exchangeRepository.findByStoreId(storeId);
 
-        if (exchanges.isEmpty()) {
-            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
-        }
+//        if (exchanges.isEmpty()) {
+//            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
+//        }
 
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
         for(Exchange exchange :exchanges){

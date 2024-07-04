@@ -56,12 +56,21 @@ public class VnpayController {
             String vnpOrderInfo = request.getParameter("vnp_OrderInfo");
             String[] parts = vnpOrderInfo.split("\\|");
             int orderId = Integer.parseInt(parts[0]);
+            int storeId = Integer.parseInt(parts[1]);
+
+            RedirectView redirectView;
+
             if (status.equals("00")) {
                 statusOrderService.createStatusOrder(new StatusOrderDTO(orderId, "PENDING"));
-                return new RedirectView("/payment-success.html");
+                redirectView = new RedirectView(" http://localhost:3000/successPayment");
+                redirectView.addStaticAttribute("orderId", orderId);
+                redirectView.addStaticAttribute("storeId;", storeId);
             } else {
-                return new RedirectView("/payment-fail.html");
+                redirectView = new RedirectView(" http://localhost:3000/failedPayment");
+                redirectView.addStaticAttribute("orderId", orderId);
+                redirectView.addStaticAttribute("storeId;", storeId);
             }
+            return redirectView;
         }catch (Exception e){
             return  new RedirectView("/error.html");
         }
