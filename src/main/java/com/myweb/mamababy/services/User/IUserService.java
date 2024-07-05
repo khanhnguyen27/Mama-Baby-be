@@ -13,7 +13,6 @@ public interface IUserService {
     User createUser(UserDTO userDTO) throws Exception;
     String login(String userName, String password) throws Exception;
     User getUserDetailsFromToken(String token) throws Exception;
-    void logout(String token) throws Exception;
     User isActive(UserDTO userDTO) throws Exception;
     User updateAccount(String token, UpdateUserDTO updateUserDTO) throws Exception;
     List<User> getAllAccount() throws Exception;

@@ -116,19 +116,6 @@ public class UserController {
         );
     }
 
-    //http://localhost:8088/mamababy/users/logout
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String tokenHeader) throws Exception {
-//        if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-//            String token = tokenHeader.substring(7);
-//            userService.logout(token);
-//            return ResponseEntity.ok("User logged out successfully");
-//        } else {
-//            return ResponseEntity.badRequest().body("Invalid token");
-//        }
-//    }
-
     //http://localhost:8088/mamababy/users
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("")
