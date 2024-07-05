@@ -6,17 +6,13 @@ import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.*;
-import com.myweb.mamababy.repositories.BlacklistedTokenRepository;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
-import com.myweb.mamababy.responses.product.ProductResponse;
-import com.myweb.mamababy.responses.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +37,6 @@ public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final BlacklistedTokenRepository blacklistedTokenRepository;
     private final int roleDefault = 1; //Customer
     private final Boolean statusDefault = true;
 
@@ -109,17 +104,6 @@ public class UserService implements IUserService {
         Optional<User> user;
         user = userRepository.findByUsername(subject);
         return user.orElseThrow(() -> new Exception("User not found"));
-    }
-
-    public void logout(String token) throws Exception{
-        // Extract expiration date from token
-        Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
-
-        BlacklistedToken blacklistedToken = new BlacklistedToken();
-        blacklistedToken.setToken(token);
-        blacklistedToken.setExpirationDate(expirationDate);
-
-        blacklistedTokenRepository.save(blacklistedToken);
     }
 
     @Override
@@ -205,9 +189,4 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList()); // Removed .orElseThrow(...)
     }
 
-
-    public void cleanupExpiredTokens() {
-        Date now = new Date();
-        blacklistedTokenRepository.deleteAllByExpirationDateBefore(now);
-    }
 }

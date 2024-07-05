@@ -107,49 +107,6 @@ public class ArticleController {
         );
     }
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping("/store")
-//    public ResponseEntity<?> getArticlesByStore(@RequestParam(defaultValue = "") String keyword,
-//                                                @RequestParam(defaultValue = "0", name = "store_id") int storeId,
-//                                                @RequestParam(defaultValue = "0", name = "page") int page,
-//                                                @RequestParam(defaultValue = "12", name = "limit") int limit,
-//                                                @RequestParam(required = false, name = "min_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate minDate,
-//                                                @RequestParam(required = false, name = "max_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate maxDate,
-//                                                @RequestHeader("Authorization") String token) throws Exception {
-//        String extractedToken = token.substring(7);
-//        int totalPages = 0;
-//
-//        PageRequest pageRequest = PageRequest.of(
-//                page, limit,
-//                Sort.by("created_at").descending()
-//        );
-//        Page<ArticleResponse> articlePage = articleService.getArticlesByStoreId(keyword, storeId, extractedToken, minDate, maxDate, pageRequest);
-//
-//        totalPages = articlePage.getTotalPages();
-//        List<ArticleResponse> articles = articlePage.getContent();
-//
-//        ArticleListResponse articleListResponse = ArticleListResponse
-//                .builder()
-//                .articles(articles)
-//                .totalPages(totalPages)
-//                .build();
-//        if (articlePage.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.OK)
-//                    .body(ResponseObject.builder()
-//                            .message("No posts found for store with id: " + storeId)
-//                            .status(HttpStatus.OK)
-//                            .build());
-//        } else {
-//            return ResponseEntity.ok().body(
-//                    ResponseObject.builder()
-//                            .message("Get articles successfully")
-//                            .data(articleListResponse)
-//                            .status(HttpStatus.OK)
-//                            .build()
-//            );
-//        }
-//    }
-
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/store")
     public ResponseEntity<?> getArticlesByStore(@RequestParam(defaultValue = "") String keyword,

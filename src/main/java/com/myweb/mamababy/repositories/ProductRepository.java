@@ -35,8 +35,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE " +
             "(:type IS NULL OR :type = '' OR p.type LIKE %:type%) " +
-            "AND p.isActive = true " +
-            "AND p.expiry_date > current_date")
+            "AND p.isActive = true ")
     List<Product> searchProductsCH(@Param("type") String type);
 
     @Query("SELECT p FROM Product p WHERE " +
