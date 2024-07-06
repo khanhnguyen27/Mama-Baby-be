@@ -23,18 +23,6 @@ public class VnpayController {
     private final PaymentService paymentService;
     private final IStatusOrderService statusOrderService;
 
-//    @PostMapping("/vn-pay")
-//    public ResponseEntity<?> pay(
-//            HttpServletRequest request
-//    ) {
-//        VnpayResponse vnpayResponse = paymentService.createVnPayPayment(request);
-//        return ResponseEntity.ok(ResponseObject.builder()
-//                .message("Payment page")
-//                .status(HttpStatus.OK)
-//                .data(vnpayResponse)
-//                .build());
-//    }
-
     @PostMapping("/vn-pay")
     public ResponseEntity<?> pay(
             HttpServletRequest request,
@@ -62,11 +50,11 @@ public class VnpayController {
 
             if (status.equals("00")) {
                 statusOrderService.createStatusOrder(new StatusOrderDTO(orderId, "PENDING"));
-                redirectView = new RedirectView(" http://localhost:3000/successPayment");
+                redirectView = new RedirectView("http://localhost:3000/successPayment");
                 redirectView.addStaticAttribute("orderId", orderId);
                 redirectView.addStaticAttribute("storeId;", storeId);
             } else {
-                redirectView = new RedirectView(" http://localhost:3000/failedPayment");
+                redirectView = new RedirectView("http://localhost:3000/failedPayment");
                 redirectView.addStaticAttribute("orderId", orderId);
                 redirectView.addStaticAttribute("storeId;", storeId);
             }
