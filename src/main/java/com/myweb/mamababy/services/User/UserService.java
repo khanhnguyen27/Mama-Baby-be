@@ -43,11 +43,9 @@ public class UserService implements IUserService {
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
         //register user
-        // Kiểm tra xem số username đã tồn tại hay chưa
         if(userRepository.existsByUsername(userDTO.getUsername())) {
             throw new DataIntegrityViolationException("Username already exists");
         }
-        // Kiểm tra xem phoneNumber đã tồn tại hay chưa
         if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
             throw new DataIntegrityViolationException("Phone number already exists");
         }
@@ -76,7 +74,7 @@ public class UserService implements IUserService {
         if(optionalUser.isEmpty()) {
             throw new DataNotFoundException("Invalid username / password");
         }
-        //return optionalUser.get();//muốn trả JWT token ?
+
         User existingUser = optionalUser.get();
         if(!existingUser.getIsActive()){
             throw new RuntimeException("User is not active");
@@ -125,7 +123,6 @@ public class UserService implements IUserService {
         String phoneNumber = updateUserDTO.getPhoneNumber();
         User retrievedUser = getUserDetailsFromToken(token);
 
-        // Kiểm tra xem phoneNumber đã tồn tại hay chưa, trừ phoneNumber của chính user hiện tại
         if (!retrievedUser.getPhoneNumber().equals(phoneNumber) && userRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataIntegrityViolationException("Phone number already exists");
         }

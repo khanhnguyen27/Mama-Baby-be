@@ -145,28 +145,19 @@ public class ArticleService implements IArticleService{
             throw new IOException("Invalid image format");
         }
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        String uniqueFilename = filename;
+        String uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
 
-        if (!uniqueFilename.startsWith("Article_")) {
-            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-            uniqueFilename = "Article_" + UUID.randomUUID().toString() + "_" + filename;
-        }
-        // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads");
-        // Kiểm tra và tạo thư mục nếu nó không tồn tại
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }
-        // Đường dẫn đầy đủ đến file
         java.nio.file.Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
-        // Sao chép file vào thư mục đích
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
     }
 
     public Boolean checkFileImage(MultipartFile file) {
         Boolean result = false;
-        // Kiểm tra kích thước file và định dạng
         if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
             return result;
         }
@@ -181,14 +172,11 @@ public class ArticleService implements IArticleService{
 
     @Override
     public void deleteFile(String filename) throws IOException {
-        // Đường dẫn đến thư mục chứa file
+
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
-        // Đường dẫn đầy đủ đến file cần xóa
         Path filePath = uploadDir.resolve(filename);
 
-        // Kiểm tra xem file tồn tại hay không
         if (Files.exists(filePath)) {
-            // Xóa file
             Files.delete(filePath);
         }
     }
