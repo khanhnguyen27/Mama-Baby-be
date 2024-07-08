@@ -173,7 +173,7 @@ public class ArticleController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateArticle(@Valid @ModelAttribute ArticleDTO articleDTO,
                                            BindingResult result,
-                                           @RequestParam("files") MultipartFile file,
+                                           @RequestParam(value = "files", required = false) MultipartFile file,
                                            @PathVariable("id") int id,
                                            @RequestHeader("Authorization") String token) throws Exception {
         try {

@@ -239,7 +239,7 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(
             @PathVariable int id,
             @ModelAttribute ProductDTO productDTO,
-            @RequestParam("image") MultipartFile file
+            @RequestParam(value = "image", required = false) MultipartFile file
             ){
         try{
             Product updatedProduct = productService.updateProduct(id, productDTO, file);
