@@ -52,11 +52,11 @@ public class VnpayController {
                 statusOrderService.createStatusOrder(new StatusOrderDTO(orderId, "PENDING"));
                 redirectView = new RedirectView("http://localhost:3000/successPayment");
                 redirectView.addStaticAttribute("orderId", orderId);
-                redirectView.addStaticAttribute("storeId;", storeId);
+                redirectView.addStaticAttribute("storeId", storeId);
             } else {
                 redirectView = new RedirectView("http://localhost:3000/failedPayment");
                 redirectView.addStaticAttribute("orderId", orderId);
-                redirectView.addStaticAttribute("storeId;", storeId);
+                redirectView.addStaticAttribute("storeId", storeId);
             }
             return redirectView;
         }catch (Exception e){
