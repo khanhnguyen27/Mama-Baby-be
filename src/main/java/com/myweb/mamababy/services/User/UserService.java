@@ -58,7 +58,7 @@ public class UserService implements IUserService {
                 .fullName(userDTO.getFullName())
                 .address(userDTO.getAddress())
                 .phoneNumber(userDTO.getPhoneNumber())
-                .createAt(LocalDateTime.now())
+                .createAt(LocalDateTime.now().plusHours(7))
                 .isActive(statusDefault)
                 .build();
         newUser.setRole(role);

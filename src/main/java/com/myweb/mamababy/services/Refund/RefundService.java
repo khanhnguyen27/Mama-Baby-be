@@ -67,7 +67,7 @@ public class RefundService implements IRefundService {
                 .description(refundDTO.getDescription())
                 .status("PROCESSING")
                 .amount(refundDTO.getAmount())
-                .createDate(LocalDateTime.now())
+                .createDate(LocalDateTime.now().plusHours(7))
                 .user(existingUser)
                 .store(existingStore)
                 .order(existingOrder)

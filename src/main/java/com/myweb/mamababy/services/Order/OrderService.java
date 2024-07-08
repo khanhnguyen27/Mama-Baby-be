@@ -64,7 +64,7 @@ public class OrderService implements IOrderService{
                 .phoneNumber(orderDTO.getPhoneNumber())
                 .shippingAddress(orderDTO.getShippingAddress())
                 .paymentMethod(orderDTO.getPaymentMethod())
-                .orderDate(LocalDateTime.now())
+                .orderDate(LocalDateTime.now().plusHours(7))
                 .type(orderDTO.getType())
                 .user(existingUser)
                 .store(existingStore)
@@ -126,13 +126,13 @@ public class OrderService implements IOrderService{
             if(orderDTO.getPaymentMethod().equals("VNPAY")){
                 statusOrders.add(StatusOrder.builder()
                                 .order(newOrder)
-                                .date(LocalDateTime.now())
+                                .date(LocalDateTime.now().plusHours(7))
                                 .status("UNPAID")
                                 .build());
             }else{
                 statusOrders.add(StatusOrder.builder()
                         .order(newOrder)
-                        .date(LocalDateTime.now())
+                        .date(LocalDateTime.now().plusHours(7))
                         .status("PENDING")
                         .build());
             }
