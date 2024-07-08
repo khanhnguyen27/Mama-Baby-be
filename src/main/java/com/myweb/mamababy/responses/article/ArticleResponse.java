@@ -45,7 +45,7 @@ public class ArticleResponse {
     private Date updated_at;
 
     @JsonProperty("status")
-    private Boolean status;
+    private boolean status;
 
     public static ArticleResponse fromArticle(Article article) {
         return ArticleResponse.builder()

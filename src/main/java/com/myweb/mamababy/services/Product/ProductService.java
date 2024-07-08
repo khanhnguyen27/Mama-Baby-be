@@ -136,8 +136,6 @@ public class ProductService implements IProductService {
     public Product updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws Exception {
         Product existingProduct = getProductById(id);
         if(existingProduct != null) {
-            //copy các thuộc tính từ DTO -> Product
-            //Có thể sử dụng ModelMapper
             Category existingCategory = categoryRepository
                     .findById(productDTO.getCategoryId())
                     .orElseThrow(() ->
@@ -230,7 +228,7 @@ public class ProductService implements IProductService {
     @Override
     public Boolean checkFileImage(MultipartFile file) {
         Boolean result = false;
-        // Kiểm tra kích thước file và định dạng
+
         if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
             return result;
         }
@@ -248,24 +246,15 @@ public class ProductService implements IProductService {
         if (!checkFileImage(file)) {
             throw new IOException("Invalid image format");
         }
-        //Xu li file name
+
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        String uniqueFilename = filename;
+        String uniqueFilename = "Product_" + UUID.randomUUID().toString() + "_" + filename;
 
-        if (!uniqueFilename.startsWith("Product_")) {
-            // Thêm gio hen tai vào trước tên file để đảm bảo tên file là duy nhất
-            uniqueFilename = "Product_" + UUID.randomUUID().toString() + "_" + filename;
-        }
-
-        // Đường dẫn đến thư mục mà bạn muốn lưu file
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
-        // Kiểm tra và tạo thư mục nếu nó không tồn tại
         if (!Files.exists(uploadDir)) {
             Files.createDirectories(uploadDir);
         }
-        // Đường dẫn đầy đủ đến file
         Path destination = Paths.get(uploadDir.toString(), uniqueFilename);
-        // Sao chép file vào thư mục đích
         Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         return uniqueFilename;
 
@@ -273,14 +262,10 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteFile(String filename) throws IOException {
-        // Đường dẫn đến thư mục chứa file
         Path uploadDir = Paths.get(UPLOADS_FOLDER);
-        // Đường dẫn đầy đủ đến file cần xóa
         Path filePath = uploadDir.resolve(filename);
 
-        // Kiểm tra xem file tồn tại hay không
         if (Files.exists(filePath)) {
-            // Xóa file
             Files.delete(filePath);
         }
     }
