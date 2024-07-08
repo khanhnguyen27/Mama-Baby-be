@@ -171,7 +171,7 @@ public class ProductService implements IProductService {
             existingProduct.setBrand(existingBrand);
             existingProduct.setAge(existingAge);
             existingProduct.setIsActive(productDTO.getIsActive());
-            existingProduct.setUpdatedAt(LocalDateTime.now());
+            existingProduct.setUpdatedAt(LocalDateTime.now().plusHours(7));
             existingProduct.setExpiry_date(expiryDate);
             //existingProduct.setStore(existingStore);
 

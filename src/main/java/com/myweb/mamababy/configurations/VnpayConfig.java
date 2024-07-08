@@ -42,7 +42,7 @@ public class VnpayConfig {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnpCreateDate = formatter.format(calendar.getTime());
         vnpParamsMap.put("vnp_CreateDate", vnpCreateDate);
-        calendar.add(Calendar.MINUTE, 15);
+        calendar.add(Calendar.MINUTE, 435);
         String vnp_ExpireDate = formatter.format(calendar.getTime());
         vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
         return vnpParamsMap;

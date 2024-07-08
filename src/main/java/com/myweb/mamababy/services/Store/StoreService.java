@@ -63,7 +63,7 @@ public class StoreService implements IStoreService{
                 .licenseUrl(fileName)
                 .status("PROCESSING")
                 .isActive(false)
-                .requestDate(LocalDateTime.now())
+                .requestDate(LocalDateTime.now().plusHours(7))
                 .build();
         newStore.setUser(existingUser);
 

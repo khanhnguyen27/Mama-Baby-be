@@ -37,7 +37,7 @@ public class StatusOrderService implements IStatusOrderService {
 
                 .order(existingOrder)
                 .status(statusOrderDTO.getStatus())
-                .date(LocalDateTime.now())
+                .date(LocalDateTime.now().plusHours(7))
                 .build();
 
         if(statusOrderDTO.getStatus().equals("COMPLETED")){
@@ -79,7 +79,7 @@ public class StatusOrderService implements IStatusOrderService {
 
         existingStatusOrder.setOrder(existingOrder);
         existingStatusOrder.setStatus(statusOrderDTO.getStatus());
-        existingStatusOrder.setDate(LocalDateTime.now());
+        existingStatusOrder.setDate(LocalDateTime.now().plusHours(7));
 
         return statusOrderRepository.save(existingStatusOrder);
     }
