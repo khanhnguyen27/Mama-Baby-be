@@ -105,7 +105,7 @@ public class OrderService implements IOrderService{
                 quantityCurrent = 0;
             }
             existingProduct.setRemain(quantityCurrent);
-            if(quantityCurrent == 0){
+            if(quantityCurrent == 0 && !existingProduct.getStatus().equals("COMING SOON")){
                 existingProduct.setStatus("OUT OF STOCK");
             }
 
