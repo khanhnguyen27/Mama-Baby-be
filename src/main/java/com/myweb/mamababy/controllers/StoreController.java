@@ -48,7 +48,6 @@ public class StoreController {
     private final IUserService userService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    //Tạo mới một cửa hàng
     //POST: http://localhost:8080/mamababy/stores
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -79,7 +78,6 @@ public class StoreController {
 
     }
 
-    //Hiện tất cả các store
     //GET: http://localhost:8080/mamababy/stores
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("")
@@ -149,7 +147,6 @@ public class StoreController {
         );
     }
 
-    //Lấy ra một sản phẩm theo ID
     //GET: http://localhost:8080/mamababy/stores/{id}
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
@@ -185,7 +182,6 @@ public class StoreController {
         }
     }
 
-    //Cập nhật lại một sản phẩm theo ID
     //PUT: http://localhost:8080/mamababy/stores/{id}
     @PutMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000")

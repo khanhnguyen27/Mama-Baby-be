@@ -25,7 +25,6 @@ public class CategoryController {
 
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
             BindingResult result) {
@@ -40,7 +39,6 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllCategories(

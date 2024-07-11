@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public ResponseEntity<?> getAllUser() throws Exception {
         List<User> user = userService.getAllAccount();
         return ResponseEntity.ok().body(
@@ -110,6 +110,21 @@ public class UserController {
                         .message("Get user's detail successfully")
                         .data(user.stream()
                                 .map(UserResponse::fromUser)
+                                .collect(Collectors.toList()))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUserForAd() throws Exception {
+        List<User> user = userService.getAllAccount();
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get user's detail successfully")
+                        .data(user.stream()
+                                .map(UserResponse::fromUserForAll)
                                 .collect(Collectors.toList()))
                         .status(HttpStatus.OK)
                         .build()
@@ -197,6 +212,22 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    //http://localhost:8088/mamababy/users/details
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(
+            @PathVariable int id
+    ) throws Exception {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok().body(
+                ResponseObject.builder()
+                        .message("Get user's detail successfully")
+                        .data(UserResponse.fromUser(user))
+                        .status(HttpStatus.OK)
+                        .build()
+        );
     }
 
 }

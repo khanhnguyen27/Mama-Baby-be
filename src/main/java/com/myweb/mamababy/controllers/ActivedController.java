@@ -27,7 +27,6 @@ public class ActivedController {
 
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createActive(
             @Valid @RequestBody ActivedDTO activedDTO,
             BindingResult result) {

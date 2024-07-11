@@ -3,6 +3,7 @@ package com.myweb.mamababy.configurations;
 
 import com.myweb.mamababy.filters.JwtTokenFilter;
 import com.myweb.mamababy.models.Role;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +40,13 @@ import static org.springframework.http.HttpMethod.*;
 @RequiredArgsConstructor
 public class WebSecurityConfig implements  WebMvcConfigurer{
     private final JwtTokenFilter jwtTokenFilter;
-    @Value("${api.prefix}")
+    //@Value("${api.prefix}")
     private String apiPrefix;
+
+    @PostConstruct
+    public void init() {
+        System.out.println("API Prefix: " + apiPrefix);
+    }
 
     @Bean
     //Pair.of(String.format("%s/products", apiPrefix), "GET"),
@@ -49,14 +55,15 @@ public class WebSecurityConfig implements  WebMvcConfigurer{
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> {
                     requests
-                              .requestMatchers("**")
-                              .permitAll()
-//                            .requestMatchers(
-//                                    String.format("%s/users/register", apiPrefix),
-//                                    String.format("%s/users/login", apiPrefix)
-//                            )
-//                            .permitAll()
-//
+                            .requestMatchers("**")
+                            .permitAll()
+
+                            .requestMatchers(
+                                    String.format("%s/users/register", apiPrefix),
+                                    String.format("%s/users/login", apiPrefix)
+                            )
+                            .permitAll()
+
 //                            .requestMatchers(GET,
 //                                    String.format("%s/active/**", apiPrefix)).hasAnyRole(Role.ADMIN)
 //                            .requestMatchers(POST,
@@ -111,16 +118,93 @@ public class WebSecurityConfig implements  WebMvcConfigurer{
 //                            .requestMatchers(PUT,
 //                                    String.format("%s/article/**", apiPrefix)).hasAnyRole(Role.STAFF)
 //
+                              .requestMatchers(GET,
+                                      String.format("%s/users/**", apiPrefix)).hasAnyRole(Role.STAFF, Role.ADMIN, Role.MEMBER)
 //                            .requestMatchers(GET,
 //                                    String.format("%s/users/details", apiPrefix)).permitAll()
 //                            .requestMatchers(GET,
-//                                    String.format("%s/users/all", apiPrefix)).hasAnyRole(Role.ADMIN)
+//                                    String.format("%s/users/admin/all", apiPrefix)).hasAnyRole(Role.ADMIN)
 //                            .requestMatchers(GET,
 //                                    String.format("%s/users/findByYear", apiPrefix)).hasAnyRole(Role.ADMIN)
 //                            .requestMatchers(PUT,
 //                                    String.format("%s/users/admin", apiPrefix)).hasAnyRole(Role.ADMIN)
 //                            .requestMatchers(PUT,
 //                                    String.format("%s/users", apiPrefix)).permitAll()
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/exchanges/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/exchanges/**", apiPrefix)).permitAll()
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/exchanges/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/exchange_details/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/exchange_details/**", apiPrefix)).permitAll()
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/exchange_details/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/orders/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/orders/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/orders/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/order_details/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/order_details/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/order_details/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/products**", apiPrefix)).permitAll()
+//                            .requestMatchers(GET,
+//                                    String.format("%s/products/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/refunds/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/refunds/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/refunds/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/refund_details/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/refund_details/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/refund_details/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/status_orders/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/status_orders/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/status_orders/**", apiPrefix)).hasAnyRole(Role.STAFF, Role.MEMBER)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/stores/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/stores/**", apiPrefix)).hasAnyRole(Role.MEMBER)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/stores/**", apiPrefix)).hasAnyRole(Role.ADMIN)
+//
+//                            .requestMatchers(GET,
+//                                    String.format("%s/vouchers**", apiPrefix)).permitAll()
+//                            .requestMatchers(GET,
+//                                    String.format("%s/vouchers/**", apiPrefix)).permitAll()
+//                            .requestMatchers(POST,
+//                                    String.format("%s/vouchers/**", apiPrefix)).hasAnyRole(Role.STAFF)
+//                            .requestMatchers(PUT,
+//                                    String.format("%s/vouchers/**", apiPrefix)).hasAnyRole(Role.STAFF)
+
 
 
 

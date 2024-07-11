@@ -23,7 +23,6 @@ public class BrandController {
 
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createBrand(
             @Valid @RequestBody BrandDTO brandDTO,
             BindingResult result) {
@@ -38,7 +37,6 @@ public class BrandController {
         return ResponseEntity.ok(brand);
     }
 
-    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrands(

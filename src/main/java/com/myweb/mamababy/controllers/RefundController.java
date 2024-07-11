@@ -67,16 +67,13 @@ public class RefundController {
             @RequestParam(defaultValue = "12", name = "limit") int limit
     ){
         int totalPages = 0;
-        // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
                 //Sort.by("createdAt").descending()
                 Sort.by("id").ascending()
         );
-        //Lay tat ca cac product theo yeu cau
         Page<RefundResponse> refundPage = refundService
                 .getAllRefund(status, pageRequest);
-        // Lấy tổng số trang
         totalPages = refundPage.getTotalPages();
         List<RefundResponse> refunds = refundPage.getContent();
 
