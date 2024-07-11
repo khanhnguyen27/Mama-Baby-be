@@ -41,10 +41,7 @@ public class CategoryController {
 
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getAllCategories(
-            @RequestParam(defaultValue = "0",name = "page")     int page,
-            @RequestParam(defaultValue = "12",name = "limit")    int limit
-    ) {
+    public ResponseEntity<?> getAllCategories() {
         List<Category> categories = categoryService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject
                 .builder()
@@ -56,10 +53,7 @@ public class CategoryController {
 
     @GetMapping("/admin")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> getAllCategoriesIsTrue(
-        @RequestParam(defaultValue = "0",name = "page")     int page,
-        @RequestParam(defaultValue = "12",name = "limit")    int limit
-    ) {
+    public ResponseEntity<?> getAllCategoriesIsTrue() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(ResponseObject
             .builder()

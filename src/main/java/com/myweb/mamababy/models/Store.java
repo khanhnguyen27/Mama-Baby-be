@@ -43,6 +43,9 @@ public class Store {
     @Column(name = "request_date")
     private LocalDateTime requestDate;
 
+    @Column(name = "valid_date")
+    private LocalDateTime validDate;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

@@ -2,7 +2,6 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ArticleDTO;
 import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.article.ArticleListResponse;
 import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;

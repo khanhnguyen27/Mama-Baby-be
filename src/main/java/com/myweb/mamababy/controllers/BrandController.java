@@ -40,8 +40,6 @@ public class BrandController {
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllBrands(
-            @RequestParam(defaultValue = "0",name = "page")     int page,
-            @RequestParam(defaultValue = "12",name = "limit")    int limit
     ) {
         List<Brand> brands = brandService.findByIsActiveTrue();
         return ResponseEntity.ok(ResponseObject

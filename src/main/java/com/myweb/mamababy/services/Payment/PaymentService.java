@@ -26,7 +26,7 @@ public class PaymentService implements IPaymentService{
         String bankCode = paymentDTO.getBankCode();
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
-        vnpParamsMap.put("vnp_OrderInfo", paymentDTO.getOrderId() + "|" + paymentDTO.getStoreId());
+        vnpParamsMap.put("vnp_OrderInfo", paymentDTO.getOrderId() + "|" + paymentDTO.getStoreId() + "|" + paymentDTO.getPackageId());
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }
