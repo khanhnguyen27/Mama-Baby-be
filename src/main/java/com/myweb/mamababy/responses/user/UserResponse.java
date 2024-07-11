@@ -58,4 +58,13 @@ public class UserResponse {
                 .role(user.getRole())
                 .build();
     }
+
+    public static UserResponse fromUserForAll(com.myweb.mamababy.models.User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .full_name(user.getFullName())
+                .phone_number(user.getPhoneNumber())
+                .build();
+    }
 }

@@ -15,6 +15,7 @@ public interface IUserService {
     User getUserDetailsFromToken(String token) throws Exception;
     User isActive(UserDTO userDTO) throws Exception;
     User updateAccount(String token, UpdateUserDTO updateUserDTO) throws Exception;
+    User getUserById(int id);
     List<User> getAllAccount() throws Exception;
     Page<User> findUserByKeyword(String keyword, Pageable pageable) throws Exception;
     List<User> findByYear(int year);

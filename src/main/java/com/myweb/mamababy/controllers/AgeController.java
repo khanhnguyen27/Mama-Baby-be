@@ -24,7 +24,6 @@ public class AgeController {
 
     @PostMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
-    //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<?> createAge(
             @Valid @RequestBody AgeDTO ageDTO,
             BindingResult result) {
@@ -40,7 +39,6 @@ public class AgeController {
     }
 
     //GET: http://localhost:8080/mamababy/products
-    //Hiện tất cả các categories
     @GetMapping("")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> getAllAges(

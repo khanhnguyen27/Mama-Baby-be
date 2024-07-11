@@ -186,4 +186,10 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList()); // Removed .orElseThrow(...)
     }
 
+    @Override
+    public User getUserById(int Id) {
+        return userRepository.findById(Id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
 }

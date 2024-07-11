@@ -229,7 +229,7 @@ public class ProductService implements IProductService {
     public Boolean checkFileImage(MultipartFile file) {
         Boolean result = false;
 
-        if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) { // Kích thước > 10MB
+        if(file.getSize() > 10 * 1024 * 1024 || file.getOriginalFilename() == null) {
             return result;
         }
         String contentType = file.getContentType();

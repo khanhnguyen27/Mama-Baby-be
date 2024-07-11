@@ -23,6 +23,8 @@ import org.springframework.web.filter.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
@@ -77,20 +79,26 @@ public class JwtTokenFilter extends OncePerRequestFilter{
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
-                Pair.of(String.format("%s/stores", apiPrefix), "GET"),
-                Pair.of(String.format("%s/products", apiPrefix), "GET"),
+                Pair.of(String.format("%s/stores**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/products**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/products/images/**", apiPrefix), "GET"),
-                Pair.of(String.format("%s/categories", apiPrefix), "GET"),
-                Pair.of(String.format("%s/brands", apiPrefix), "GET"),
-                Pair.of(String.format("%s/age", apiPrefix), "GET"),
-                Pair.of(String.format("%s/comments", apiPrefix), "GET"),
-                Pair.of(String.format("%s/article", apiPrefix), "GET"),
+                Pair.of(String.format("%s/categories**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/brands**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/age**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/comments**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/article**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/article/images/**", apiPrefix), "GET"),
-                Pair.of(String.format("%s/vouchers", apiPrefix), "GET")
+                Pair.of(String.format("%s/vouchers**", apiPrefix), "GET")
         );
-        for(Pair<String, String> bypassToken: bypassTokens) {
-            if (request.getServletPath().contains(bypassToken.getFirst()) &&
-                    request.getMethod().equals(bypassToken.getSecond())) {
+        String requestPath = request.getServletPath();
+        String requestMethod = request.getMethod();
+
+        for (Pair<String, String> token : bypassTokens) {
+            String path = token.getFirst();
+            String method = token.getSecond();
+            // Check if the request path and method match any pair in the bypassTokens list
+            if (requestPath.matches(path.replace("**", ".*"))
+                    && requestMethod.equalsIgnoreCase(method)) {
                 return true;
             }
         }
