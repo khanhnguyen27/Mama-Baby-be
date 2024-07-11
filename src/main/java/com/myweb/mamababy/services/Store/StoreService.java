@@ -133,6 +133,7 @@ public class StoreService implements IStoreService{
 
         existingStore.setStatus(storeDTO.getStatus());
         existingStore.setActive(storeDTO.isActive());
+        existingStore.setValidDate(LocalDateTime.now().plusHours(7).plusMonths(2));
 
         return storeRepository.save(existingStore);
     }
