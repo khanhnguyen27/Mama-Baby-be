@@ -1,15 +1,9 @@
 package com.myweb.mamababy.controllers;
 
-import com.myweb.mamababy.dtos.ExchangeDTO;
 import com.myweb.mamababy.dtos.ExchangeDetailDTO;
-import com.myweb.mamababy.dtos.OrderDetailDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.Exchange;
-import com.myweb.mamababy.models.ExchangeDetail;
-import com.myweb.mamababy.models.OrderDetail;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
-import com.myweb.mamababy.responses.order.OrderDetailResponse;
 import com.myweb.mamababy.services.ExchangeDetail.IExchangeDetailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/exchange_details")

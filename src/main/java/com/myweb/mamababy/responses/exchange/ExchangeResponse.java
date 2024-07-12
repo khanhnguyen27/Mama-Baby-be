@@ -1,14 +1,11 @@
 package com.myweb.mamababy.responses.exchange;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Exchange;
-import com.myweb.mamababy.models.ExchangeDetail;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

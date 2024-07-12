@@ -3,14 +3,10 @@ package com.myweb.mamababy.responses.comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.models.User;
-import com.myweb.mamababy.responses.user.UserResponse;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,8 +1,5 @@
 package com.myweb.mamababy.repositories;
 
-import com.myweb.mamababy.models.Exchange;
-import com.myweb.mamababy.models.Order;
-import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.models.Refund;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

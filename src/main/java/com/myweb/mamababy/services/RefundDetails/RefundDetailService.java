@@ -6,11 +6,9 @@ import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.RefundDetailRepository;
 import com.myweb.mamababy.repositories.RefundRepository;
-import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

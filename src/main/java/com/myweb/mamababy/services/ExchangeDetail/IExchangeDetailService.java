@@ -1,9 +1,7 @@
 package com.myweb.mamababy.services.ExchangeDetail;
 
 import com.myweb.mamababy.dtos.ExchangeDetailDTO;
-import com.myweb.mamababy.dtos.OrderDetailDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.models.OrderDetail;
 import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
 
 import java.util.List;

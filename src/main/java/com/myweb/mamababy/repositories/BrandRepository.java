@@ -1,10 +1,10 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Brand;
-import java.util.List;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
 

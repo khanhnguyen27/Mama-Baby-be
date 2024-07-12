@@ -1,7 +1,6 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

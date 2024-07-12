@@ -1,8 +1,6 @@
 package com.myweb.mamababy.controllers;
 
-import com.myweb.mamababy.dtos.CategoryDTO;
 import com.myweb.mamababy.dtos.ProductDTO;
-import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.product.ProductListResponse;
 import com.myweb.mamababy.responses.product.ProductResponse;

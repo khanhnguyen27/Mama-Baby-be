@@ -1,6 +1,5 @@
 package com.myweb.mamababy.repositories;
 
-import com.myweb.mamababy.models.ExchangeDetail;
 import com.myweb.mamababy.models.RefundDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 

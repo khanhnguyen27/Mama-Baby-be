@@ -1,12 +1,8 @@
 package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.ActivedDTO;
-import com.myweb.mamababy.dtos.AgeDTO;
 import com.myweb.mamababy.models.Actived;
-import com.myweb.mamababy.models.Age;
-import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Actived.IActivedService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

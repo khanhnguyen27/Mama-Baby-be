@@ -1,16 +1,13 @@
 package com.myweb.mamababy.services.Comment;
 
 import com.myweb.mamababy.components.JwtTokenUtil;
-import com.myweb.mamababy.dtos.CartItemDTO;
 import com.myweb.mamababy.dtos.CommentDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
-import com.myweb.mamababy.exceptions.ExpiredTokenException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.CommentRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.repositories.UserRepository;
 import com.myweb.mamababy.services.User.IUserService;
-import com.myweb.mamababy.services.User.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

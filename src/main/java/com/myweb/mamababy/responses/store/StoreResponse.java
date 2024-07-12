@@ -3,13 +3,11 @@ package com.myweb.mamababy.responses.store;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myweb.mamababy.models.Store;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -36,6 +34,11 @@ public class StoreResponse {
     @JsonProperty("request_date")
     private LocalDateTime requestDate;
 
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+    @JsonProperty("valid_date")
+    private LocalDateTime validDate;
+
     @JsonProperty("is_active")
     private boolean isActive;
 
@@ -51,6 +54,7 @@ public class StoreResponse {
                 .phone(store.getPhone())
                 .licenseUrl(store.getLicenseUrl())
                 .requestDate(store.getRequestDate())
+                .validDate(store.getValidDate())
                 .status(store.getStatus())
                 .isActive(store.isActive())
                 .userID(store.getUser().getId())

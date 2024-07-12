@@ -1,7 +1,6 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Actived;
-import com.myweb.mamababy.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
