@@ -52,4 +52,19 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
              Pageable pageable);
 
     List<Product> findByStoreId(int id);
+
+    @Query("SELECT p FROM Product p WHERE " +
+        "(:keyword IS NULL OR :keyword = '' OR p.name LIKE %:keyword%) " +
+        "AND (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
+        "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId) " +
+        "AND (:storeId IS NULL OR :storeId = 0 OR p.store.id = :storeId) " +
+        "AND (:age IS NULL OR :age = 0 OR p.age.id = :age) " +
+        "AND (:type IS NULL OR p.type = :type)")
+    Page<Product> searchProductsByType(@Param("keyword") String keyword,
+        @Param("categoryId") int categoryId,
+        @Param("brandId") int brandId,
+        @Param("age") int age,
+        @Param("storeId") int storeId,
+        @Param("type") String type,
+        Pageable pageable);
 }

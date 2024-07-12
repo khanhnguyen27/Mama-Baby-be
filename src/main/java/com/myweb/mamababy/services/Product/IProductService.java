@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.models.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,4 +34,6 @@ public interface IProductService {
     String storeFile(MultipartFile file) throws IOException;
 
     void deleteFile(String filename) throws IOException;
+
+    Page<ProductResponse> getProductsByType(String keyword, int categoryId, int brandId, int rangeAge, int storeId, String type, Pageable pageable);
 }
