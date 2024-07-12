@@ -7,6 +7,7 @@ import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Product.IProductService;
 import com.myweb.mamababy.services.Store.IStoreService;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
@@ -170,50 +171,61 @@ public class ProductController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/store")
     public ResponseEntity<?> getProductByStoreId(
-            @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "", name = "sort_price") String sort,
-            @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
-            @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
-            @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
-            @RequestParam(defaultValue = "0", name = "store_id") int storeId,
-            @RequestParam(defaultValue = "0", name = "page") int page,
-            @RequestParam(defaultValue = "12", name = "limit") int limit
+        @RequestParam(defaultValue = "") String keyword,
+        @RequestParam(defaultValue = "", name = "sort_price") String sortPrice,
+        @RequestParam(defaultValue = "", name = "sort_status") String sortStatus,
+        @RequestParam(defaultValue = "0", name = "category_id") int categoryId,
+        @RequestParam(defaultValue = "0", name = "brand_id") int brandId,
+        @RequestParam(defaultValue = "0", name = "age_id") int rangeAge,
+        @RequestParam(defaultValue = "0", name = "store_id") int storeId,
+        @RequestParam(defaultValue = "0", name = "page") int page,
+        @RequestParam(defaultValue = "12", name = "limit") int limit
     ) throws Exception {
-        int totalPages = 0;
-        PageRequest pageRequest = null;
-        if(sort.equals("DESC")){
-            pageRequest = PageRequest.of(
-                    page, limit,
-                    Sort.by("price").descending()
-            );
-        }else if(sort.equals("ASC")){
-            pageRequest = PageRequest.of(
-                    page, limit,
-                    Sort.by("price").ascending()
-            );
-        }else {
-            pageRequest = PageRequest.of(
-                    page, limit,
-                    Sort.by("createdAt").descending()
-            );
+        List<Sort.Order> orders = new ArrayList<>();
+
+        if (!sortPrice.isEmpty()) {
+            orders.add(Sort.Order.by("price").with(Sort.Direction.fromString(sortPrice)));
         }
 
-        Page<ProductResponse> productPage = productService
-                .getProductByStoreId(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
+        if (!sortPrice.isEmpty()) {
+            orders.add(Sort.Order.by("point").with(Sort.Direction.fromString(sortPrice)));
+        }
 
-        totalPages = productPage.getTotalPages();
+        if (!sortStatus.isEmpty()) {
+            if (sortStatus.equalsIgnoreCase("GIFT")) {
+                orders.add(Sort.Order.by("type").with(Sort.Direction.ASC));
+            } else if (sortStatus.equalsIgnoreCase("WHOLESALE")) {
+                orders.add(Sort.Order.by("type").with(Sort.Direction.DESC));
+            }
+        }
+
+        if (orders.isEmpty()) {
+            orders.add(Sort.Order.desc("createdAt"));
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, limit, Sort.by(orders));
+
+        Page<ProductResponse> productPage;
+        if ("GIFT".equalsIgnoreCase(sortStatus)) {
+            productPage = productService.getProductsByType(keyword, categoryId, brandId, rangeAge, storeId, "GIFT", pageRequest);
+        } else if ("WHOLESALE".equalsIgnoreCase(sortStatus)) {
+            productPage = productService.getProductsByType(keyword, categoryId, brandId, rangeAge, storeId, "WHOLESALE", pageRequest);
+        } else {
+            productPage = productService.getProductByStoreId(keyword, categoryId, brandId, rangeAge, storeId, pageRequest);
+        }
+        int totalPages = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
 
-        ProductListResponse productListResponse = ProductListResponse
-                .builder()
-                .products(products)
-                .totalPages(totalPages)
-                .build();
+        ProductListResponse productListResponse = ProductListResponse.builder()
+            .products(products)
+            .totalPages(totalPages)
+            .build();
+
         return ResponseEntity.ok(ResponseObject.builder()
-                .message("Get products details successfully")
-                .data(productListResponse)
-                .status(HttpStatus.OK)
-                .build());
+            .message("Get products details successfully")
+            .data(productListResponse)
+            .status(HttpStatus.OK)
+            .build());
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

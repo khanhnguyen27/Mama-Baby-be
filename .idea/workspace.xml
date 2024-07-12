@@ -5,31 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f5ac502-e3ca-427b-82ce-f8b3877b1e5c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/StoreAPackageController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/dtos/StorePackageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/models/StorePackage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/repositories/StoreAPackageRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/responses/storePackage/StorePackageResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/StorePackage/IStorePackageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/StorePackage/StorePackageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VnpayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/controllers/VnpayController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="CodeInsightWorkspaceSettings">
-    <option name="optimizeImportsOnTheFly" value="true" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,19 +26,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MamababyApplication.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DuyQuang",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Project_SWP/Mama-Baby-be",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "Errors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MamababyApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DuyQuang&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="MamababyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplication" />
@@ -88,16 +67,5 @@
       <updated>1720080730832</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/StorePackage/StorePackageService.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
