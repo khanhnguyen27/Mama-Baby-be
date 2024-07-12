@@ -3,7 +3,6 @@ package com.myweb.mamababy.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.awt.*;
 import java.util.Date;
 
 @Entity

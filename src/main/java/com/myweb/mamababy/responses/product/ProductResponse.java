@@ -2,18 +2,11 @@ package com.myweb.mamababy.responses.product;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myweb.mamababy.models.Comment;
-import com.myweb.mamababy.models.Order;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.responses.BaseResponse;
-import com.myweb.mamababy.responses.comment.CommentResponse;
-import com.myweb.mamababy.responses.order.StatusOrderResponse;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 

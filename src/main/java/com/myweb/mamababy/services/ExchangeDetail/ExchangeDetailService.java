@@ -4,11 +4,9 @@ import com.myweb.mamababy.dtos.ExchangeDetailDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.Exchange;
 import com.myweb.mamababy.models.ExchangeDetail;
-import com.myweb.mamababy.models.OrderDetail;
 import com.myweb.mamababy.models.Product;
 import com.myweb.mamababy.repositories.ExchangeDetailRepository;
 import com.myweb.mamababy.repositories.ExchangeRepository;
-import com.myweb.mamababy.repositories.OrderDetailRepository;
 import com.myweb.mamababy.repositories.ProductRepository;
 import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

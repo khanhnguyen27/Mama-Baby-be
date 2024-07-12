@@ -1,7 +1,6 @@
 package com.myweb.mamababy.services.Package;
 
 import com.myweb.mamababy.dtos.PackageDTO;
-import com.myweb.mamababy.models.Category;
 import com.myweb.mamababy.models.Package;
 import com.myweb.mamababy.repositories.PackageRepository;
 import jakarta.transaction.Transactional;

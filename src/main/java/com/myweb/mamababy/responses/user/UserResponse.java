@@ -1,14 +1,11 @@
 package com.myweb.mamababy.responses.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myweb.mamababy.dtos.UserDTO;
-import com.myweb.mamababy.models.Role;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter

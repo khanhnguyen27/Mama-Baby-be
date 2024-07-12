@@ -6,7 +6,6 @@ import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
 import com.myweb.mamababy.responses.article.ArticleResponse;
-import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.User.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,15 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service

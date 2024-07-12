@@ -1,6 +1,5 @@
 package com.myweb.mamababy.responses.refunds;
 
-import com.myweb.mamababy.responses.exchange.ExchangeResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

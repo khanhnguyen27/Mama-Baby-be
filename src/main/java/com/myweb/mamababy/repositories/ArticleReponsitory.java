@@ -1,13 +1,11 @@
 package com.myweb.mamababy.repositories;
 
 import com.myweb.mamababy.models.Article;
-import com.myweb.mamababy.models.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

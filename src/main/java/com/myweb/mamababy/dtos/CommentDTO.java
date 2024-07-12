@@ -1,14 +1,8 @@
 package com.myweb.mamababy.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myweb.mamababy.models.Product;
-import com.myweb.mamababy.models.User;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
-import java.util.Date;
-import java.util.List;
 
 @Data//toString
 @Getter

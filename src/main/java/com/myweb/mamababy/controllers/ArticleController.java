@@ -5,10 +5,7 @@ import com.myweb.mamababy.models.Article;
 import com.myweb.mamababy.responses.article.ArticleListResponse;
 import com.myweb.mamababy.responses.article.ArticleResponse;
 import com.myweb.mamababy.responses.ResponseObject;
-import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Article.IArticleService;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +25,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/article")

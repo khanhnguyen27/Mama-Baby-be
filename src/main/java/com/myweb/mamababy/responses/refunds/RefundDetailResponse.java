@@ -1,10 +1,7 @@
 package com.myweb.mamababy.responses.refunds;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.myweb.mamababy.models.ExchangeDetail;
 import com.myweb.mamababy.models.RefundDetail;
-import com.myweb.mamababy.responses.exchange.ExchangeDetailResponse;
-import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter

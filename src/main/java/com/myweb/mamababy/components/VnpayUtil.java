@@ -1,15 +1,11 @@
 package com.myweb.mamababy.components;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.net.URLEncoder;
-import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 import java.util.*;
 

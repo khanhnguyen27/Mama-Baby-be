@@ -1,8 +1,6 @@
 package com.myweb.mamababy.services.Comment;
 
-import com.myweb.mamababy.dtos.AgeDTO;
 import com.myweb.mamababy.dtos.CommentDTO;
-import com.myweb.mamababy.models.Age;
 import com.myweb.mamababy.models.Comment;
 
 import java.util.List;

@@ -2,10 +2,8 @@ package com.myweb.mamababy.services.User;
 import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
 import com.myweb.mamababy.models.User;
-import com.myweb.mamababy.responses.user.UserResponse;
 import org.springframework.data.domain.Page;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
