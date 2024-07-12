@@ -11,6 +11,7 @@ import com.myweb.mamababy.services.Package.IPackageService;
 import com.myweb.mamababy.services.Payment.PaymentService;
 import com.myweb.mamababy.services.StatusOrder.IStatusOrderService;
 import com.myweb.mamababy.services.Store.IStoreService;
+import com.myweb.mamababy.services.StorePackage.IStorePackageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class VnpayController {
     private final IStatusOrderService statusOrderService;
     private final IStoreService storeService;
     private final IPackageService packageService;
+    private final IStorePackageService storePackageService;
     private final StoreRepository storeRepository;
 
     @PostMapping("/vn-pay")
@@ -60,6 +62,7 @@ public class VnpayController {
             if (status.equals("00")) {
                 if(orderId != 0 && packageId == 0){
                     statusOrderService.createStatusOrder(new StatusOrderDTO(orderId, "PENDING"));
+
                     redirectView = new RedirectView("http://localhost:3000/successPayment");
                     redirectView.addStaticAttribute("orderId", orderId);
                     redirectView.addStaticAttribute("storeId", storeId);
@@ -68,16 +71,30 @@ public class VnpayController {
                     Package exisitngPackage = packageService.getPackageById(packageId);
                     existingStore.setValidDate(existingStore.getValidDate().plusMonths(exisitngPackage.getMonth()));
                     storeRepository.save(existingStore);
-                    redirectView = new RedirectView("http://localhost:3000/successPayment");
+
+                    StorePackageDTO newStorePackageDTO = StorePackageDTO.builder()
+                            .packageId(packageId)
+                            .storeId(storeId)
+                            .price(exisitngPackage.getPrice())
+                            .build();
+                    storePackageService.createStorePackage(newStorePackageDTO);
+
+                    redirectView = new RedirectView("http://localhost:3000/staff/successPackagePayment");
                     redirectView.addStaticAttribute("packageId", packageId);
                     redirectView.addStaticAttribute("storeId", storeId);
                 }
 
             } else {
-                redirectView = new RedirectView("http://localhost:3000/failedPayment");
-                redirectView.addStaticAttribute("orderId", orderId);
-                redirectView.addStaticAttribute("storeId", storeId);
-                redirectView.addStaticAttribute("packageId", packageId);
+                if(orderId != 0 && packageId == 0){
+                    redirectView = new RedirectView("http://localhost:3000/failedPayment");
+                    redirectView.addStaticAttribute("orderId", orderId);
+                    redirectView.addStaticAttribute("storeId", storeId);
+                }else if (orderId == 0 && packageId != 0) {
+                    redirectView = new RedirectView("http://localhost:3000/staff/failedPackagePayment");
+                    redirectView.addStaticAttribute("packageId", packageId);
+                    redirectView.addStaticAttribute("storeId", storeId);
+                }
+
             }
             return redirectView;
         }catch (Exception e){
