@@ -117,7 +117,7 @@ public class WebSecurityConfig implements  WebMvcConfigurer{
 //                                    String.format("%s/article/**", apiPrefix)).hasAnyRole(Role.STAFF)
 //
                               .requestMatchers(GET,
-                                      String.format("%s/users/**", apiPrefix)).hasAnyRole(Role.STAFF, Role.ADMIN, Role.MEMBER)
+                                      String.format("%s/users/**", apiPrefix)).permitAll()
 //                            .requestMatchers(GET,
 //                                    String.format("%s/users/details", apiPrefix)).permitAll()
 //                            .requestMatchers(GET,
