@@ -37,7 +37,12 @@ public class VoucherService implements IVoucherService{
                 .findById(voucherDTO.getStoreId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
+
                                 "Cannot find store with id: "+voucherDTO.getStoreId()));
+
+        if (!existingStore.isActive() || existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))) {
+            throw new DataNotFoundException("Invalid store is inActive");
+        }
 
         Voucher newVoucher = Voucher.builder()
 

@@ -45,7 +45,7 @@ public class OrderService implements IOrderService{
                             "Cannot find voucher with id: " + orderDTO.getVoucherId()));
         }
 
-        if (!existingUser.getIsActive() || !existingStore.isActive() ) {
+        if (!existingUser.getIsActive() || !existingStore.isActive() || existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))) {
             throw new DataNotFoundException("Invalid user, store is inActive");
         }
 

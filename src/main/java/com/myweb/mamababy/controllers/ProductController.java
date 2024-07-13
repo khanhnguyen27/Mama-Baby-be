@@ -7,6 +7,8 @@ import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.services.Product.IProductService;
 import com.myweb.mamababy.services.Store.IStoreService;
+
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +109,7 @@ public class ProductController {
 
         List<ProductResponse> productResponsesValid = new ArrayList<>();
         for(ProductResponse productResponse : products){
-            if(storeService.getStoreById(productResponse.getStoreId()).isActive()){
+            if(storeService.getStoreById(productResponse.getStoreId()).isActive() && !storeService.getStoreById(productResponse.getStoreId()).getValidDate().isBefore(LocalDateTime.now().plusHours(7))){
                 productResponsesValid.add(productResponse);
             }
         }
