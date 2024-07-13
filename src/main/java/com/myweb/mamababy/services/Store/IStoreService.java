@@ -23,7 +23,7 @@ public interface IStoreService {
 
     Page<StoreResponse> getAllStoresAdmin(String keyword,String status, PageRequest pageRequest);
 
-    Store updateStore(int id, StoreDTO storeDTO, MultipartFile file) throws IOException;
+    Store updateStore(int id, StoreDTO storeDTO) throws IOException;
 
     Store updateStatusStore(int id, StoreDTO storeDTO);
 

@@ -4,7 +4,6 @@ import com.myweb.mamababy.dtos.ProductDTO;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.*;
-import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.product.ProductResponse;
 import com.myweb.mamababy.services.Store.IStoreService;
 import jakarta.transaction.Transactional;
@@ -13,23 +12,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,7 +63,7 @@ public class ProductService implements IProductService {
                         new DataNotFoundException(
                                 "Cannot find store with id: "+productDTO.getStoreId()));
 
-        if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive()){
+        if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive() || existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))){
             throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
         }
 
@@ -158,7 +151,7 @@ public class ProductService implements IProductService {
                             new DataNotFoundException(
                                     "Cannot find store with id: "+productDTO.getStoreId()));
 
-            if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive()){
+            if(!existingCategory.isActive() ||!existingBrand.isActive() || !existingAge.isActive() || !existingStore.isActive() || existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))){
                 throw new DataIntegrityViolationException("Cannot create new product with not active value!!!");
             }
 

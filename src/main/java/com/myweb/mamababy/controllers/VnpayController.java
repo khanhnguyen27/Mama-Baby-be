@@ -21,6 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("${api.prefix}/payment")
 @RequiredArgsConstructor
@@ -69,7 +71,13 @@ public class VnpayController {
                 }else if (orderId == 0 && packageId != 0){
                     Store existingStore = storeService.getStoreById(storeId);
                     Package exisitngPackage = packageService.getPackageById(packageId);
-                    existingStore.setValidDate(existingStore.getValidDate().plusMonths(exisitngPackage.getMonth()));
+                    LocalDateTime validDate;
+                    if(existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))){
+                        validDate = LocalDateTime.now().plusHours(7).plusMonths(exisitngPackage.getMonth());
+                    }else{
+                        validDate = existingStore.getValidDate().plusMonths(exisitngPackage.getMonth());
+                    }
+                    existingStore.setValidDate(validDate);
                     storeRepository.save(existingStore);
 
                     StorePackageDTO newStorePackageDTO = StorePackageDTO.builder()

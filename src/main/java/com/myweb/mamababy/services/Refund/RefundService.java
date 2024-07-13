@@ -143,21 +143,12 @@ public class RefundService implements IRefundService {
 
     @Override
     public List<Refund> findByUserId(int userId) throws DataNotFoundException {
-
-//        if (refunds.isEmpty()) {
-//            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
-//        }
         return refundRepository.findByUserId(userId);
     }
 
 
     @Override
     public List<Refund> findByStoreId(int storeId) throws DataNotFoundException {
-
-//        if (refunds.isEmpty()) {
-//            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
-//        }
-
         return refundRepository.findByStoreId(storeId);
     }
 }

@@ -25,7 +25,8 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
     @Query("SELECT s FROM Store s WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR s.nameStore LIKE %:keyword%) " +
             "AND (:status IS NULL OR :status = '' OR s.status LIKE %:status%) " +
-            "AND s.isActive = true")
+            "AND s.isActive = true " +
+            "AND s.validDate > current_timestamp")
     Page<Store> searchStores
             (@Param("keyword") String keyword,
              @Param("status") String status,

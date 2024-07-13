@@ -107,24 +107,6 @@ public class ExchangeService implements IExchangeService{
     public Exchange updateExchange(int id, ExchangeDTO exchangeDTO) throws Exception {
         Exchange existingExchange = getExchangeById(id);
         if (existingExchange != null) {
-
-//            OrderDetail existingOrderDetail = orderDetailRepository
-//                    .findById(exchangeDTO.getOrderDetailId())
-//                    .orElseThrow(() ->
-//                            new DataNotFoundException(
-//                                    "Cannot find order detail with id: "+exchangeDTO.getOrderDetailId()));
-//            User existingUser = userRepository
-//                    .findById(exchangeDTO.getUserId())
-//                    .orElseThrow(() ->
-//                            new DataNotFoundException(
-//                                    "Cannot find user with id: "+exchangeDTO.getUserId()));
-//
-//            existingExchange.setOrderDetail(existingOrderDetail);
-//            existingExchange.setUser(existingUser);
-//
-//            if(exchangeDTO.getQuantity() >= 0) {
-//                existingProduct.setPrice(productDTO.getPrice());
-//            }
             if (exchangeDTO.getStatus() != null &&
                     !exchangeDTO.getStatus().isEmpty())
                 existingExchange.setStatus(exchangeDTO.getStatus());
@@ -138,11 +120,6 @@ public class ExchangeService implements IExchangeService{
     @Override
     public List<ExchangeResponse> findByUserId(int userId) throws DataNotFoundException {
         List<Exchange> exchanges = exchangeRepository.findByUserId(userId);
-
-//        if (exchanges.isEmpty()) {
-//            throw new DataNotFoundException("Cannot find exchange for user with id: " + userId);
-//        }
-
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
         for(Exchange exchange :exchanges){
             exchangeResponses.add(ExchangeResponse.fromExchange(exchange));
@@ -153,11 +130,6 @@ public class ExchangeService implements IExchangeService{
     @Override
     public List<ExchangeResponse> findByStoreId(int storeId) throws DataNotFoundException {
         List<Exchange> exchanges = exchangeRepository.findByStoreId(storeId);
-
-//        if (exchanges.isEmpty()) {
-//            throw new DataNotFoundException("Cannot find exchange for store with id: " + storeId);
-//        }
-
         List<ExchangeResponse> exchangeResponses = new ArrayList<>();
         for(Exchange exchange :exchanges){
             exchangeResponses.add(ExchangeResponse.fromExchange(exchange));

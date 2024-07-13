@@ -177,11 +177,18 @@ public class StoreController {
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<?> updateStore(
             @PathVariable int id,
-            @Valid @ModelAttribute StoreDTO storeDTO,
-            @RequestParam("license") MultipartFile file
+            @Valid @RequestBody StoreDTO storeDTO,
+            BindingResult result
     ) {
         try{
-            Store updateStore = storeService.updateStore(id, storeDTO, file);
+            if(result.hasErrors()) {
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .toList();
+                return ResponseEntity.badRequest().body(errorMessages);
+            }
+            Store updateStore = storeService.updateStore(id, storeDTO);
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Create new store successfully !!!")
                     .status(HttpStatus.OK)
