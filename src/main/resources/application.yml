@@ -9,13 +9,13 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
       format_sql: true
 api:
-  prefix: /mamababy
+  prefix: mamababy
 jwt:
   expiration: 86400 # 24h
   secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=

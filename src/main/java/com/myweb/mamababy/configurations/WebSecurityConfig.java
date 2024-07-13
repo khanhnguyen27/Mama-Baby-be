@@ -5,6 +5,7 @@ import com.myweb.mamababy.filters.JwtTokenFilter;
 import com.myweb.mamababy.models.Role;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -38,7 +39,7 @@ import static org.springframework.http.HttpMethod.*;
 @RequiredArgsConstructor
 public class WebSecurityConfig implements  WebMvcConfigurer{
     private final JwtTokenFilter jwtTokenFilter;
-    //@Value("${api.prefix}")
+    @Value("${api.prefix}")
     private String apiPrefix;
 
     @PostConstruct
