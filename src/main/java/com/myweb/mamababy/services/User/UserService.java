@@ -3,8 +3,10 @@ package com.myweb.mamababy.services.User;
 import com.myweb.mamababy.components.JwtTokenUtil;
 import com.myweb.mamababy.dtos.UpdateUserDTO;
 import com.myweb.mamababy.dtos.UserDTO;
+import com.myweb.mamababy.exceptions.CustomException;
 import com.myweb.mamababy.exceptions.DataNotFoundException;
 import com.myweb.mamababy.exceptions.ExpiredTokenException;
+import com.myweb.mamababy.exceptions.PhoneNumberExistsException;
 import com.myweb.mamababy.models.*;
 import com.myweb.mamababy.repositories.RoleRepository;
 import com.myweb.mamababy.repositories.UserRepository;
@@ -123,7 +125,7 @@ public class UserService implements IUserService {
         User retrievedUser = getUserDetailsFromToken(token);
 
         if (!retrievedUser.getPhoneNumber().equals(phoneNumber) && userRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new DataIntegrityViolationException("Phone number already exists");
+            throw new PhoneNumberExistsException("Phone number already exists");
         }
 
         if (jwtTokenUtil.isTokenExpired(token)) {
@@ -131,15 +133,32 @@ public class UserService implements IUserService {
         }
 
             if (!retrievedUser.getUsername().equals(updateUserDTO.getUsername())) {
-                throw new Exception("Username does not match");
+                throw new CustomException("Username does not match");
             } else {
-                String password = updateUserDTO.getPassword();
-                String encodedPassword = passwordEncoder.encode(password);
+                String passwordData = updateUserDTO.getPassword();
+                String[] passwordParts = passwordData.split("\\|");
+                if (passwordParts.length == 2) {
+                    String currentPassword = passwordParts[0];
+                    String newPassword = passwordParts[1];
 
-                retrievedUser.setPassword(encodedPassword);
-                retrievedUser.setFullName(updateUserDTO.getFullName());
+                    if (!currentPassword.isEmpty() && !newPassword.isEmpty()) {
+                        // Verify current password
+                        if (!passwordEncoder.matches(currentPassword, retrievedUser.getPassword())) {
+                            throw new CustomException("Current password is incorrect");
+                        }
+
+                        // Encode and set new password
+                        String encodedPassword = passwordEncoder.encode(newPassword);
+                        retrievedUser.setPassword(encodedPassword);
+                    }
+                }
+
+                if(!updateUserDTO.getFullName().equals(""))
+                    retrievedUser.setFullName(updateUserDTO.getFullName());
+                if(!updateUserDTO.getAddress().equals(""))
                 retrievedUser.setAddress(updateUserDTO.getAddress());
-                retrievedUser.setPhoneNumber(updateUserDTO.getPhoneNumber());
+                if(!updateUserDTO.getPhoneNumber().equals(""))
+                    retrievedUser.setPhoneNumber(updateUserDTO.getPhoneNumber());
                 userRepository.save(retrievedUser);
             }
 
