@@ -3,8 +3,12 @@ package com.myweb.mamababy.services.Store;
 import com.myweb.mamababy.dtos.StoreDTO;
 
 import com.myweb.mamababy.exceptions.DataNotFoundException;
+import com.myweb.mamababy.models.Package;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.models.StorePackage;
 import com.myweb.mamababy.models.User;
+import com.myweb.mamababy.repositories.PackageRepository;
+import com.myweb.mamababy.repositories.StoreAPackageRepository;
 import com.myweb.mamababy.responses.store.StoreResponse;
 import com.myweb.mamababy.repositories.StoreRepository;
 import com.myweb.mamababy.repositories.UserRepository;
@@ -36,7 +40,10 @@ public class StoreService implements IStoreService{
 
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final StoreAPackageRepository storeAPackageRepository;
+    private final PackageRepository packageRepository;
     private static final String UPLOADS_FOLDER = "uploads";
+
 
     @Override
     @Transactional
@@ -204,5 +211,33 @@ public class StoreService implements IStoreService{
             // Xóa file
             Files.delete(filePath);
         }
+    }
+
+    @Transactional
+    @Override
+    public Store buyPackageSuccess(int storePackageId) throws Exception {
+        Optional<StorePackage> optionalStorePackage = storeAPackageRepository.findById(storePackageId);
+        if (optionalStorePackage.isPresent()) {
+            StorePackage storePackage = optionalStorePackage.get();
+            Optional<Package> optionalPackage = packageRepository.findById(storePackage.getAPackage().getId());
+            if (optionalPackage.isPresent()) {
+                Package aPackage  = optionalPackage.get();
+                Store existingStore = storeRepository
+                        .findById(storePackage.getStore().getId())
+                        .orElseThrow(() ->
+                                new DataNotFoundException(
+                                        "Cannot find store with id: "+ storePackage.getStore().getId()));
+                LocalDateTime validDate;
+                if(existingStore.getValidDate().isBefore(LocalDateTime.now().plusHours(7))){
+                    validDate = LocalDateTime.now().plusHours(7).plusMonths(aPackage.getMonth());
+                }else{
+                    validDate = existingStore.getValidDate().plusMonths(aPackage.getMonth());
+                }
+                existingStore.setValidDate(validDate);
+                return storeRepository.save(existingStore);
+            }
+            throw new DataNotFoundException("Cannot find Package with id =" + storePackageId);
+        }
+        throw new DataNotFoundException("Cannot find StorePackage with id =" + storePackageId);
     }
 }

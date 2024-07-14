@@ -21,7 +21,7 @@ public class PaymentDTO {
 
     private int orderId;
 
-    private int packageId;
+    private int storePackageId;
 
     private int storeId;
 }
