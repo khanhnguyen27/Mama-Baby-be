@@ -13,7 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/store_package")
@@ -51,9 +53,13 @@ public class StoreAPackageController {
     public ResponseEntity<?> getAllStorePackage() {
         try {
             List<StorePackage> storePackages = storePackageService.getAllPackage();
+            List<StorePackageResponse> sortedStorePackages = storePackages.stream()
+                    .map(StorePackageResponse::fromStorePackage)
+                    .sorted(Comparator.comparing(StorePackageResponse::getBuyDate).reversed())
+                    .collect(Collectors.toList());
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Get all store packages successfully!!!")
-                    .data(storePackages.stream().map(StorePackageResponse::fromStorePackage).toList())
+                    .data(sortedStorePackages)
                     .status(HttpStatus.OK)
                     .build());
         } catch (Exception e) {
@@ -82,9 +88,29 @@ public class StoreAPackageController {
             @Valid @PathVariable("store_id") int storeId) {
         try {
             List<StorePackage> storePackages = storePackageService.getStorePackageByStoreId(storeId);
+            List<StorePackageResponse> sortedStorePackages = storePackages.stream()
+                    .map(StorePackageResponse::fromStorePackage)
+                    .sorted(Comparator.comparing(StorePackageResponse::getBuyDate).reversed())
+                    .collect(Collectors.toList());
             return ResponseEntity.ok(ResponseObject.builder()
                     .message("Store packages with store Id = " + storeId + " Found Successfully!!!")
-                    .data(storePackages.stream().map(StorePackageResponse::fromStorePackage).toList())
+                    .data(sortedStorePackages)
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> updatePaymentSuccess(
+            @Valid @PathVariable("id") int storePackageId) {
+        try {
+            StorePackage storePackage = storePackageService.updatePaymenSucces(storePackageId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Store packages with  Id = " + storePackageId + " Update Successfully!!!")
+                    .data(StorePackageResponse.fromStorePackage(storePackage))
                     .status(HttpStatus.OK)
                     .build());
         } catch (Exception e) {

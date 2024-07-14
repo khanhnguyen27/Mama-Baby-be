@@ -14,4 +14,6 @@ public interface IStorePackageService {
     List<StorePackage> getStorePackageByStoreId(int id);
 
     List<StorePackage> getAllPackage();
+
+    StorePackage updatePaymenSucces(int id) throws Exception;
 }

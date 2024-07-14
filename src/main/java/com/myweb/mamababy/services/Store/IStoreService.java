@@ -36,4 +36,6 @@ public interface IStoreService {
     String storeFile(MultipartFile file) throws IOException;
 
     void deleteFile(String filename) throws IOException;
+
+    Store buyPackageSuccess(int storePackageId) throws Exception;
 }
