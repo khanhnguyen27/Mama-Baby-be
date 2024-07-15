@@ -8,6 +8,7 @@ import com.myweb.mamababy.models.StorePackage;
 import com.myweb.mamababy.repositories.PackageRepository;
 import com.myweb.mamababy.repositories.StoreAPackageRepository;
 import com.myweb.mamababy.repositories.StoreRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class StorePackageService implements IStorePackageService{
                 .store(existingStore)
                 .price(existingPackage.getPrice())
                 .buyDate(LocalDateTime.now().plusHours(7))
-                .validDate(existingStore.getValidDate())
+                .status("UNPAID")
                 .build();
         return storeAPackageRepository.save(newStorePackage);
     }
@@ -48,7 +49,7 @@ public class StorePackageService implements IStorePackageService{
         if (optionalStorePackage.isPresent()) {
             return optionalStorePackage.get();
         }
-        throw new DataNotFoundException("Cannot find product with id =" + id);
+        throw new DataNotFoundException("Cannot find StorePackage with id =" + id);
     }
 
     @Override
@@ -60,4 +61,17 @@ public class StorePackageService implements IStorePackageService{
     public List<StorePackage> getAllPackage() {
         return storeAPackageRepository.findAll();
     }
+
+    @Transactional
+    @Override
+    public StorePackage updatePaymenSucces(int id) throws Exception{
+        Optional<StorePackage> optionalStorePackage = storeAPackageRepository.findById(id);
+        if (optionalStorePackage.isPresent()) {
+            StorePackage storePackage = optionalStorePackage.get();
+            storePackage.setStatus("PAID");
+            return storeAPackageRepository.save(storePackage);
+        }
+        throw new DataNotFoundException("Cannot find StorePackage with id =" + id);
+    }
+
 }

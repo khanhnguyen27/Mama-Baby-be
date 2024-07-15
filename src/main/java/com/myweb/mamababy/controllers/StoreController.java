@@ -3,6 +3,7 @@ package com.myweb.mamababy.controllers;
 
 import com.myweb.mamababy.dtos.StoreDTO;
 import com.myweb.mamababy.models.Store;
+import com.myweb.mamababy.models.StorePackage;
 import com.myweb.mamababy.responses.ResponseObject;
 import com.myweb.mamababy.responses.store.StoreListResponse;
 import com.myweb.mamababy.responses.store.StoreResponse;
@@ -273,6 +274,22 @@ public class StoreController {
         } catch (Exception e) {
             logger.error("Error occurred while retrieving image: " + e.getMessage());
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/pay_success/{storePackageId}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> updatePaymentSuccess(
+            @Valid @PathVariable("storePackageId") int storePackageId) {
+        try {
+            Store store = storeService.buyPackageSuccess(storePackageId);
+            return ResponseEntity.ok(ResponseObject.builder()
+                    .message("Store with  Id = " + storePackageId + " Payment successfully!!!")
+                    .data(StoreResponse.fromStore(store))
+                    .status(HttpStatus.OK)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

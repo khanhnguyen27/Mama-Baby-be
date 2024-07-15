@@ -31,10 +31,7 @@ public class StorePackageResponse {
     @JsonProperty("buy_date")
     private LocalDateTime buyDate;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-    @JsonProperty("valid_date")
-    private LocalDateTime validDate;
+    private String status;
 
     public static StorePackageResponse fromStorePackage(StorePackage storePackage) {
         return StorePackageResponse.builder()
@@ -42,8 +39,8 @@ public class StorePackageResponse {
                 .packageId(storePackage.getAPackage().getId())
                 .storeId(storePackage.getStore().getId())
                 .price(storePackage.getPrice())
-                .validDate(storePackage.getValidDate())
-                .buyDate(storePackage.getValidDate())
+                .buyDate(storePackage.getBuyDate())
+                .status(storePackage.getStatus())
                 .build();
     }
 

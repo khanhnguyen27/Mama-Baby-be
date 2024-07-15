@@ -32,6 +32,6 @@ public class StorePackage {
     @Column(name = "buy_date")
     private LocalDateTime buyDate;
 
-    @Column(name = "valid_date")
-    private LocalDateTime validDate;
+    @Column(name = "status")
+    private String status;
 }

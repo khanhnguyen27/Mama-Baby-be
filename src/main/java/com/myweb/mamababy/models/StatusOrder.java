@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 
-public class StatusOrder {
+public class  StatusOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
