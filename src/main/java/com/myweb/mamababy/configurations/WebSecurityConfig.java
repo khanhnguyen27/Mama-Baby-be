@@ -220,7 +220,7 @@ public class WebSecurityConfig implements  WebMvcConfigurer{
                             .requestMatchers(PUT,
                                     String.format("%s/store_package**", apiPrefix)).hasAnyRole(Role.ADMIN, Role.STAFF)
 
-                            .requestMatchers("/payment-fail.html", "/payment-success.html", "/**")
+                            .requestMatchers("/payment-fail.html", "/payment-success.html","/error.html", "/**")
                             .permitAll();
 
                 }).csrf(AbstractHttpConfigurer::disable);

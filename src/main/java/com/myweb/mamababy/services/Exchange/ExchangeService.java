@@ -52,7 +52,7 @@ public class ExchangeService implements IExchangeService{
         Exchange newExchange = Exchange.builder()
                 .description(exchangeDTO.getDescription())
                 .status("PROCESSING")
-                .createDate(LocalDateTime.now())
+                .createDate(LocalDateTime.now().plusHours(7))
                 .user(existingUser)
                 .store(existingStore)
                 .order(existingOrder)
