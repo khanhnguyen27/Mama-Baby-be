@@ -192,24 +192,20 @@ public class OrderService implements IOrderService{
     @Override
     public List<Order> findByStoreId(int storeId) throws DataNotFoundException {
 
-        List<Order> orders = orderRepository.findByStoreId(storeId);
+        return orderRepository.findByStoreId(storeId);
 
-        if (orders.isEmpty()) {
-            throw new DataNotFoundException("Cannot find orders for store with id: " + storeId);
-        }
-
-        return orders;
+//        if (orders.isEmpty()) {
+//            throw new DataNotFoundException("Cannot find orders for store with id: " + storeId);
+//        }
     }
 
     @Override
     public Page<Order> getOrdersByKeyword(String keyword, Pageable pageable) throws DataNotFoundException {
-        Page<Order> orderPage = orderRepository.findByKeyword(keyword, pageable);
+        return orderRepository.findByKeyword(keyword, pageable);
 
-        if (orderPage.isEmpty()) {
-            throw new DataNotFoundException("No orders found with keyword: " + keyword);
-        }
-
-        return orderPage;
+//        if (orderPage.isEmpty()) {
+//            throw new DataNotFoundException("No orders found with keyword: " + keyword);
+//        }
     }
 
     @Override

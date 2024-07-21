@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d40bb96f-20db-4cbd-acbf-ebcf07b30758" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/configurations/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/configurations/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/myweb/mamababy/services/Order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/Product_8e2bdd25-d02c-4c01-a8f2-77b655d3a60d_12931.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/Product_ac22c278-2dc0-4ed1-aff6-f4a651b8d791_1679568666-1-6kg-crop.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/Product_b60bf4b2-29a0-49af-86c8-a518426b0d9a_OIP.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/uploads/Product_ede385bf-4508-493f-a648-4ecb797edd0b_OIP.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,14 +31,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MamababyApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DuyQuang",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MamababyApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DuyQuang&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="MamababyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.myweb.mamababy.MamababyApplication" />
